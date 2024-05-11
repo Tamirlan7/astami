@@ -10,6 +10,14 @@ public record CreateBranchRequest(
         String title,
 
         @NotNull
-        long companyId
+        long companyId,
+
+        @Size(max = 100)
+        @NotBlank
+        String country,
+
+        @Size(max = 100)
+        @NotBlank
+        String city
 ) {
 }

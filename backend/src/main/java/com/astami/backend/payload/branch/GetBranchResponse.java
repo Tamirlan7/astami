@@ -6,10 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateBranchResponse {
+@Data
+@Builder
+public class GetBranchResponse {
     private BranchDto branch;
 }

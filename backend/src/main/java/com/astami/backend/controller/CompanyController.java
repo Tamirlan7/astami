@@ -4,6 +4,7 @@ import com.astami.backend.payload.company.CreateCompanyRequest;
 import com.astami.backend.payload.company.CreateCompanyResponse;
 import com.astami.backend.payload.company.GetCompanyResponse;
 import com.astami.backend.service.CompanyService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,13 +24,13 @@ public class CompanyController {
             @PathVariable("id") Long companyId
     ) {
         return ResponseEntity.ok()
-                .body(companyService.getCompanyById(companyId));
+                .body(companyService.getCompanyResponseById(companyId));
     }
 
     @PostMapping
     @PreAuthorize("hasRole('ENTREPRENEUR')")
     public ResponseEntity<CreateCompanyResponse> createCompany(
-            @RequestBody CreateCompanyRequest body,
+            @RequestBody @Valid CreateCompanyRequest body,
             Authentication authentication
     ) {
         return ResponseEntity.status(HttpStatus.CREATED)
