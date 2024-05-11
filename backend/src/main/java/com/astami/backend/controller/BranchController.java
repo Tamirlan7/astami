@@ -20,9 +20,9 @@ public class BranchController {
 
     private final BranchService branchService;
 
-    @GetMapping("{id}")
+    @GetMapping("{branchId}")
     public ResponseEntity<GetBranchResponse> getBranchById(
-            @PathVariable("id") long branchId,
+            @PathVariable("branchId") long branchId,
             Authentication authentication
     ) {
         return ResponseEntity.ok()
