@@ -1,0 +1,23 @@
+meta {
+  name: register
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{api_url}}/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "phone": "+78765461322",
+    "email": "test@gmail.com",
+    "password": "test12345",
+    "firstName": "test",
+    "lastName": "test",
+    "birthDate": "2006-05-23",
+    "gender": "Male"
+  }
+}
