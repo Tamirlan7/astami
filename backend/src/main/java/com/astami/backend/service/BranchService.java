@@ -16,16 +16,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class BranchService {
-    private final UserService userService;
     private final BranchRepository branchRepository;
     private final CompanyService companyService;
 
 
-    public CreateBranchResponse createBranch(CreateBranchRequest body, Authentication authentication) {
+    public CreateBranchResponse createBranch(CreateBranchRequest body, Authentication authentication, long companyId) {
         Company company = companyService
-                .getCompanyById(body.companyId());
+                .getCompanyById(companyId);
 
-        if (!companyService.isUserAllowed(authentication, body.companyId())) {
+        if (companyService.isUserAllowed(authentication, companyId)) {
             throw new CustomBadRequestException("User is not the owner of this company");
         }
 
@@ -46,7 +45,7 @@ public class BranchService {
     public GetBranchResponse getBranchResponseById(long branchId, Authentication authentication) {
         Branch branch = this.getBranchById(branchId);
 
-        if (!companyService.isUserAllowed(authentication, branch.getCompany().getId())) {
+        if (companyService.isUserAllowed(authentication, branch.getCompany().getId())) {
             throw new CustomBadRequestException("User is not the owner of this company");
         }
 
@@ -55,7 +54,7 @@ public class BranchService {
                 .build();
     }
 
-    private Branch getBranchById(long branchId) {
+    public Branch getBranchById(long branchId) {
         return branchRepository.findById(branchId)
                 .orElseThrow(() -> new CustomNotFoundException("Branch with id " + branchId + " not found"));
     }

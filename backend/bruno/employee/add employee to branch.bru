@@ -1,0 +1,21 @@
+meta {
+  name: add employee to branch
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{api_url}}/company/1/branch/1/employee
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:multipart-form {
+  fullName: Олжас
+  description: Описание Олжаса
+  image: @file(C:\Users\Acer\Desktop\projects\logo.jpg)
+}

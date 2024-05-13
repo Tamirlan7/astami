@@ -8,7 +8,7 @@ public class CompanyMapper {
     public static CompanyDto mapToDto(Company company) {
         return CompanyDto.builder()
                 .id(company.getId())
-                .branches(company.getBranches())
+                .branches(company.getBranches().stream().map(BranchMapper::mapToDto).toList())
                 .userId(company.getUser().getId())
                 .title(company.getTitle())
                 .build();

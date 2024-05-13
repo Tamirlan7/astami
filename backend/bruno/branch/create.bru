@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: {{api_url}}/branch
+  url: {{api_url}}/company/1/branch
   body: json
   auth: bearer
 }
@@ -18,7 +18,6 @@ body:json {
   {
     "title": "branch1",
     "city": "Astana",
-    "country": "Kazakhstan",
-    "companyId": 1
+    "country": "Kazakhstan"
   }
 }

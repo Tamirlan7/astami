@@ -1,6 +1,5 @@
 package com.astami.backend.service;
 
-import com.astami.backend.exception.CustomBadRequestException;
 import com.astami.backend.exception.CustomNotFoundException;
 import com.astami.backend.mapper.CompanyMapper;
 import com.astami.backend.model.Company;
@@ -64,10 +63,10 @@ public class CompanyService {
             if (user.getRole() != Role.ROLE_ADMIN) {
                 // user is not even admin
 
-                return false;
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 }
