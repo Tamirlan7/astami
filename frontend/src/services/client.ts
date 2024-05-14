@@ -4,7 +4,7 @@ import {ITokens} from "../types/types.ts";
 
 const {accessToken} = JSON.parse(localStorage.getItem(TOKENS) ?? '') as ITokens
 
-const axiosClient = axios.create({
+const client = axios.create({
     baseURL: API_URL,
     headers: {
         'Content-Type': 'application/json',
@@ -13,4 +13,4 @@ const axiosClient = axios.create({
     }
 })
 
-export default axiosClient;
+export default client;
