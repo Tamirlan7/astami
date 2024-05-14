@@ -41,6 +41,11 @@ public class Branch {
     @Builder.Default
     private List<Employee> employees = new ArrayList<>();
 
+    @OneToMany(mappedBy = "branch", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    @Builder.Default
+    private List<Service> services = new ArrayList<>();
+
     public void setCompany(Company company) {
         this.company = company;
         this.company.getBranches().add(this);

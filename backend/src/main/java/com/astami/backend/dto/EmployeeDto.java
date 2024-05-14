@@ -18,6 +18,6 @@ public class EmployeeDto {
     private String fullName;
     private String description;
     private File image;
-    private List<Service> services;
+    private List<Long> services;
     private long branchId;
 }
