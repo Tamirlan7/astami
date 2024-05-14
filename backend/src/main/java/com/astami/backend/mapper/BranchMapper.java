@@ -16,6 +16,9 @@ public class BranchMapper {
                 .employees(
                         branch.getEmployees().stream().map(EmployeeMapper::mapToDto).toList()
                 )
+                .services(
+                        branch.getServices().stream().map(ServiceMapper::mapToDto).toList()
+                )
                 .build();
     }
 }

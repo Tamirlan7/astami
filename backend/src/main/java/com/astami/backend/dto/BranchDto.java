@@ -18,4 +18,5 @@ public class BranchDto {
     private String country;
     private long companyId;
     private List<EmployeeDto> employees;
+    private List<ServiceDto> services;
 }
