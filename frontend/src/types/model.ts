@@ -54,6 +54,7 @@ export interface IUser {
     birthDate: Date
     createdAt: Date
     updatedAt: Date
+    [key: string]: unknown
 }
 
 export enum Gender {

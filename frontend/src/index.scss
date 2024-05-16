@@ -1,0 +1,22 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-size: 14px;
+  font-weight: 400;
+  color: #1E2020;
+  font-family: 'Open Sans', "Helvetica Neue", sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  font-family: inherit;
+}
+
+input:is(:-webkit-autofill, :-webkit-autofill-focus) {
+  transition: background-color 600000s 0s, color 600000s 0s;
+}

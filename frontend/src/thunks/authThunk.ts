@@ -4,7 +4,7 @@ import AuthService from "../services/authService.ts";
 
 export const loginThunk = createAsyncThunk(
     'auth/login',
-    (body: ILoginRequest, {rejectWithValue}) => {
+    async (body: ILoginRequest, {rejectWithValue}) => {
         try {
             const {data, status} = await AuthService.login(body);
 
@@ -22,7 +22,7 @@ export const loginThunk = createAsyncThunk(
 
 export const registerThunk = createAsyncThunk(
     'auth/register',
-    (body: IRegisterRequest, {rejectWithValue}) => {
+    async (body: IRegisterRequest, {rejectWithValue}) => {
         try {
             const {data, status} = await AuthService.register(body);
 
@@ -40,7 +40,7 @@ export const registerThunk = createAsyncThunk(
 
 export const refreshThunk = createAsyncThunk(
     'auth/refresh',
-    (body: IRefreshRequest, {rejectWithValue}) => {
+    async (body: IRefreshRequest, {rejectWithValue}) => {
         try {
             const {data, status} = await AuthService.refreshToken(body);
 

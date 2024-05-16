@@ -1,0 +1,23 @@
+.wrapper {
+  width: max-content;
+  display: flex;
+  gap: 2px;
+  flex-direction: column;
+  position: relative;
+  padding: 1px 0;
+
+  &:hover {
+    .underline {
+      transform: scale(1);
+    }
+  }
+}
+
+.underline {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background-color: #000;
+  transform: scale(0);
+  transition: .3s ease;
+}

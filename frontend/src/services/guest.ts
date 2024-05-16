@@ -1,5 +1,5 @@
 import axios from "axios";
-import {API_URL} from "../config/appConstants.ts";
+import {API_URL} from "../config/AppConstants.ts";
 
 const guest = axios.create({
     baseURL: API_URL,

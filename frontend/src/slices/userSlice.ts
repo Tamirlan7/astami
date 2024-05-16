@@ -2,21 +2,24 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IUser} from "../types/model.ts";
 import {loginThunk, refreshThunk, registerThunk} from "../thunks/authThunk.ts";
 import {ITokens} from "../types/types.ts";
-import {TOKENS} from "../config/appConstants.ts";
+import {TOKENS} from "../config/AppConstants.ts";
 
 interface IState {
-    tokens: ITokens
+    tokens: ITokens | null
     user: IUser | null,
-    isLoading: boolean
+    isLoading: boolean,
+    isTokenRefreshing: boolean
     error: {
         caught: boolean
         message: string
+        statusCode: number
     }
 }
 
 const initialState: IState = {
-    tokens: ITokens,
+    tokens: null,
     user: null,
+    isTokenRefreshing: false,
     isLoading: false,
     error: {
         caught: false,
@@ -28,15 +31,29 @@ const initialState: IState = {
 const userSlice = createSlice({
     name: "user",
     initialState: initialState,
-    reducers: {},
+    reducers: {
+        updateUser(state: IState, action: PayloadAction<Partial<IUser>>) {
+            Object.entries(action.payload).forEach(([key, value]) => {
+                if (value) {
+                    if (state.user == null) {
+                        state.user = {} as IUser
+                    }
+
+                    state.user[key] = value;
+                }
+            });
+        }
+    },
     extraReducers: builder =>
         builder
             .addCase(loginThunk.pending, (state: IState) => {
                 state.isLoading = true;
             })
-            .addCase(loginThunk.fulfilled, (state: IState, action: PayloadAction<ITokens>) => {
-                state.tokens = action.payload;
-                localStorage.setItem(TOKENS, action.payload)
+            .addCase(loginThunk.fulfilled, (state: IState, action: PayloadAction<ITokens | undefined>) => {
+                if (action.payload) {
+                    state.tokens = action.payload;
+                    localStorage.setItem(TOKENS, JSON.stringify(action.payload))
+                }
 
                 // reset error block
                 state.error.caught = false;
@@ -48,18 +65,16 @@ const userSlice = createSlice({
             })
             .addCase(loginThunk.rejected, (state: IState, action: PayloadAction<unknown>) => {
                 state.isLoading = false;
-                state.error.caught = true
+                state.error.caught = true;
 
                 if (action.payload instanceof Error) {
-                    const e = action.payload as Error
+                    const e = action.payload as Error;
                     state.error.message = e.message;
-                }
-
-                if ('status' in action.payload || 'message' in action.payload) {
+                } else if (typeof action.payload === 'object' && action.payload !== null) {
                     const e = action.payload as {
                         status?: number,
                         message?: string
-                    }
+                    };
 
                     state.error.message = e.message ?? '';
                     state.error.statusCode = e.status ?? 0;
@@ -69,9 +84,11 @@ const userSlice = createSlice({
             .addCase(registerThunk.pending, (state: IState) => {
                 state.isLoading = true;
             })
-            .addCase(registerThunk.fulfilled, (state: IState, action: PayloadAction<ITokens>) => {
-                state.tokens = action.payload;
-                localStorage.setItem(TOKENS, action.payload)
+            .addCase(registerThunk.fulfilled, (state: IState, action: PayloadAction<ITokens | undefined>) => {
+                if (action.payload) {
+                    state.tokens = action.payload;
+                    localStorage.setItem(TOKENS, JSON.stringify(action.payload))
+                }
 
                 // reset error block
                 state.error.caught = false;
@@ -83,18 +100,16 @@ const userSlice = createSlice({
             })
             .addCase(registerThunk.rejected, (state: IState, action: PayloadAction<unknown>) => {
                 state.isLoading = false;
-                state.error.caught = true
+                state.error.caught = true;
 
                 if (action.payload instanceof Error) {
-                    const e = action.payload as Error
+                    const e = action.payload as Error;
                     state.error.message = e.message;
-                }
-
-                if ('status' in action.payload || 'message' in action.payload) {
+                } else if (typeof action.payload === 'object' && action.payload !== null) {
                     const e = action.payload as {
                         status?: number,
                         message?: string
-                    }
+                    };
 
                     state.error.message = e.message ?? '';
                     state.error.statusCode = e.status ?? 0;
@@ -104,10 +119,13 @@ const userSlice = createSlice({
 
             .addCase(refreshThunk.pending, (state: IState) => {
                 state.isLoading = true;
+                state.isTokenRefreshing = true;
             })
-            .addCase(refreshThunk.fulfilled, (state: IState, action: PayloadAction<ITokens>) => {
-                state.tokens = action.payload;
-                localStorage.setItem(TOKENS, action.payload)
+            .addCase(refreshThunk.fulfilled, (state: IState, action: PayloadAction<ITokens | undefined>) => {
+                if (action.payload) {
+                    state.tokens = action.payload;
+                    localStorage.setItem(TOKENS, JSON.stringify(action.payload))
+                }
 
                 // reset error block
                 state.error.caught = false;
@@ -115,22 +133,22 @@ const userSlice = createSlice({
                 state.error.statusCode = 0;
 
                 state.isLoading = false;
+                state.isTokenRefreshing = false;
 
             })
             .addCase(refreshThunk.rejected, (state: IState, action: PayloadAction<unknown>) => {
                 state.isLoading = false;
-                state.error.caught = true
+                state.isTokenRefreshing = false;
+                state.error.caught = true;
 
                 if (action.payload instanceof Error) {
-                    const e = action.payload as Error
+                    const e = action.payload as Error;
                     state.error.message = e.message;
-                }
-
-                if ('status' in action.payload || 'message' in action.payload) {
+                } else if (typeof action.payload === 'object' && action.payload !== null) {
                     const e = action.payload as {
                         status?: number,
                         message?: string
-                    }
+                    };
 
                     state.error.message = e.message ?? '';
                     state.error.statusCode = e.status ?? 0;
@@ -138,5 +156,5 @@ const userSlice = createSlice({
             })
 })
 
-
+export const {updateUser} = userSlice.actions
 export default userSlice.reducer;

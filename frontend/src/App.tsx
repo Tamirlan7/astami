@@ -1,7 +1,12 @@
+import {Suspense} from "react";
+import Router from "./router/Router.tsx";
+
 function App() {
 
     return (
-        <div></div>
+        <Suspense fallback={<div>loading...</div>}>
+            <Router />
+        </Suspense>
     )
 }
 

@@ -1,0 +1,37 @@
+.input-wrapper {
+  position: relative;
+}
+
+.input {
+  height: 40px;
+  border: 1px solid #A4A4A4;
+  outline: none;
+  padding: 0 5px;
+  border-radius: 4px;
+  font-family: 'Open Sans', sans-serif;
+
+  &:focus {
+    border-color: #3755FA;
+  }
+
+  &:hover:not(:focus) {
+    border-color: rgba(30, 32, 32, 0.8);
+  }
+}
+
+.label {
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.icon {
+  position: absolute;
+  top: 50%;
+  cursor: pointer;
+  margin-top: 1px;
+  transform: translateY(-50%);
+}
+
+.post-icon {
+  right: 7px;
+}
