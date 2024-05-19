@@ -14,6 +14,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({children, enabledRoles})
 
     if (isLoading || !isInitialized) {
         // loader...
+        return <div>loading...</div>
     }
 
     if (role && enabledRoles?.length) {

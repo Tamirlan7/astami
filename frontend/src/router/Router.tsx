@@ -4,6 +4,7 @@ import AppRoute from "./AppRoute.js";
 import ProtectedRoute from "./ProtectedRoute";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 import JwtValidationRoute from "./JwtValidationRoute";
+import UnauthenticatedRoute from "@router/UnauthenticatedRoute.tsx";
 
 
 const Router = () => {
@@ -45,11 +46,11 @@ const Router = () => {
                     key={route.path}
                     path={route.path}
                     element={
-                        <>
+                        <UnauthenticatedRoute>
                             <AppRoute metaData={route.metaData}>
                                 {route.component}
                             </AppRoute>
-                        </>
+                        </UnauthenticatedRoute>
                     }
                 />
             ))}

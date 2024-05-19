@@ -1,0 +1,41 @@
+.item {
+  width: 100%;
+  padding: 10px 10px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Open Sans', sans-serif;
+  border-bottom: 1px solid #d4d4d4;
+  cursor: pointer;
+  transition: background-color 150ms ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &:hover {
+    background-color: rgba(212, 212, 212, 0.5);
+  }
+
+}
+
+.last {
+  border-bottom: none;
+}
+
+.title {
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  user-select: none;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+}

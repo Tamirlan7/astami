@@ -1,0 +1,24 @@
+.list {
+  list-style: none;
+  width: 100%;
+  border: 1px solid #d4d4d4;
+  border-radius: 6px;
+  max-height: calc(100vh - 300px);
+  overflow-y: auto;
+  min-width: 50%;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+    background: #d4d4d4;
+    border-radius: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #1e2020;
+    border-radius: 6px;
+  }
+}
+
+.empty-root {
+  font-weight: 600;
+}

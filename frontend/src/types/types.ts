@@ -1,4 +1,4 @@
-import {ReactElement} from "react";
+import {ReactElement, ReactNode} from "react";
 import {Role} from "./model.ts";
 
 export interface ITokens {
@@ -7,10 +7,10 @@ export interface ITokens {
 }
 
 export interface ITokenPayload {
-    id: string;
-    issuedAt: number; // Assuming issuedAt is a string representation of Instant
-    expiration: number; // Assuming expiration is a string representation of Instant
-    tokenType: TokenType;
+    jti: string;
+    iat: number;
+    exp: number;
+    tokenType: string;
     role: string;
     userId: number;
 }
@@ -23,6 +23,7 @@ export enum TokenType {
 export interface IRouteMetaData {
     headerEnabled?: boolean
     footerEnabled?: boolean
+    customHeader?: ReactElement
 }
 
 export interface IRoute {
@@ -31,3 +32,42 @@ export interface IRoute {
     metaData?: IRouteMetaData
     enabledRoles?: Role[]
 }
+
+export interface IPropertyValid {
+    isInvalid: boolean
+    message?: string
+}
+
+export interface IFormValid {
+    [key: string]: IPropertyValid[]
+}
+
+export interface IRequest {
+    isPending: boolean
+    success: boolean | null
+    path: string | null
+    error: IResponseError
+    method: HttpMethod | null
+}
+
+export enum HttpMethod {
+    POST = 'POST',
+    GET = 'GET',
+    PUT = 'PUT',
+    DELETE = 'DELETE',
+}
+
+export interface IResponseError {
+    caught: boolean
+    message: string | null
+    status: number
+}
+
+export interface IPopupNotification {
+    description: string;
+    message: string;
+    placement: string;
+    type: PopupNotificationType;
+}
+
+export type PopupNotificationType = 'error' | 'info' | 'success' | 'warning' | 'open' | 'destroy'

@@ -13,7 +13,6 @@
       "@config/*": ["src/config/*"],
       "@slices/*": ["src/slices/*"],
       "@router/*": ["src/router/*"],
-      "@types/*": ["src/types/*"],
       "@services/*": ["src/services/*"]
     },
     "target": "ES2020",

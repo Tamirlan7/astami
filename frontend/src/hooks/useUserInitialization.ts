@@ -4,7 +4,7 @@ import {
 } from '../slices/userSlice';
 import extractJwtPayload from '../utils/extractJwtPayload';
 import {TOKENS} from "../config/AppConstants.ts";
-import {ITokens} from "../types/types.ts";
+import {ITokens} from "@types/types.ts";
 import RoleConverter from "../utils/RoleConverter.ts";
 import {useAppDispatch, useAppSelector} from "./reduxHooks.ts";
 

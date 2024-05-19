@@ -1,12 +1,14 @@
 import {configureStore} from "@reduxjs/toolkit";
 import userSlice from "./slices/userSlice.ts";
 import companySlice from "./slices/companySlice.ts";
+import popupNotificationSlice from "@slices/popupNotificationSlice.ts";
 
 const store = configureStore({
     reducer: {
         'user': userSlice,
         'company': companySlice,
-    },
+        'popupNotification': popupNotificationSlice,
+},
     devTools: import.meta.env.NODE_ENV !== 'production',
 })
 

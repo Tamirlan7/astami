@@ -1,0 +1,16 @@
+.block {
+  box-shadow: 0 4px 4px rgba(149, 149, 149, 0.25);
+}
+
+.inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.link {
+  font-size: 16px;
+  font-weight: 600;
+  color: #5B8CEB;
+}

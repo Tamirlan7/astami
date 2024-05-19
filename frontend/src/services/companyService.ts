@@ -1,10 +1,16 @@
 import client from "./client.ts";
-import {ICreateCompanyRequest} from "../types/payload.ts";
+import {AxiosResponse} from "axios";
+import BackendEndpoints from "@config/BackendEndpoints.ts";
+import {ICreateCompanyRequest, ICreateCompanyResponse, IGetUserCompaniesResponse} from "@/types/payload.ts";
 
-const companyService = {}
+class CompanyService {
+    public static createCompany(body: ICreateCompanyRequest): Promise<AxiosResponse<ICreateCompanyResponse>> {
+        return client.post(BackendEndpoints.CREATE_COMPANY, body)
+    }
 
-companyService.createCompany = (body: ICreateCompanyRequest) => {
-    return client.post('/company', body);
+    public static getUserCompanies(): Promise<AxiosResponse<IGetUserCompaniesResponse>> {
+        return client.get(BackendEndpoints.GET_USER_COMPANIES)
+    }
 }
 
-export default companyService;
+export default CompanyService;

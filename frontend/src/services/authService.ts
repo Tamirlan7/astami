@@ -1,7 +1,7 @@
-import {ILoginRequest, IRefreshRequest, IRegisterRequest} from "../types/payload.ts";
-import BackendEndpoints from "../config/BackendEndpoints.ts";
+import {ILoginRequest, IRefreshRequest, IRegisterRequest} from "@/types/payload.ts";
+import BackendEndpoints from "@config/BackendEndpoints.ts";
 import guest from "./guest.ts";
-import {ITokens} from "../types/types.ts";
+import {ITokens} from "@/types/types.ts";
 import {AxiosResponse} from 'axios'
 
 class AuthService {

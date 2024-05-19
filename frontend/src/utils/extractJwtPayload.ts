@@ -1,4 +1,4 @@
-import {ITokenPayload} from "../types/types.ts";
+import {ITokenPayload} from "@types/types.ts";
 
 export default function extractJwtPayload(token: string): ITokenPayload | null {
     if (token) {

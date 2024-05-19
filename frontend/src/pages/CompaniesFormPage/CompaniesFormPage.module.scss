@@ -1,0 +1,36 @@
+.inner {
+  padding-top: 35px;
+  display: flex;
+  justify-content: center;
+}
+
+.content {
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  width: 100%;
+}
+
+.back {
+  position: relative;
+  right: 20px;
+  top: 5px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 20px;
+
+  input {
+    width: 100%;
+  }
+}
+
+.btn {
+  width: auto;
+}
+
+

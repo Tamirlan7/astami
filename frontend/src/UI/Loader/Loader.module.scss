@@ -1,0 +1,39 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
+  gap: 15px;
+  font-family: Halvar Breitschrift, sans-serif;
+  font-size: 16px;
+}
+
+.loader {
+  width: 28px;
+  height: 28px;
+  border: 3px solid #000;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.white-wrapper {
+  color: white;
+}
+
+.white-loader {
+  border: 3px solid #fff;
+  border-bottom-color: transparent;
+}

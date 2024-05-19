@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IUser} from "../types/model.ts";
 import {loginThunk, refreshThunk, registerThunk} from "../thunks/authThunk.ts";
-import {ITokens} from "../types/types.ts";
+import {ITokens} from "@/types/types.ts";
 import {TOKENS} from "../config/AppConstants.ts";
 
 interface IState {
@@ -42,6 +42,9 @@ const userSlice = createSlice({
                     state.user[key] = value;
                 }
             });
+        },
+        clearTokens(state: IState) {
+            state.tokens = null
         }
     },
     extraReducers: builder =>
@@ -156,5 +159,5 @@ const userSlice = createSlice({
             })
 })
 
-export const {updateUser} = userSlice.actions
+export const {updateUser, clearTokens} = userSlice.actions
 export default userSlice.reducer;

@@ -1,4 +1,4 @@
-import {ReactNode} from "react";
+import React, {ReactNode} from "react";
 import {TOKENS, UNAUTHENTICATED_ENTRY} from "../config/AppConstants.ts";
 import {Navigate, useLocation} from "react-router-dom";
 import {useAppSelector} from "../hooks/reduxHooks.ts";
@@ -18,11 +18,11 @@ function JwtValidationRoute({children}: JwtValidationRouteProps) {
 
     if (isTokenRefreshing) {
         // loader
+        return <div>loading...</div>
     }
 
     if (accessToken) {
         if (validateJwt()) {
-            console.log('s')
             return children;
         } else {
             isExpired = true;
@@ -32,6 +32,7 @@ function JwtValidationRoute({children}: JwtValidationRouteProps) {
     if (isExpired && refreshToken) {
         // refresh the tokens
         // dispatch(refreshTokenThunk({refreshToken}));
+        return <div>loading...</div>
         // return <PageLoader/>;
     }
 

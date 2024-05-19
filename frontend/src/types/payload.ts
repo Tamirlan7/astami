@@ -76,3 +76,7 @@ export interface AddServiceResponse {
 export interface GetServiceResponse {
     service: IService
 }
+
+export interface IGetUserCompaniesResponse {
+    companies: ICompany[]
+}

@@ -3,4 +3,5 @@ export enum RoutePaths {
     REGISTER = '/register',
     DASHBOARD = '/dashboard',
     COMPANIES = '/companies',
+    COMPANIES_FORM = '/companies/form',
 }

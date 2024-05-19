@@ -16,10 +16,10 @@ export default defineConfig({
       '@thunks': path.resolve(__dirname, './src/thunks'),
       '@slices': path.resolve(__dirname, './src/slices'),
       '@hooks': path.resolve(__dirname, './src/hooks'),
-      '@types': path.resolve(__dirname, './src/types'),
       '@router': path.resolve(__dirname, './src/router'),
       '@pages': path.resolve(__dirname, './src/pages'),
       '@utils': path.resolve(__dirname, './src/utils'),
+      '@config': path.resolve(__dirname, './src/config'),
     },
   },
 })
