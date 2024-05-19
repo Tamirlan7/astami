@@ -8,8 +8,9 @@ import UnderlineText from "@ui/UnderlineText/UnderlineText.tsx";
 import Button from "@ui/Button/Button.tsx";
 import InfoIcon from '@assets/icons/info.svg?react'
 import PasswordInput from "@ui/PasswordInput/PasswordInput.tsx";
-import {IFormValid} from "@/types/types.ts";
+import {HttpMethod, IFormValid} from "@/types/types.ts";
 import {RoutePaths} from "@config/RoutePaths.ts";
+import BackendEndpoints from "@config/BackendEndpoints.ts";
 
 interface ILoginFormData {
     login: string
@@ -20,7 +21,7 @@ function LoginPage() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const loginInput = useRef<HTMLInputElement>(null);
-    const {isLoading, tokens} = useAppSelector(state => state.user)
+    const {lastRequest, tokens} = useAppSelector(state => state.user)
     const [formData, setFormData] = useState<ILoginFormData>({
         login: '',
         password: '',
@@ -31,11 +32,15 @@ function LoginPage() {
     }, []);
 
     useEffect(() => {
-        if (!isLoading && tokens) {
+        if (!lastRequest.isPending &&
+            lastRequest.success &&
+            lastRequest.path === BackendEndpoints.LOGIN &&
+            lastRequest.method === HttpMethod.POST &&
+            tokens) {
             navigate(RoutePaths.COMPANIES)
         }
 
-    }, [isLoading, tokens, navigate]);
+    }, [lastRequest, tokens, navigate]);
 
     const isFormValid = useMemo<IFormValid>(() => {
         const isValid = {
@@ -88,7 +93,7 @@ function LoginPage() {
                             value={formData.login}
                             onChange={handleOnChange}
                             postIcon={(
-                                <figure style={{ cursor: 'pointer' }}>
+                                <figure style={{cursor: 'pointer'}}>
                                     <InfoIcon/>
                                 </figure>
                             )}
@@ -111,7 +116,7 @@ function LoginPage() {
                     </div>
 
                     <Button disabled={isFormValid['all'][0].isInvalid}
-                            isLoading={isLoading}
+                            isLoading={lastRequest.isPending}
                             tabIndex={4}
                             type={'submit'}
                             className={c.btn}

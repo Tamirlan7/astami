@@ -6,15 +6,15 @@ import {AxiosResponse} from 'axios'
 
 class AuthService {
     public static login(body: ILoginRequest): Promise<AxiosResponse<ITokens>> {
-        return guest.post<ITokens>(BackendEndpoints.LOGIN, body)
+        return guest.post(BackendEndpoints.LOGIN, body)
     }
 
     public static register(body: IRegisterRequest): Promise<AxiosResponse<ITokens>> {
-        return guest.post<ITokens>(BackendEndpoints.REGISTER, body)
+        return guest.post(BackendEndpoints.REGISTER, body)
     }
 
     public static refreshToken(body: IRefreshRequest): Promise<AxiosResponse<ITokens>> {
-        return guest.post<ITokens>(BackendEndpoints.REFRESH, body)
+        return guest.post(BackendEndpoints.REFRESH, body)
     }
 }
 

@@ -5,18 +5,25 @@ import {raisePopupNotification} from "@slices/popupNotificationSlice.ts";
 import axios from "axios";
 
 export const loginThunk = createAsyncThunk(
-    'auth/login',
+    'auth/loginThunk',
     async (body: ILoginRequest, {dispatch, rejectWithValue}) => {
         try {
-            const {data} = await AuthService.login(body);
+            const {data, status} = await AuthService.login(body);
+            if (status >= 200 && status < 300) {
+                dispatch(raisePopupNotification({
+                    message: 'Сообщение',
+                    description: 'Вы успешно авторизовались!',
+                    type: 'success',
+                }))
+            }
             return data;
         } catch (err) {
-            let errorMessage = 'Неизвестная ошибка';
-            let errorDescription = '';
+            let errorMessage = 'Ошибка';
+            let errorDescription = 'Неизвестная ошибка';
 
             if (axios.isAxiosError(err)) {
-                errorMessage = 'Ошибка при авторизации';
-                errorDescription = err.response?.data.message || '';
+                errorMessage = 'Ошибка';
+                errorDescription = err.response?.data.message || 'Ошибка при получении списка компании';
             } else if (err instanceof Error) {
                 errorDescription = err.message;
             }
@@ -33,18 +40,25 @@ export const loginThunk = createAsyncThunk(
 )
 
 export const registerThunk = createAsyncThunk(
-    'auth/register',
+    'auth/registerThunk',
     async (body: IRegisterRequest, {dispatch, rejectWithValue}) => {
         try {
-            const {data} = await AuthService.register(body);
+            const {data, status} = await AuthService.register(body);
+            if (status >= 200 && status < 300) {
+                dispatch(raisePopupNotification({
+                    message: 'Сообщение',
+                    description: 'Регистрация прошла успешно, Добро пожаловать!',
+                    type: 'success',
+                }))
+            }
             return data;
         } catch (err) {
-            let errorMessage = 'Неизвестная ошибка';
-            let errorDescription = '';
+            let errorMessage = 'Ошибка';
+            let errorDescription = 'Неизвестная ошибка';
 
             if (axios.isAxiosError(err)) {
-                errorMessage = 'Ошибка при авторизации';
-                errorDescription = err.response?.data.message || '';
+                errorMessage = 'Ошибка';
+                errorDescription = err.response?.data.message || 'Ошибка при получении списка компании';
             } else if (err instanceof Error) {
                 errorDescription = err.message;
             }
@@ -61,13 +75,13 @@ export const registerThunk = createAsyncThunk(
 )
 
 export const refreshThunk = createAsyncThunk(
-    'auth/refresh',
+    'auth/refreshThunk',
     async (body: IRefreshRequest, {rejectWithValue}) => {
         try {
             const {data} = await AuthService.refreshToken(body);
             return data;
         } catch (err) {
-            rejectWithValue(err);
+            return rejectWithValue(err);
         }
     }
 )
