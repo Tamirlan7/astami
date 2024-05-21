@@ -23,7 +23,11 @@ export const createCompanyThunk = createAsyncThunk(
 
             if (axios.isAxiosError(err)) {
                 errorMessage = 'Ошибка';
-                errorDescription = err.response?.data.message || 'Ошибка при получении списка компании';
+                if (err.code === 'ERR_NETWORK') {
+                    errorDescription = 'Не удалось соединиться с сервером'
+                } else {
+                    errorDescription = err.response?.data.message || 'Ошибка при попытке регистрации компании';
+                }
             } else if (err instanceof Error) {
                 errorDescription = err.message;
             }
@@ -51,7 +55,43 @@ export const getUserCompaniesThunk = createAsyncThunk(
 
             if (axios.isAxiosError(err)) {
                 errorMessage = 'Ошибка';
-                errorDescription = err.response?.data.message || 'Ошибка при получении списка компании';
+                if (err.code === 'ERR_NETWORK') {
+                    errorDescription = 'Не удалось соединиться с сервером'
+                } else {
+                    errorDescription = err.response?.data.message || 'Ошибка при получении списка компании';
+                }
+            } else if (err instanceof Error) {
+                errorDescription = err.message;
+            }
+
+            dispatch(raisePopupNotification({
+                message: errorMessage,
+                description: errorDescription,
+                type: 'error'
+            }));
+
+            return rejectWithValue(err);
+        }
+    }
+)
+
+export const getCompanyById = createAsyncThunk(
+    'auth/getCompanyById',
+    async (id: number, {dispatch, rejectWithValue}) => {
+        try {
+            const {data} = await CompanyService.getCompanyById(id);
+            return data;
+        } catch (err) {
+            let errorMessage = 'Ошибка';
+            let errorDescription = 'Неизвестная ошибка';
+
+            if (axios.isAxiosError(err)) {
+                errorMessage = 'Ошибка';
+                if (err.code === 'ERR_NETWORK') {
+                    errorDescription = 'Не удалось соединиться с сервером'
+                } else {
+                    errorDescription = err.response?.data.message || 'Ошибка при получении компании по идентификатору';
+                }
             } else if (err instanceof Error) {
                 errorDescription = err.message;
             }

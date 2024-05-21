@@ -5,16 +5,16 @@ import {ITokens} from "@/types/types.ts";
 import {AxiosResponse} from 'axios'
 
 class AuthService {
-    public static login(body: ILoginRequest): Promise<AxiosResponse<ITokens>> {
-        return guest.post(BackendEndpoints.LOGIN, body)
+    public static async login(body: ILoginRequest): Promise<AxiosResponse<ITokens>> {
+        return await guest.post(BackendEndpoints.LOGIN, body)
     }
 
-    public static register(body: IRegisterRequest): Promise<AxiosResponse<ITokens>> {
-        return guest.post(BackendEndpoints.REGISTER, body)
+    public static async register(body: IRegisterRequest): Promise<AxiosResponse<ITokens>> {
+        return await guest.post(BackendEndpoints.REGISTER, body)
     }
 
-    public static refreshToken(body: IRefreshRequest): Promise<AxiosResponse<ITokens>> {
-        return guest.post(BackendEndpoints.REFRESH, body)
+    public static async refreshToken(body: IRefreshRequest): Promise<AxiosResponse<ITokens>> {
+        return await guest.post(BackendEndpoints.REFRESH, body)
     }
 }
 

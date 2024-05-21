@@ -6,6 +6,12 @@ import CompaniesPage from "../pages/CompaniesPage/CompaniesPage.tsx";
 import {Role} from "@/types/model.ts";
 import AuthHeader from "@components/AuthHeader/AuthHeader.tsx";
 import CompaniesFormPage from "@pages/CompaniesFormPage/CompaniesFormPage.tsx";
+import DashboardPage from "@pages/DashboardPage/DashboardPage.tsx";
+import BranchFormPage from "@pages/BranchFormPage/BranchFormPage.tsx";
+import RecordsPage from "@pages/RecordsPage/RecordsPage.tsx";
+import EmployeesPage from "@pages/EmployeesPage/EmployeesPage.tsx";
+import ServicesPage from "@pages/ServicesPage/ServicesPage.tsx";
+import CustomersPage from "@pages/CustomersPage/CustomersPage.tsx";
 
 /* For authenticated users */
 export const protectedRoutes: IRoute[] = [
@@ -18,17 +24,63 @@ export const protectedRoutes: IRoute[] = [
         ],
         metaData: {
             footerEnabled: false,
+            headerId: 'default',
         }
     },
     {
-        path: RoutePaths.COMPANIES_FORM,
-        component: <CompaniesFormPage/>,
+        path: RoutePaths.RECORDS,
+        component: <RecordsPage/>,
         enabledRoles: [
             Role.ROLE_ENTREPRENEUR,
             Role.ROLE_ADMIN,
         ],
         metaData: {
             footerEnabled: false,
+        }
+    },
+    {
+        path: RoutePaths.EMPLOYEES,
+        component: <EmployeesPage/>,
+        enabledRoles: [
+            Role.ROLE_ENTREPRENEUR,
+            Role.ROLE_ADMIN,
+        ],
+        metaData: {
+            footerEnabled: false,
+        }
+    },
+    {
+        path: RoutePaths.SERVICES,
+        component: <ServicesPage/>,
+        enabledRoles: [
+            Role.ROLE_ENTREPRENEUR,
+            Role.ROLE_ADMIN,
+        ],
+        metaData: {
+            footerEnabled: false,
+        }
+    },
+    {
+        path: RoutePaths.CUSTOMERS,
+        component: <CustomersPage/>,
+        enabledRoles: [
+            Role.ROLE_ENTREPRENEUR,
+            Role.ROLE_ADMIN,
+        ],
+        metaData: {
+            footerEnabled: false,
+        }
+    },
+    {
+        path: RoutePaths.BRANCH_FORM,
+        component: <BranchFormPage/>,
+        enabledRoles: [
+            Role.ROLE_ENTREPRENEUR,
+            Role.ROLE_ADMIN,
+        ],
+        metaData: {
+            footerEnabled: false,
+            headerId: 'default',
         }
     },
 ]
@@ -43,7 +95,7 @@ export const unauthenticatedRoutes: IRoute[] = [
         component: <LoginPage/>,
         metaData: {
             footerEnabled: false,
-            customHeader: <AuthHeader/>,
+            headerId: 'auth',
         }
     },
     {
@@ -51,7 +103,7 @@ export const unauthenticatedRoutes: IRoute[] = [
         component: <RegisterPage/>,
         metaData: {
             footerEnabled: false,
-            customHeader: <AuthHeader/>,
+            headerId: 'auth',
         }
     },
 ];

@@ -6,7 +6,7 @@ import {useAppDispatch, useAppSelector} from "@hooks/reduxHooks.ts";
 import {resetPopupNotification} from "@slices/popupNotificationSlice.ts";
 import {ArgsProps} from "antd/es/notification";
 import {NotificationPlacement} from "antd/es/notification/interface";
-import Header from "@components/Header/Header.tsx";
+import {defaultHeader, headers, IHeader} from "@config/Headers.tsx";
 
 interface IAppRouteProps extends PropsWithChildren {
     metaData?: IRouteMetaData
@@ -62,15 +62,23 @@ const AppRoute: FC<IAppRouteProps> = ({metaData, children}) => {
         ...metaData
     }
 
+    /*
+        You can configure this in routes.tsx.
+        When you register your route, you can pass metadata with headerId,
+        which will be later looked up in the headers config.
+        If it is undefined in the config, the default header will be used.
+    */
+    const customHeader: IHeader | null = metaData?.headerId ? headers[metaData.headerId] : null;
+
     return (
         <>
             <div>
                 {metaData.headerEnabled && (
                     <header>
-                        {metaData?.customHeader ? (
-                            metaData.customHeader
+                        {customHeader ? (
+                            customHeader.element
                         ) : (
-                            <Header/>
+                            defaultHeader.element
                         )}
                     </header>
                 )}

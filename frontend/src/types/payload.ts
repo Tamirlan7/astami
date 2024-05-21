@@ -22,6 +22,7 @@ export interface IRegisterRequest {
 
 export interface ICreateCompanyRequest {
     title: string // size, max = 100
+    branches?: ICreateBranchRequest[]
 }
 
 export interface ICreateCompanyResponse {

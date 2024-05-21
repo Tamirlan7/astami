@@ -1,0 +1,23 @@
+.block {
+  width: 56px;
+  height: 100%;
+  transition: width 0.2s ease-in-out;
+}
+
+.block-extended {
+  width: 200px;
+
+
+}
+
+.menu {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-inline: 9px;
+}
+
+.menu-item {
+  width: 100%;
+}

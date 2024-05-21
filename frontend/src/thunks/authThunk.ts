@@ -23,11 +23,15 @@ export const loginThunk = createAsyncThunk(
 
             if (axios.isAxiosError(err)) {
                 errorMessage = 'Ошибка';
-                errorDescription = err.response?.data.message || 'Ошибка при получении списка компании';
+                if (err.code === 'ERR_NETWORK') {
+                    errorDescription = 'Не удалось соединиться с сервером'
+                } else {
+                    errorDescription = err.response?.data.message || 'Произошла ошибка при авторизации';
+                }
+
             } else if (err instanceof Error) {
                 errorDescription = err.message;
             }
-
             dispatch(raisePopupNotification({
                 message: errorMessage,
                 description: errorDescription,
@@ -58,7 +62,11 @@ export const registerThunk = createAsyncThunk(
 
             if (axios.isAxiosError(err)) {
                 errorMessage = 'Ошибка';
-                errorDescription = err.response?.data.message || 'Ошибка при получении списка компании';
+                if (err.code === 'ERR_NETWORK') {
+                    errorDescription = 'Не удалось соединиться с сервером'
+                } else {
+                    errorDescription = err.response?.data.message || 'Произошла ошибка при регистрации';
+                }
             } else if (err instanceof Error) {
                 errorDescription = err.message;
             }

@@ -1,0 +1,34 @@
+.main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-sizing: content-box;
+  padding: 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    background-color: rgba(163, 163, 163, 0.4);
+  }
+
+  &:not(.title) {
+    width: max-content;
+  }
+
+  &:has(.title) {
+    width: calc(100% - 9px);
+  }
+}
+
+.title-enter {
+  visibility: hidden;
+}
+
+.title-enter-done {
+  visibility: visible;
+}
+
+.title {
+  font-weight: 600;
+}

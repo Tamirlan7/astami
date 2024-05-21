@@ -1,0 +1,11 @@
+.block {
+  background-color: #333333;
+  height: 56px;
+}
+
+.inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}

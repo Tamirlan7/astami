@@ -1,10 +1,20 @@
 import {ReactElement, ReactNode} from "react";
 import {Role} from "./model.ts";
+import {RoutePaths} from "@config/RoutePaths.ts";
+import {HeaderId} from "@config/Headers.tsx";
 
 export interface ITokens {
     accessToken: string
     refreshToken: string
 }
+
+export interface IControlPanelPage {
+    id: string
+    title: string
+    path: RoutePaths
+    icon: ReactElement
+}
+
 
 export interface ITokenPayload {
     jti: string;
@@ -23,7 +33,7 @@ export enum TokenType {
 export interface IRouteMetaData {
     headerEnabled?: boolean
     footerEnabled?: boolean
-    customHeader?: ReactElement
+    headerId?: HeaderId,
 }
 
 export interface IRoute {
