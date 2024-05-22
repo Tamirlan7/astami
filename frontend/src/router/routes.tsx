@@ -28,6 +28,18 @@ export const protectedRoutes: IRoute[] = [
         }
     },
     {
+        path: RoutePaths.COMPANIES_FORM,
+        component: <CompaniesFormPage />,
+        enabledRoles: [
+            Role.ROLE_ENTREPRENEUR,
+            Role.ROLE_ADMIN,
+        ],
+        metaData: {
+            footerEnabled: false,
+            headerId: 'default',
+        }
+    },
+    {
         path: RoutePaths.RECORDS,
         component: <RecordsPage/>,
         enabledRoles: [

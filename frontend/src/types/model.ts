@@ -3,6 +3,7 @@ export interface ICompany {
     title: string
     userId: number
     branches: IBranch[]
+    lastRequestBranch: IBranch
 }
 
 export interface IBranch {

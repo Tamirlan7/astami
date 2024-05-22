@@ -17,7 +17,7 @@ class CompanyService {
         return await client.get(BackendEndpoints.GET_USER_COMPANIES)
     }
 
-    static async getCompanyById(id: number) : Promise<AxiosResponse<IGetCompanyResponse>> {
+    public static async getCompanyById(id: number) : Promise<AxiosResponse<IGetCompanyResponse>> {
         return await client
             .get(BackendEndpoints.GET_COMPANY_BY_ID.replace(':id', id.toString()))
     }

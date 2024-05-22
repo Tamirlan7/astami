@@ -25,6 +25,7 @@ const BranchFormPage = () => {
     const navigate = useNavigate()
     const companyTitle = useMemo<string | null>(() => searchParams.get("companyTitle"), [searchParams]);
     const redirectBack = useMemo<string | null>(() => searchParams.get("redirectBack"), [searchParams]);
+    const companyId = useMemo<string | null>(() => searchParams.get("companyId"), [searchParams]);
 
     useEffect(() => {
         titleInputRef.current?.focus();
@@ -45,6 +46,10 @@ const BranchFormPage = () => {
     }, [lastRequest, navigate, redirectBack]);
 
     useEffect(() => {
+        if (companyId) {
+            return;
+        }
+
         if (!companyTitle) {
             navigate(RoutePaths.COMPANIES_FORM)
         }
@@ -54,19 +59,24 @@ const BranchFormPage = () => {
                 navigate(RoutePaths.COMPANIES_FORM)
             }
         }
-    }, [navigate, companyTitle]);
+    }, [navigate, companyTitle, companyId]);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        dispatch(createCompanyThunk({
-            title: companyTitle as string,
-            branches: [{
-                title: formData.title,
-                city: formData.city,
-                country: formData.country
-            }]
-        }))
+        if (companyId) {
+            //
+        } else {
+            dispatch(createCompanyThunk({
+                title: companyTitle as string,
+                branches: [{
+                    title: formData.title,
+                    city: formData.city,
+                    country: formData.country
+                }]
+            }))
+        }
+
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
@@ -149,7 +159,7 @@ const BranchFormPage = () => {
                                 label={'Название филиала'}
                             />
 
-                            <PlainInput
+                            <Pla inInput
                                 validations={formValidation.country}
                                 value={formData.country}
                                 name={'country'}
