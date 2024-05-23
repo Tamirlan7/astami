@@ -11,6 +11,7 @@ import {HttpMethod, IFormValid} from "@/types/types.ts";
 import {useAppDispatch, useAppSelector} from "@hooks/reduxHooks.ts";
 import {createCompanyThunk} from "@thunks/companyThunk.ts";
 import BackendEndpoints from "@config/BackendEndpoints.ts";
+import {addBranchToCompanyThunk} from "@thunks/branchThunk.ts";
 
 const BranchFormPage = () => {
     const [formData, setFormData] = useState({
@@ -32,10 +33,15 @@ const BranchFormPage = () => {
     }, []);
 
     useEffect(() => {
-        if (lastRequest.success &&
-            lastRequest.method === HttpMethod.POST &&
-            lastRequest.path === BackendEndpoints.CREATE_COMPANY &&
-            !lastRequest.isPending
+        if (
+            (lastRequest.success &&
+                lastRequest.method === HttpMethod.POST &&
+                lastRequest.path === BackendEndpoints.CREATE_COMPANY &&
+                !lastRequest.isPending) ||
+            (lastRequest.success &&
+                lastRequest.method === HttpMethod.POST &&
+                lastRequest.path === BackendEndpoints.ADD_BRANCH_TO_COMPANY &&
+                !lastRequest.isPending)
         ) {
             if (redirectBack) {
                 navigate(redirectBack)
@@ -64,8 +70,13 @@ const BranchFormPage = () => {
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (companyId) {
-            //
+        if (companyId && !Object.is(Number(companyId), NaN)) {
+            dispatch(addBranchToCompanyThunk({
+                companyId: Number(companyId),
+                title: formData.title,
+                city: formData.city,
+                country: formData.country
+            }))
         } else {
             dispatch(createCompanyThunk({
                 title: companyTitle as string,
@@ -159,7 +170,7 @@ const BranchFormPage = () => {
                                 label={'Название филиала'}
                             />
 
-                            <Pla inInput
+                            <PlainInput
                                 validations={formValidation.country}
                                 value={formData.country}
                                 name={'country'}

@@ -39,6 +39,10 @@ export interface ICreateBranchRequest {
     city: string
 }
 
+export interface ICreateBranchRequestWithCompanyId extends ICreateBranchRequest {
+    companyId: number
+}
+
 export interface ICreateBranchResponse {
     branch: IBranch
 }

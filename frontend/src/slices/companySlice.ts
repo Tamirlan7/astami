@@ -1,9 +1,15 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {ICompany} from "../types/model.ts";
+import {IBranch, ICompany} from "../types/model.ts";
 import {createCompanyThunk, getCompanyById, getUserCompaniesThunk} from "@thunks/companyThunk.ts";
-import {ICreateCompanyResponse, IGetCompanyResponse, IGetUserCompaniesResponse} from "@/types/payload.ts";
+import {
+    ICreateBranchResponse,
+    ICreateCompanyResponse,
+    IGetCompanyResponse,
+    IGetUserCompaniesResponse
+} from "@/types/payload.ts";
 import {HttpMethod, IRequest} from "@/types/types.ts";
 import BackendEndpoints from "@config/BackendEndpoints.ts";
+import {addBranchToCompanyThunk, updateLastRequestedBranchThunk} from "@thunks/branchThunk.ts";
 
 interface IState {
     companies: ICompany[]
@@ -140,6 +146,99 @@ const companySlice = createSlice({
                 }
             })
             .addCase(getCompanyById.rejected, (state: IState, action: PayloadAction<unknown>) => {
+                state.lastRequest.error.caught = true;
+                state.lastRequest.isPending = false
+
+                if (action.payload instanceof Error) {
+                    const e = action.payload as Error;
+                    state.lastRequest.error.message = e.message;
+                } else if (typeof action.payload === 'object' && action.payload !== null) {
+                    const e = action.payload as {
+                        status?: number,
+                        message?: string
+                    };
+
+                    state.lastRequest.error.message = e.message === undefined ? null : e.message;
+                    state.lastRequest.error.status = e.status ?? 0;
+                }
+            })
+
+
+            .addCase(updateLastRequestedBranchThunk.pending, (state: IState) => {
+                state.lastRequest.isPending = true
+                state.lastRequest.path = BackendEndpoints.UPDATE_LAST_REQUESTED_BRANCH
+                state.lastRequest.method = HttpMethod.PUT
+            })
+            .addCase(updateLastRequestedBranchThunk.fulfilled, (state: IState, action: PayloadAction<{
+                branchId: number;
+                companyId: number
+            } | undefined>) => {
+                if (action.payload) {
+                    state.companies = state.companies.map(c => {
+                        if (c.id === action.payload?.companyId) {
+                            const branch: IBranch | undefined = c.branches.find(b => b.id === action.payload?.branchId)
+
+                            if (branch) {
+                                c.lastRequestBranch = branch
+                            }
+                        }
+
+                        return c;
+                    })
+                }
+
+                state.lastRequest.isPending = false
+                state.lastRequest.success = true
+                state.lastRequest.error = {
+                    caught: false,
+                    message: null,
+                    status: 0,
+                }
+            })
+            .addCase(updateLastRequestedBranchThunk.rejected, (state: IState, action: PayloadAction<unknown>) => {
+                state.lastRequest.error.caught = true;
+                state.lastRequest.isPending = false
+
+                if (action.payload instanceof Error) {
+                    const e = action.payload as Error;
+                    state.lastRequest.error.message = e.message;
+                } else if (typeof action.payload === 'object' && action.payload !== null) {
+                    const e = action.payload as {
+                        status?: number,
+                        message?: string
+                    };
+
+                    state.lastRequest.error.message = e.message === undefined ? null : e.message;
+                    state.lastRequest.error.status = e.status ?? 0;
+                }
+            })
+
+
+            .addCase(addBranchToCompanyThunk.pending, (state: IState) => {
+                state.lastRequest.isPending = true
+                state.lastRequest.path = BackendEndpoints.ADD_BRANCH_TO_COMPANY
+                state.lastRequest.method = HttpMethod.POST
+            })
+            .addCase(addBranchToCompanyThunk.fulfilled, (state: IState, action: PayloadAction<ICreateBranchResponse>) => {
+                if (action.payload?.branch) {
+                    state.companies = state.companies.map(c => {
+                        if (c.id === action.payload.branch.companyId) {
+                            c.branches.push(action.payload.branch)
+                        }
+
+                        return c;
+                    })
+                }
+
+                state.lastRequest.isPending = false
+                state.lastRequest.success = true
+                state.lastRequest.error = {
+                    caught: false,
+                    message: null,
+                    status: 0,
+                }
+            })
+            .addCase(addBranchToCompanyThunk.rejected, (state: IState, action: PayloadAction<unknown>) => {
                 state.lastRequest.error.caught = true;
                 state.lastRequest.isPending = false
 

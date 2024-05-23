@@ -5,6 +5,7 @@ import NextIcon from '@assets/icons/next.svg?react'
 import {createSearchParams, useNavigate} from "react-router-dom";
 import {RoutePaths} from "@config/RoutePaths.ts";
 import {useAppDispatch} from "@hooks/reduxHooks.ts";
+import {updateLastRequestedBranchThunk} from "@thunks/branchThunk.ts";
 
 interface CompanyItemProps extends HTMLAttributes<HTMLDivElement> {
     company: ICompany
@@ -26,8 +27,11 @@ const CompanyItem: FC<CompanyItemProps> = ({company, isLastItem, ...props}) => {
         if (company.lastRequestBranch) {
             branchId = company.lastRequestBranch.id.toString();
         } else if (company.branches.length) {
-            dispatch(updateLastRequestedBranchThunk(companyId, branchId))
             branchId = company.branches[0].id.toString();
+            dispatch(updateLastRequestedBranchThunk({
+                companyId: Number(companyId),
+                branchId: Number(branchId),
+            }))
         } else {
             navigate({
                 pathname: RoutePaths.BRANCH_FORM,
