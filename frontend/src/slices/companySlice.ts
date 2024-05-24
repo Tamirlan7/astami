@@ -129,12 +129,13 @@ const companySlice = createSlice({
 
             .addCase(getCompanyById.pending, (state: IState) => {
                 state.lastRequest.isPending = true
-                state.lastRequest.path = BackendEndpoints.GET_USER_COMPANIES
+                state.lastRequest.path = BackendEndpoints.GET_COMPANY_BY_ID
                 state.lastRequest.method = HttpMethod.GET
             })
             .addCase(getCompanyById.fulfilled, (state: IState, action: PayloadAction<IGetCompanyResponse | undefined>) => {
                 if (action.payload) {
                     state.currentCompany = action.payload.company
+                    state.currentCompany.currentBranch = action.payload.currentBranch
                 }
 
                 state.lastRequest.isPending = false
@@ -179,7 +180,7 @@ const companySlice = createSlice({
                             const branch: IBranch | undefined = c.branches.find(b => b.id === action.payload?.branchId)
 
                             if (branch) {
-                                c.lastRequestBranch = branch
+                                c.currentBranch = branch
                             }
                         }
 
@@ -257,5 +258,4 @@ const companySlice = createSlice({
             })
 })
 
-export const {clearLastRequest} = companySlice.actions
 export default companySlice.reducer;

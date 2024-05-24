@@ -147,7 +147,7 @@ const BranchFormPage = () => {
                 <div className={c.inner}>
 
                     <figure className={c.back}>
-                        <Back to={RoutePaths.COMPANIES_FORM} state={{
+                        <Back to={redirectBack ?? RoutePaths.COMPANIES_FORM} state={{
                             companyTitle
                         }}/>
                     </figure>

@@ -1,0 +1,16 @@
+.block {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  padding: 10px 0;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Montserrat', sans-serif;
+
+  &:hover {
+    background-color: rgba(226, 226, 226, 0.5);
+  }
+
+}

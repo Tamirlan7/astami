@@ -31,6 +31,7 @@ export interface ICreateCompanyResponse {
 
 export interface IGetCompanyResponse {
     company: ICompany
+    currentBranch: IBranch
 }
 
 export interface ICreateBranchRequest {

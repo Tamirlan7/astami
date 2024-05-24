@@ -1,7 +1,7 @@
 import React, {FC, PropsWithChildren, useEffect, useState} from 'react';
 import c from './ControlPanelWrapper.module.scss'
 import ControlPanelMenu from "@components/ControlPanelMenu/ControlPanelMenu.tsx";
-import {useAppDispatch} from "@hooks/reduxHooks.ts";
+import {useAppDispatch, useAppSelector} from "@hooks/reduxHooks.ts";
 import {getCompanyById} from "@thunks/companyThunk.ts";
 import {useParams} from "react-router-dom";
 
@@ -19,7 +19,7 @@ const ControlPanelWrapper: FC<ControlPanelWrapperProps> = ({children}) => {
 
     useEffect(() => {
         dispatch(getCompanyById(Number(companyId)))
-    }, [dispatch]);
+    }, [companyId, dispatch]);
 
     return (
         <div className={c.block}>
