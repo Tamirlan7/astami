@@ -12,6 +12,7 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.util.Collections;
 
 @RequiredArgsConstructor
 @Component
@@ -30,7 +31,7 @@ public class JwtAuthenticationConverter implements AuthenticationConverter {
                 return new PreAuthenticatedAuthenticationToken(
                         token,
                         strFormatToken,
-                        token.getRoles().stream().map(SimpleGrantedAuthority::new).toList()
+                        Collections.singletonList(new SimpleGrantedAuthority(token.getRole().name()))
                 );
             }
         }

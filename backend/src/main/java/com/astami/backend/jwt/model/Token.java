@@ -1,12 +1,12 @@
 package com.astami.backend.jwt.model;
 
+import com.astami.backend.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
-import java.util.List;
 
 @AllArgsConstructor
 @Data
@@ -17,6 +17,6 @@ public class Token {
     private Instant issuedAt;
     private Instant expiration;
     private TokenType tokenType;
-    private List<String> roles;
+    private Role role;
     private Long userId;
 }

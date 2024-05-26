@@ -31,6 +31,9 @@ public class Employee {
     @Column(name = "description", length = 500)
     private String description;
 
+    @Column(name = "job_title", nullable = false)
+    private String jobTitle;
+
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -45,6 +48,11 @@ public class Employee {
     @JoinColumn(name = "branch_id", nullable = false)
     @JsonIgnore
     private Branch branch;
+
+    @JsonIgnore
+    @Builder.Default
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Record> records = new ArrayList<>();
 
     public void setBranch(Branch branch) {
         this.branch = branch;

@@ -1,6 +1,7 @@
 package com.astami.backend.payload.branch;
 
-import jakarta.validation.constraints.NotBlank;import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public record CreateBranchRequest(
         @NotBlank

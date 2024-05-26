@@ -20,10 +20,8 @@ public class ServiceService {
     private final CompanyService companyService;
     private final BranchService branchService;
 
-    public GetServiceResponse getServiceResponseById(long  serviceId, long companyId, Authentication authentication) {
-        if (!companyService.isUserAllowed(authentication, companyId)) {
-            throw new CustomBadRequestException("User is not allowed to add service");
-        }
+    public GetServiceResponse getServiceResponseById(long serviceId, long companyId, Authentication authentication) {
+        companyService.validateUserCompany(authentication, companyId);
 
         Service service = this.getServiceById(serviceId);
 
@@ -38,9 +36,7 @@ public class ServiceService {
     }
 
     public AddServiceResponse addServiceToBranch(AddServiceRequest body, long companyId, long branchId, Authentication authentication) {
-        if (!companyService.isUserAllowed(authentication, companyId)) {
-            throw new CustomBadRequestException("User is not allowed to add service");
-        }
+        companyService.validateUserCompany(authentication, companyId);
 
         Branch branch = branchService.getBranchById(branchId);
         Service service = Service.builder()

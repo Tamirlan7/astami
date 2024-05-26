@@ -62,6 +62,11 @@ public class Service {
     @JsonIgnore
     private Branch branch;
 
+    @JsonIgnore
+    @Builder.Default
+    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Record> records = new ArrayList<>();
+
     public void setBranch(Branch branch) {
         this.branch = branch;
         this.branch.getServices().add(this);

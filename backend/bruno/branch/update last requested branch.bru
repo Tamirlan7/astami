@@ -5,7 +5,11 @@ meta {
 }
 
 put {
-  url: 
+  url: {{api_url}}/company/1/branch/1/last-requested-branch
   body: none
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
 }

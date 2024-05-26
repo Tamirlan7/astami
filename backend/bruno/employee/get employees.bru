@@ -5,7 +5,11 @@ meta {
 }
 
 get {
-  url: 
+  url: {{api_url}}/company/1/branch/1/employee
   body: none
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
 }

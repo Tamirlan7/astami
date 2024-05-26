@@ -1,5 +1,6 @@
 package com.astami.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,11 +26,12 @@ public class Company {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "title", nullable = false, length = 100)
+    @Column(name = "title", unique = true, nullable = false, length = 100)
     private String title;
 
     @Builder.Default
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Branch> branches = new ArrayList<>();
 
     public void setUser(User user) {

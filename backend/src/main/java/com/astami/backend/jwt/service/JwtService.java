@@ -2,6 +2,7 @@ package com.astami.backend.jwt.service;
 
 import com.astami.backend.jwt.model.Token;
 import com.astami.backend.jwt.model.TokenType;
+import com.astami.backend.model.Role;
 import com.astami.backend.model.User;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
@@ -64,7 +65,7 @@ public class JwtService {
 
         return Token.builder()
                 .id(UUID.randomUUID().toString())
-                .roles(List.of(user.getRole().name()))
+                .role(user.getRole())
                 .issuedAt(now)
                 .expiration(expiration)
                 .userId(user.getId())
@@ -83,7 +84,7 @@ public class JwtService {
                         .id(claimsSet.getJWTID())
                         .expiration(claimsSet.getExpirationTime().toInstant())
                         .issuedAt(claimsSet.getIssueTime().toInstant())
-                        .roles(claimsSet.getStringListClaim("roles"))
+                        .role(Role.valueOf(claimsSet.getStringClaim("role")))
                         .userId(claimsSet.getLongClaim("userId"))
                         .tokenType(TokenType.valueOf(claimsSet.getStringClaim("tokenType")))
                         .build();
@@ -105,7 +106,7 @@ public class JwtService {
                 .issueTime(Date.from(token.getIssuedAt()))
                 .jwtID(token.getId())
                 .claim("tokenType", token.getTokenType().toString())
-                .claim("roles", token.getRoles())
+                .claim("role", token.getRole())
                 .claim("userId", token.getUserId())
                 .build();
 

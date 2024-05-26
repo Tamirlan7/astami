@@ -7,6 +7,10 @@ import com.astami.backend.model.Service;
 public class ServiceMapper {
 
     public static ServiceDto mapToDto(Service service) {
+        if (service == null) {
+            return null;
+        }
+
         return ServiceDto.builder()
                 .id(service.getId())
                 .title(service.getTitle())

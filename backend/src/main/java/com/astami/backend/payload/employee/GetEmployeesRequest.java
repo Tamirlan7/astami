@@ -1,2 +1,20 @@
-package com.astami.backend.payload.employee;public class GetEmployeesRequest {
+package com.astami.backend.payload.employee;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.Authentication;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class GetEmployeesRequest {
+    private Authentication authentication;
+    private long branchId;
+    private long companyId;
+    private int page;
+    private int size;
+    private String name;
 }

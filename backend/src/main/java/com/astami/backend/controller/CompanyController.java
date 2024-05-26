@@ -1,8 +1,6 @@
 package com.astami.backend.controller;
 
-import com.astami.backend.payload.company.CreateCompanyRequest;
-import com.astami.backend.payload.company.CreateCompanyResponse;
-import com.astami.backend.payload.company.GetCompanyResponse;
+import com.astami.backend.payload.company.*;
 import com.astami.backend.service.CompanyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +17,21 @@ public class CompanyController {
 
     private final CompanyService companyService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<GetCompanyResponse> getCompanyById(
-            @PathVariable("id") Long companyId
+    @GetMapping
+    public ResponseEntity<GetCompaniesResponse> getUserCompanies(
+            Authentication authentication
     ) {
         return ResponseEntity.ok()
-                .body(companyService.getCompanyResponseById(companyId));
+                .body(companyService.getUserCompanies(authentication));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<GetCompanyResponse> getCompanyById(
+            @PathVariable("id") Long companyId,
+            Authentication authentication
+    ) {
+        return ResponseEntity.ok()
+                .body(companyService.getCompanyResponseById(companyId, authentication));
     }
 
     @PostMapping
@@ -35,6 +42,16 @@ public class CompanyController {
     ) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(companyService.createCompany(body, authentication));
+    }
+
+    @PutMapping("/{companyId}")
+    public ResponseEntity<UpdateCompanyResponse> updateCompany(
+            Authentication authentication,
+            @RequestBody UpdateCompanyRequest body,
+            @PathVariable("companyId") long companyId
+    ) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(companyService.updateCompany(body, companyId, authentication));
     }
 
 }

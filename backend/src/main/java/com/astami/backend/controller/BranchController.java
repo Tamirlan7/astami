@@ -22,10 +22,11 @@ public class BranchController {
     @GetMapping("{branchId}")
     public ResponseEntity<GetBranchResponse> getBranchById(
             @PathVariable("branchId") long branchId,
-            Authentication authentication
+            Authentication authentication,
+            @PathVariable("companyId") long companyId
     ) {
         return ResponseEntity.ok()
-                .body(branchService.getBranchResponseById(branchId, authentication));
+                .body(branchService.getBranchResponseById(branchId, companyId, authentication));
     }
 
     @PostMapping
@@ -39,4 +40,15 @@ public class BranchController {
                 .body(branchService.createBranch(body, authentication, companyId));
     }
 
+    @PutMapping("/{branchId}/last-requested-branch")
+    public ResponseEntity<?> updateLastRequestedBranch(
+            Authentication authentication,
+            @PathVariable("branchId") long branchId,
+            @PathVariable("companyId") long companyId
+    ) {
+        branchService.updateLastRequestedBranch(branchId, companyId, authentication);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(null);
+    }
 }

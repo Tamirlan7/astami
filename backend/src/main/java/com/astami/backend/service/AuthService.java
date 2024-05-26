@@ -56,16 +56,16 @@ public class AuthService {
 
         if (body.phone() != null && !body.phone().isBlank()) {
             user = userRepository.findByPhone(body.phone())
-                    .orElseThrow(() -> new CustomNotFoundException("User with phone " + body.phone() + " not found."));
+                    .orElseThrow(() -> new CustomNotFoundException("Пользователь с таким номером телефона не найден"));
         }
 
         if (body.email() != null && !body.email().isBlank()) {
             user = userRepository.findByEmail(body.email())
-                    .orElseThrow(() -> new CustomNotFoundException("User with email " + body.email() + " not found."));
+                    .orElseThrow(() -> new CustomNotFoundException("Пользователь с такой почтой не найден"));
         }
 
         if (user == null) {
-            throw new CustomBadRequestException("User not found, the reason could be phone or email are null");
+            throw new CustomBadRequestException("Пользователь не найден, возможно учетные данные были не переданы");
         }
 
         return Tokens.builder()

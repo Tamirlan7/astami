@@ -1,2 +1,17 @@
-package com.astami.backend.payload.company;public class GetCompaniesResponse {
+package com.astami.backend.payload.company;
+
+import com.astami.backend.dto.CompanyDto;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class GetCompaniesResponse {
+    List<CompanyDto> companies;
 }

@@ -6,6 +6,10 @@ import com.astami.backend.model.Service;
 
 public class EmployeeMapper {
     public static EmployeeDto mapToDto(Employee employee) {
+        if (employee == null) {
+            return null;
+        }
+
         return EmployeeDto.builder()
                 .id(employee.getId())
                 .image(employee.getImage())

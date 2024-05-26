@@ -1,7 +1,6 @@
 package com.astami.backend.dto;
 
 import com.astami.backend.model.File;
-import com.astami.backend.model.Service;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

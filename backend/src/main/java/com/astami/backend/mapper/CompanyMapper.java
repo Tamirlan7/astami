@@ -6,6 +6,10 @@ import com.astami.backend.model.Company;
 public class CompanyMapper {
 
     public static CompanyDto mapToDto(Company company) {
+        if (company == null) {
+            return null;
+        }
+
         return CompanyDto.builder()
                 .id(company.getId())
                 .branches(company.getBranches().stream().map(BranchMapper::mapToDto).toList())

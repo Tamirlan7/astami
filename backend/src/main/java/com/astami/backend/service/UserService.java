@@ -21,7 +21,7 @@ public class UserService {
         if (authentication instanceof PreAuthenticatedAuthenticationToken auth) {
             if (auth.getPrincipal() instanceof CustomUserDetails userDetails) {
                 return userRepository.findByPhone(userDetails.getUsername())
-                        .orElseThrow(() -> new CustomNotFoundException("User with phone " + userDetails.getUsername() + " not found"));
+                        .orElseThrow(() -> new CustomNotFoundException("Пользователь с таким номером телефона не найден"));
             }
         }
 

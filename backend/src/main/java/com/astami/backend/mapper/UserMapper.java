@@ -6,6 +6,8 @@ import com.astami.backend.model.User;
 public class UserMapper {
 
     public static UserDto mapToDto(User user) {
+        if (user == null) return null;
+
         return UserDto.builder()
                 .id(user.getId())
                 .role(user.getRole())

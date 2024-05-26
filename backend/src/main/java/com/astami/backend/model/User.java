@@ -66,4 +66,8 @@ public class User {
     @Builder.Default
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Company> companies = new ArrayList<>();
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Branch lastRequestedBranch;
 }
