@@ -49,6 +49,11 @@ const companySlice = createSlice({
                     status: 0
                 },
             };
+        },
+        changeCurrentBranch(state: IState, action: PayloadAction<IBranch>) {
+            if (state.currentCompany) {
+                state.currentCompany.currentBranch = action.payload;
+            }
         }
     },
     extraReducers: builder =>
@@ -258,4 +263,5 @@ const companySlice = createSlice({
             })
 })
 
+export const {changeCurrentBranch} = companySlice.actions
 export default companySlice.reducer;

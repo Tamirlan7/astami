@@ -12,14 +12,19 @@ const ControlPanelWrapper: FC<ControlPanelWrapperProps> = ({children}) => {
     const [isMenuExtended, setIsMenuExtended] = useState(false);
     const dispatch = useAppDispatch()
     const {companyId} = useParams()
+    const {currentCompany} = useAppSelector(state => state.company)
 
     const onBurgerMenuStateChanged = (value: boolean) => {
         setIsMenuExtended(value);
     }
 
     useEffect(() => {
+        if ((currentCompany && currentCompany.id === Number(companyId))) {
+            return
+        }
+
         dispatch(getCompanyById(Number(companyId)))
-    }, [companyId, dispatch]);
+    }, [companyId, dispatch, currentCompany]);
 
     return (
         <div className={c.block}>

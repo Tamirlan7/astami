@@ -1,7 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import BranchService from "@services/branchService.ts";
-import {ICreateBranchRequest, ICreateBranchRequestWithCompanyId, ICreateCompanyRequest} from "@/types/payload.ts";
-import CompanyService from "@services/companyService.ts";
+import {ICreateBranchRequestWithCompanyId} from "@/types/payload.ts";
 import {raisePopupNotification} from "@slices/popupNotificationSlice.ts";
 import axios from "axios";
 
@@ -9,7 +8,6 @@ export const updateLastRequestedBranchThunk = createAsyncThunk(
     'auth/updateLastRequestedBranchThunk',
     async ({branchId, companyId}: { branchId: number; companyId: number }, {rejectWithValue}) => {
         try {
-            console.log('updated')
             await BranchService.updateLastRequestedBranch(companyId, branchId);
             return {
                 branchId,
