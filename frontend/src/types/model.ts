@@ -12,8 +12,6 @@ export interface IBranch {
     country: string
     city: string
     companyId: number
-    employees: IEmployee[]
-    services: IService[]
 }
 
 export interface IEmployee {

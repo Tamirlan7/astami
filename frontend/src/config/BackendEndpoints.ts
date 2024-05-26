@@ -7,6 +7,7 @@ class BackendEndpoints {
     static GET_COMPANY_BY_ID = '/company/:id';
     static UPDATE_LAST_REQUESTED_BRANCH = '/company/:companyId/branch/:branchId/last-requested-branch';
     static ADD_BRANCH_TO_COMPANY = '/company/:companyId/branch';
+    static GET_EMPLOYEES = '/company/:companyId/branch/:branchId/employees';
 }
 
 export default BackendEndpoints;

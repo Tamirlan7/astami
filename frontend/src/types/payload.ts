@@ -48,6 +48,31 @@ export interface ICreateBranchResponse {
     branch: IBranch
 }
 
+export interface IGetEmployeesRequest {
+    branchId: number
+    companyId: number
+    name?: string
+}
+
+export interface IPagination {
+    isLast: boolean | null
+    isFirst: boolean | null
+    currentPage: number | null
+    totalElements: number | null
+    totalPages: number | null
+    size: number | null
+}
+
+export interface IGetEmployeesResponse {
+    employees: IEmployee[]
+    isLast: boolean
+    isFirst: boolean
+    currentPage: number
+    totalElements: number
+    totalPages: number
+    size: number
+}
+
 export interface IGetBranchResponse {
     branch: IBranch
 }

@@ -5,7 +5,7 @@ import {raisePopupNotification} from "@slices/popupNotificationSlice.ts";
 import CompanyService from "@services/companyService.ts";
 
 export const createCompanyThunk = createAsyncThunk(
-    'auth/createCompanyThunk',
+    'company/createCompanyThunk',
     async (body: ICreateCompanyRequest, {dispatch, rejectWithValue}) => {
         try {
             const {data, status} = await CompanyService.createCompany(body);
@@ -44,7 +44,7 @@ export const createCompanyThunk = createAsyncThunk(
 )
 
 export const getUserCompaniesThunk = createAsyncThunk(
-    'auth/getUserCompaniesThunk',
+    'company/getUserCompaniesThunk',
     async (_, {dispatch, rejectWithValue}) => {
         try {
             const {data} = await CompanyService.getUserCompanies();
@@ -76,7 +76,7 @@ export const getUserCompaniesThunk = createAsyncThunk(
 )
 
 export const getCompanyById = createAsyncThunk(
-    'auth/getCompanyById',
+    'company/getCompanyById',
     async (id: number, {dispatch, rejectWithValue}) => {
         try {
             const {data} = await CompanyService.getCompanyById(id);
