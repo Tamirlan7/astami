@@ -1,10 +1,11 @@
-import {Route, Routes} from 'react-router-dom';
+import {Navigate, Route, Routes} from 'react-router-dom';
 import {protectedRoutes, publicRoutes, unauthenticatedRoutes} from './routes';
 import AppRoute from "./AppRoute.js";
 import ProtectedRoute from "./ProtectedRoute";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 import JwtValidationRoute from "./JwtValidationRoute";
 import UnauthenticatedRoute from "@router/UnauthenticatedRoute.tsx";
+import {RoutePaths} from "@config/RoutePaths.ts";
 
 
 const Router = () => {
@@ -55,6 +56,12 @@ const Router = () => {
                 />
             ))}
 
+
+            <Route
+                path={'/'}
+                element={<Navigate to={RoutePaths.COMPANIES} />}
+            />
+
             <Route
                 path={'/*'}
                 element={
@@ -67,9 +74,7 @@ const Router = () => {
                         </AppRoute>
                     </>
                 }
-            >
-
-            </Route>
+            />
         </Routes>
     )
 }

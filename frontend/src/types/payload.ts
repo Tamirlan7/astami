@@ -52,6 +52,8 @@ export interface IGetEmployeesRequest {
     branchId: number
     companyId: number
     name?: string
+    page?: number
+    size?: number
 }
 
 export interface IPagination {

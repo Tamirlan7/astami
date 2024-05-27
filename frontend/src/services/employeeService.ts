@@ -13,7 +13,9 @@ class EmployeeService {
                 .replace(':branchId', body.branchId.toString()),
             {
                 params: {
-                    name: body.name
+                    name: body.name,
+                    page: body.page,
+                    size: body.size,
                 }
             }
         )

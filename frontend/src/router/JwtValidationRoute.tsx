@@ -12,7 +12,8 @@ function JwtValidationRoute({children}: JwtValidationRouteProps) {
     const {pathname} = useLocation();
     // const dispatch = useAppDispatch();
     const {accessToken, refreshToken} = JSON.parse(localStorage.getItem(TOKENS) ?? '{}');
-    const {isTokenRefreshing} = useAppSelector((state) => state.user);
+    const {lastRequest} = useAppSelector((state) => state.user);
+    const isTokenRefreshing = false
 
     let isExpired = false;
 

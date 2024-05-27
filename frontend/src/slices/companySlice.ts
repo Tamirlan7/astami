@@ -10,6 +10,7 @@ import {
 import {HttpMethod, IRequest} from "@/types/types.ts";
 import BackendEndpoints from "@config/BackendEndpoints.ts";
 import {addBranchToCompanyThunk, updateLastRequestedBranchThunk} from "@thunks/branchThunk.ts";
+import axios from "axios";
 
 interface IState {
     companies: ICompany[]
@@ -155,17 +156,19 @@ const companySlice = createSlice({
                 state.lastRequest.error.caught = true;
                 state.lastRequest.isPending = false
 
-                if (action.payload instanceof Error) {
+                if (axios.isAxiosError(action.payload)) {
+                    if (action.payload.response) {
+                        const {
+                            message,
+                            status
+                        } = action.payload.response.data
+
+                        state.lastRequest.error.message = message === undefined ? null : message;
+                        state.lastRequest.error.status = status ?? 0;
+                    }
+                } else if (action.payload instanceof Error) {
                     const e = action.payload as Error;
                     state.lastRequest.error.message = e.message;
-                } else if (typeof action.payload === 'object' && action.payload !== null) {
-                    const e = action.payload as {
-                        status?: number,
-                        message?: string
-                    };
-
-                    state.lastRequest.error.message = e.message === undefined ? null : e.message;
-                    state.lastRequest.error.status = e.status ?? 0;
                 }
             })
 
