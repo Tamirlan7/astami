@@ -16,13 +16,13 @@ const Img: FC<ImgProps> = ({path, rounded, replaceCompanyIdInPath, ...props}) =>
     useEffect(() => {
         const getImg = async () => {
             try {
-                let uri = path
+                let uri = path;
 
                 if (replaceCompanyIdInPath && companyId) {
-                    uri = uri.replace(':companyId', companyId)
+                    uri = uri.replace(':companyId', companyId);
                 }
 
-                const res = await client.get(uri, {responseType: 'blob'});
+                const res = await client.get(uri, { responseType: 'blob' });
                 const imgURL = URL.createObjectURL(res.data);
                 setImgSrc(imgURL);
             } catch (e: unknown) {
@@ -38,11 +38,12 @@ const Img: FC<ImgProps> = ({path, rounded, replaceCompanyIdInPath, ...props}) =>
                 URL.revokeObjectURL(imgSrc);
             }
         };
-    }, [companyId, imgSrc, path, replaceCompanyIdInPath]);
+    }, [companyId, path, replaceCompanyIdInPath]);
 
     return (
         <img
             {...props}
+            alt={props.alt}
             src={imgSrc}
             className={`${c.image} ${props.className} ${rounded && c.rounded}`}
         />

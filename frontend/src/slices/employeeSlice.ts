@@ -37,7 +37,8 @@ const initialState: IState = {
 const employeeSlice = createSlice({
     name: "employee",
     initialState,
-    reducers: {},
+    reducers: {
+    },
     extraReducers: builder =>
         builder
             .addCase(getEmployeesThunk.pending, (state: IState) => {

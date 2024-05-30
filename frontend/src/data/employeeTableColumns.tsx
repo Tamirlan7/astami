@@ -1,14 +1,15 @@
 import {IEmployee} from "@/types/model.ts";
 import {ColumnType} from "antd/es/table";
-import {API_URL} from "@config/AppConstants.ts";
-import {useState} from "react";
 import Img from "@ui/Img/Img.tsx";
 import BackendEndpoints from "@config/BackendEndpoints.ts";
+import Icon from "@ui/Icon/Icon.tsx";
+import EditIcon from '@assets/icons/edit.svg?react';
 
 const employeeTableColumns: ColumnType<IEmployee>[] = [
     {
         title: '',
         key: 'image',
+        dataIndex: 'image',
         width: 40,
         render: (_, record, __) => {
             return (
@@ -43,7 +44,28 @@ const employeeTableColumns: ColumnType<IEmployee>[] = [
         dataIndex: 'jobTitle',
         key: 'jobTitle',
     },
-
+    {
+        title: 'Описание',
+        dataIndex: 'description',
+        key: 'description',
+        render: (_, record, __) => {
+            return (
+                <div>{record.description.substring(0, 25)}{record.description.length > 25 && '...'}</div>
+            )
+        },
+    },
+    {
+        title: '',
+        dataIndex: 'edit',
+        width: 40,
+        render: (_, record, __) => {
+            return (
+                <Icon width={20} height={20}>
+                    <EditIcon/>
+                </Icon>
+            )
+        },
+    },
 ]
 
 export default employeeTableColumns;
