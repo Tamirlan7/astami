@@ -48,12 +48,10 @@ export interface ICreateBranchResponse {
     branch: IBranch
 }
 
-export interface IGetEmployeesRequest {
+export interface IGetEmployeesRequest extends IPaginationIncludedRequest {
     branchId: number
     companyId: number
     name?: string
-    page?: number
-    size?: number
 }
 
 export interface IPagination {
@@ -65,8 +63,11 @@ export interface IPagination {
     size: number | null
 }
 
-export interface IGetEmployeesResponse {
+export interface IGetEmployeesResponse extends IPaginationIncludedResponse {
     employees: IEmployee[]
+}
+
+export interface IPaginationIncludedResponse {
     isLast: boolean
     isFirst: boolean
     currentPage: number
@@ -79,13 +80,20 @@ export interface IGetBranchResponse {
     branch: IBranch
 }
 
-export interface AddEmployeeRequest {
-    fullName: string
-    description: string
-    image: File
+export interface ICreateEmployeeRequest extends ICreateEmployeeRequestBody {
+    companyId: number
+    branchId: number
 }
 
-export interface AddEmployeeResponse {
+export interface ICreateEmployeeRequestBody {
+    fullName: string
+    description: string
+    image: string
+    jobTitle: string
+    age: number | null
+}
+
+export interface ICreateEmployeeResponse {
     employee: IEmployee
 }
 
@@ -108,6 +116,21 @@ export interface AddServiceResponse {
 
 export interface GetServiceResponse {
     service: IService
+}
+
+export interface IGetServicesResponse extends IPaginationIncludedResponse {
+    services: IService[]
+}
+
+export interface IPaginationIncludedRequest {
+    page?: number
+    size?: number
+}
+
+export interface IGetServicesRequest extends IPaginationIncludedRequest {
+    branchId: number
+    companyId: number
+    title?: string
 }
 
 export interface IGetUserCompaniesResponse {

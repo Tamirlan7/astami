@@ -8,15 +8,15 @@ import {getEmployeesThunk} from "@thunks/employeeThunk.ts";
 import BackendEndpoints from "@config/BackendEndpoints.ts";
 import {HttpMethod} from "@/types/types.ts";
 import EmployeesFilter from "@components/EmployeesFilter/EmployeesFilter.tsx";
-import Modal from "@ui/Modal/Modal.tsx";
-import EmployeeForm from "@components/EmployeeForm/EmployeeForm.tsx";
+import {useNavigate} from "react-router-dom";
+import {RoutePaths} from "@config/RoutePaths.ts";
 
 const EmployeesPage = () => {
+    const navigate = useNavigate();
     const dispatch = useAppDispatch()
     const {employees, pagination} = useAppSelector(state => state.employee)
     const {currentCompany, lastRequest} = useAppSelector(state => state.company)
     const [currentPage, setCurrentPage] = useState(0);
-    const [isFormVisible, setIsFormVisible] = useState(false);
 
     useEffect(() => {
         if ((currentCompany &&
@@ -38,15 +38,17 @@ const EmployeesPage = () => {
     }
 
     const handleOnAddEmployeeClick = () => {
-        showFormModal();
+        navigateToEmployeeFormPage();
     }
 
-    const showFormModal = () => {
-        setIsFormVisible(true)
-    }
+    const navigateToEmployeeFormPage = () => {
 
-    const hideFormModal = () => {
-        setIsFormVisible(false)
+        if (currentCompany) {
+            navigate(
+                RoutePaths.EMPLOYEES_FORM
+                    .replace(':companyId', currentCompany.id.toString())
+            );
+        }
     }
 
     return (
@@ -70,14 +72,6 @@ const EmployeesPage = () => {
                            columns={employeeTableColumns}
                     />
                 </div>
-
-                {/*modals*/}
-                <Modal
-                    isActive={isFormVisible}
-                    setIsActive={setIsFormVisible}
-                >
-                    <EmployeeForm isVisible={isFormVisible} closeModal={hideFormModal} />
-                </Modal>
             </div>
         </ControlPanelWrapper>
     );

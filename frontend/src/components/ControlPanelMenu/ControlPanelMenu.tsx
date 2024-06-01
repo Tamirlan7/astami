@@ -1,10 +1,9 @@
 import React, {FC} from 'react';
 import c from './ControlPanelMenu.module.scss'
 import controlPanelPages from "@/data/controlPanelPages.tsx";
-import ControlPanelIcon from "@ui/ControlPanelIcon/ControlPanelIcon.tsx";
 import BurgerMenuIcon from '@assets/icons/burger-menu.svg?react'
 import ControlPanelMenuItem from "@components/ControlPanelMenuItem/ControlPanelMenuItem.tsx";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 interface ControlPanelMenuProps {
     burgerMenuState?: boolean

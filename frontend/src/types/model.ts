@@ -21,6 +21,9 @@ export interface IEmployee {
     image: IFile
     services: number[] // services ids
     branchId: number
+    workdayStartTime: string
+    workdayEndTime: string
+    workDays: string[]
 }
 
 export interface IService {
@@ -53,6 +56,7 @@ export interface IUser {
     birthDate: Date
     createdAt: Date
     updatedAt: Date
+
     [key: string]: unknown
 }
 
@@ -61,7 +65,17 @@ export enum Gender {
     FEMALE = "FEMALE"
 }
 
+export enum Weekdays {
+    MONDAY = "MONDAY",
+    TUESDAY = "TUESDAY",
+    WEDNESDAY = "WEDNESDAY",
+    THURSDAY = "THURSDAY",
+    FRIDAY = "FRIDAY",
+    SATURDAY = "SATURDAY",
+    SUNDAY = "SUNDAY",
+}
+
 export enum Role {
-    ROLE_ADMIN= "ROLE_ADMIN",
+    ROLE_ADMIN = "ROLE_ADMIN",
     ROLE_ENTREPRENEUR = "ROLE_ENTREPRENEUR",
 }

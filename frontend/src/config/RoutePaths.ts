@@ -8,4 +8,5 @@ export enum RoutePaths {
     CUSTOMERS = '/company/:companyId/customers',
     COMPANIES_FORM = '/companies/form',
     BRANCH_FORM = '/branch/form',
+    EMPLOYEES_FORM = '/company/:companyId/settings/employee/form',
 }

@@ -12,6 +12,7 @@ import RecordsPage from "@pages/RecordsPage/RecordsPage.tsx";
 import EmployeesPage from "@pages/EmployeesPage/EmployeesPage.tsx";
 import ServicesPage from "@pages/ServicesPage/ServicesPage.tsx";
 import CustomersPage from "@pages/CustomersPage/CustomersPage.tsx";
+import EmployeesFormPage from "@pages/EmployeesFormPage/EmployeesFormPage.tsx";
 
 /* For authenticated users */
 export const protectedRoutes: IRoute[] = [
@@ -29,7 +30,7 @@ export const protectedRoutes: IRoute[] = [
     },
     {
         path: RoutePaths.COMPANIES_FORM,
-        component: <CompaniesFormPage />,
+        component: <CompaniesFormPage/>,
         enabledRoles: [
             Role.ROLE_ENTREPRENEUR,
             Role.ROLE_ADMIN,
@@ -48,6 +49,8 @@ export const protectedRoutes: IRoute[] = [
         ],
         metaData: {
             footerEnabled: false,
+            headerId: 'control-panel',
+            fixed: true,
         }
     },
     {
@@ -59,6 +62,8 @@ export const protectedRoutes: IRoute[] = [
         ],
         metaData: {
             footerEnabled: false,
+            headerId: 'control-panel',
+            fixed: true,
         }
     },
     {
@@ -70,6 +75,8 @@ export const protectedRoutes: IRoute[] = [
         ],
         metaData: {
             footerEnabled: false,
+            headerId: 'control-panel',
+            fixed: true,
         }
     },
     {
@@ -81,6 +88,8 @@ export const protectedRoutes: IRoute[] = [
         ],
         metaData: {
             footerEnabled: false,
+            headerId: 'control-panel',
+            fixed: true,
         }
     },
     {
@@ -93,6 +102,19 @@ export const protectedRoutes: IRoute[] = [
         metaData: {
             footerEnabled: false,
             headerId: 'default',
+        }
+    },
+    {
+        path: RoutePaths.EMPLOYEES_FORM,
+        component: <EmployeesFormPage/>,
+        enabledRoles: [
+            Role.ROLE_ENTREPRENEUR,
+            Role.ROLE_ADMIN,
+        ],
+        metaData: {
+            footerEnabled: false,
+            headerId: 'control-panel',
+            fixed: true,
         }
     },
 ]

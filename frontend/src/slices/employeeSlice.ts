@@ -1,9 +1,9 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IEmployee} from "@/types/model.ts";
 import {HttpMethod, IRequest} from "@/types/types.ts";
-import {IGetEmployeesResponse, IPagination} from "@/types/payload.ts";
+import {ICreateEmployeeResponse, IGetEmployeesResponse, IPagination} from "@/types/payload.ts";
 import BackendEndpoints from "@config/BackendEndpoints.ts";
-import {getEmployeesThunk} from "@thunks/employeeThunk.ts";
+import {createEmployeeThunk, getEmployeesThunk} from "@thunks/employeeThunk.ts";
 
 interface IState {
     employees: IEmployee[]
@@ -37,8 +37,7 @@ const initialState: IState = {
 const employeeSlice = createSlice({
     name: "employee",
     initialState,
-    reducers: {
-    },
+    reducers: {},
     extraReducers: builder =>
         builder
             .addCase(getEmployeesThunk.pending, (state: IState) => {
@@ -66,6 +65,46 @@ const employeeSlice = createSlice({
                 }
             })
             .addCase(getEmployeesThunk.rejected, (state: IState, action: PayloadAction<unknown>) => {
+                state.lastRequest.error.caught = true;
+                state.lastRequest.isPending = false
+
+                if (action.payload instanceof Error) {
+                    const e = action.payload as Error;
+                    state.lastRequest.error.message = e.message;
+                } else if (typeof action.payload === 'object' && action.payload !== null) {
+                    const e = action.payload as {
+                        status?: number,
+                        message?: string
+                    };
+
+                    state.lastRequest.error.message = e.message === undefined ? null : e.message;
+                    state.lastRequest.error.status = e.status ?? 0;
+                }
+            })
+
+            .addCase(createEmployeeThunk.pending, (state: IState) => {
+                state.lastRequest.isPending = true
+                state.lastRequest.path = BackendEndpoints.CREATE_EMPLOYEE
+                state.lastRequest.method = HttpMethod.POST
+            })
+            .addCase(createEmployeeThunk.fulfilled, (state: IState, action: PayloadAction<ICreateEmployeeResponse | undefined>) => {
+                if (action.payload) {
+                    if (state.employees.length < 10) {
+                        state.employees.push({
+                            ...action.payload.employee,
+                        })
+                    }
+                }
+
+                state.lastRequest.isPending = false
+                state.lastRequest.success = true
+                state.lastRequest.error = {
+                    caught: false,
+                    message: null,
+                    status: 0,
+                }
+            })
+            .addCase(createEmployeeThunk.rejected, (state: IState, action: PayloadAction<unknown>) => {
                 state.lastRequest.error.caught = true;
                 state.lastRequest.isPending = false
 

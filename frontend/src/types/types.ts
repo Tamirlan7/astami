@@ -34,6 +34,7 @@ export interface IRouteMetaData {
     headerEnabled?: boolean
     footerEnabled?: boolean
     headerId?: HeaderId,
+    fixed?: boolean
 }
 
 export interface IRoute {

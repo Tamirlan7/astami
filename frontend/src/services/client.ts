@@ -1,8 +1,8 @@
 import axios from "axios";
 import {API_URL, TOKENS} from "../config/AppConstants.ts";
-import {ITokens} from "@types/types.ts";
+import {ITokens} from "@/types/types.ts";
 
-const {accessToken} = JSON.parse(localStorage.getItem(TOKENS) ?? '') as ITokens
+const {accessToken} = JSON.parse(localStorage.getItem(TOKENS) ?? '{}') as ITokens
 
 const client = axios.create({
     baseURL: API_URL,

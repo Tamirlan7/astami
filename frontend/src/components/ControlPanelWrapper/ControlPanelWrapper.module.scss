@@ -1,4 +1,6 @@
 .block {
+  padding-right: 20px;
+
   &:has(.menu-extended) {
 
     .main {
@@ -11,7 +13,7 @@
 .aside {
   position: fixed;
   top: 56px;
-  z-index: 9999;
+  z-index: 1000;
   bottom: 0;
   background-color: #F0F0F0;
 

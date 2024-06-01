@@ -74,7 +74,11 @@ const AppRoute: FC<IAppRouteProps> = ({metaData, children}) => {
         <>
             <div>
                 {metaData.headerEnabled && (
-                    <header>
+                    <header style={{
+                        position: metaData.fixed ? 'fixed' : 'static',
+                        width: '100%',
+                        zIndex: '999'
+                    }}>
                         {customHeader ? (
                             customHeader.element
                         ) : (
@@ -83,7 +87,9 @@ const AppRoute: FC<IAppRouteProps> = ({metaData, children}) => {
                     </header>
                 )}
 
-                <main>
+                <main style={{
+                    paddingTop: metaData.fixed ? 56 : 0
+                }}>
                     {children}
                 </main>
 
