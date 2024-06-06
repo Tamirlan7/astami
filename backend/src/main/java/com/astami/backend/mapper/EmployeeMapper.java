@@ -4,6 +4,7 @@ import com.astami.backend.dto.EmployeeDto;
 import com.astami.backend.model.Employee;
 import com.astami.backend.model.Service;
 
+
 public class EmployeeMapper {
     public static EmployeeDto mapToDto(Employee employee) {
         if (employee == null) {
@@ -16,7 +17,12 @@ public class EmployeeMapper {
                 .description(employee.getDescription())
                 .services(employee.getServices().stream().map(Service::getId).toList())
                 .branchId(employee.getBranch().getId())
+                .workDays(employee.getWorkDays())
+                .workdayStartTime(employee.getWorkdayStartTime())
+                .workdayEndTime(employee.getWorkDayEndTime())
                 .fullName(employee.getFullName())
+                .age(employee.getAge())
+                .jobTitle(employee.getJobTitle())
                 .build();
     }
 }

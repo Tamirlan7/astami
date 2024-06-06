@@ -1,0 +1,34 @@
+.block {
+  padding: 0 0 10px;
+  min-width: 400px;
+}
+
+.form {
+  width: 100%;
+  margin-top: 15px;
+}
+
+.form-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.input-root {
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+
+  &:not(.textarea) {
+    min-height: 40px !important;
+  }
+}
+
+.textarea {
+  resize: none !important;
+  min-height: 100px !important;
+}

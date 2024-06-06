@@ -1,4 +1,5 @@
 import {
+    ICreateServiceRequest, ICreateServiceResponse,
     IGetServicesRequest, IGetServicesResponse
 } from "@/types/payload.ts";
 import {AxiosResponse} from "axios";
@@ -18,6 +19,15 @@ class ServiceService {
                     size: body.size,
                 }
             }
+        )
+    }
+
+    static async createService(body: ICreateServiceRequest): Promise<AxiosResponse<ICreateServiceResponse>> {
+        return await client.post(
+            BackendEndpoints.CREATE_SERVICE
+                .replace(':companyId', body.companyId.toString())
+                .replace(':branchId', body.branchId.toString()),
+            body,
         )
     }
 }

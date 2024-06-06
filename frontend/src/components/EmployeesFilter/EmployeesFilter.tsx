@@ -9,7 +9,7 @@ interface EmployeesFilterProps {
 
 const EmployeesFilter: FC<EmployeesFilterProps> = ({onTitleChange, onAddEmployeeClick}) => {
 
-    const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleOnTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (onTitleChange) {
             onTitleChange(e.target.value);
         }

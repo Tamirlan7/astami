@@ -52,7 +52,8 @@
 }
 
 .label {
-  display: inline-block;
+  display: flex;
+  align-items: center;
   margin-bottom: 5px;
   font-weight: 600;
 }
@@ -79,6 +80,25 @@
   font-size: 13px;
   animation: error-enter 150ms ease forwards;
   transform: translateY(-30px);
+}
+
+
+.required {
+  color: gray;
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  position: relative;
+  left: 12px;
+  height: 100%;
+
+  &::after {
+    content: ')'
+  }
+
+  &::before {
+    content: '(*';
+  }
 }
 
 @keyframes error-enter {

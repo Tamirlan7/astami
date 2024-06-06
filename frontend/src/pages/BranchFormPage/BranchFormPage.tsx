@@ -98,7 +98,8 @@ const BranchFormPage = () => {
             title: [
                 {
                     isInvalid: formData.title.trim().length <= 1,
-                    message: 'Название филиала должна быть больше одного символа'
+                    message: 'Название филиала должна быть больше одного символа',
+                    exception: formData.title.trim().length === 0,
                 },
                 {
                     isInvalid: formData.title.trim().length > 100,
@@ -108,17 +109,19 @@ const BranchFormPage = () => {
             city: [
                 {
                     isInvalid: formData.city.trim().length <= 1,
-                    message: 'Название страны должна быть больше 1 символа'
+                    message: 'Название страны должна быть больше 1 символа',
+                    exception: formData.city.trim().length === 0,
                 },
                 {
                     isInvalid: formData.city.trim().length > 100,
-                    message: 'Название страны не должна превышать более 100 символов'
+                    message: 'Название страны не должна превышать более 100 символов',
                 },
             ],
             country: [
                 {
                     isInvalid: formData.country.trim().length <= 4,
-                    message: 'Название страны должна быть больше 4 символов'
+                    message: 'Название страны должна быть больше 4 символов',
+                    exception: formData.country.trim().length === 0,
                 },
                 {
                     isInvalid: formData.country.trim().length > 100,

@@ -26,7 +26,7 @@ const PlainUpload: FC<PlainUploadProps> = ({label, rootClassName, ...props}) => 
             <div className={c.main}>
                 <Upload
                     {...props}
-                    customRequest={dummyCustomRequest}
+                    customRequest={props.customRequest ?? dummyCustomRequest}
                     className={`${c.upload} ${props.className}`}
                 >
                     {props.children}

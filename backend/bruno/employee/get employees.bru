@@ -5,9 +5,15 @@ meta {
 }
 
 get {
-  url: {{api_url}}/company/1/branch/1/employee
+  url: {{api_url}}/company/1/branch/1/employee?name&page=0&size=10
   body: none
   auth: bearer
+}
+
+query {
+  name: 
+  page: 0
+  size: 10
 }
 
 auth:bearer {

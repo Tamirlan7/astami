@@ -1,4 +1,5 @@
-import {Gender, IBranch, ICompany, IEmployee, IService} from "./model.ts";
+import {Gender, IBranch, ICompany, IEmployee, IFile, IService, Weekdays} from "./model.ts";
+import {UploadFile} from "antd";
 
 export interface ILoginRequest {
     email: string
@@ -85,13 +86,27 @@ export interface ICreateEmployeeRequest extends ICreateEmployeeRequestBody {
     branchId: number
 }
 
+export interface IUpdateEmployeeRequest extends ICreateEmployeeRequest {
+    employeeId: number
+}
+
+export interface IUpdateEmployeeResponse extends ICreateEmployeeResponse {
+    assignedServices: IService[]
+}
+
 export interface ICreateEmployeeRequestBody {
     fullName: string
     description: string
-    image: string
+    image: Blob | null | IFile
     jobTitle: string
-    age: number | null
+    age: number
+    workDays: Weekdays[]
+    assignedServices: AssignedService[]
+    workdayStartTime: string
+    workdayEndTime: string
 }
+
+export type AssignedService = (Pick<IService, 'id'> & Pick<IService, 'title'>)
 
 export interface ICreateEmployeeResponse {
     employee: IEmployee
@@ -101,13 +116,31 @@ export interface GetEmployeeResponse {
     employee: IEmployee
 }
 
-export interface AddServiceRequest {
+export interface ICreateServiceResponse {
+    service: IService
+}
+
+export interface ICreateServiceRequest extends ICreateServiceRequestBody {
+    companyId: number
+    branchId: number
+}
+
+export interface ICreateServiceRequestBody {
     title: string
     description: string
     price: number
-    duration: string
-    availableFrom: Date
-    availableTo: Date
+    duration: number
+}
+
+export interface IGetEmployeeByIdRequest {
+    companyId: number
+    branchId: number
+    employeeId: number
+}
+
+export interface IGetEmployeeByIdResponse {
+    employee: IEmployee
+    assignedServices: IService[]
 }
 
 export interface AddServiceResponse {

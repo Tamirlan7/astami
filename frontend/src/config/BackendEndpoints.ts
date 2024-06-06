@@ -11,6 +11,9 @@ class BackendEndpoints {
     static GET_EMPLOYEES_FILE = '/company/:companyId/branch/:branchId/employee/:employeeId/file/:fileName';
     static CREATE_EMPLOYEE = '/company/:companyId/branch/:branchId/employee';
     static GET_SERVICES = '/company/:companyId/branch/:branchId/service';
+    static CREATE_SERVICE = '/company/:companyId/branch/:branchId/service';
+    static GET_EMPLOYEE_BY_ID = '/company/:companyId/branch/:branchId/employee/:employeeId';
+    static UPDATE_EMPLOYEE_BY_ID = '/company/:companyId/branch/:branchId/employee/:employeeId';
 }
 
 export default BackendEndpoints;

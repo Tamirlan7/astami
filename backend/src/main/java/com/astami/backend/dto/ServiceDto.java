@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Time;
-import java.time.Duration;
 import java.util.List;
 
 @AllArgsConstructor
@@ -18,9 +16,7 @@ public class ServiceDto {
     private String title;
     private String description;
     private float price;
-    private Duration duration;
-    private Time availableFrom;
-    private Time availableTo;
+    private long duration;
     private List<Long> employees;
     private long branchId;
 }

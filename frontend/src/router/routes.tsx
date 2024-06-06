@@ -13,6 +13,7 @@ import EmployeesPage from "@pages/EmployeesPage/EmployeesPage.tsx";
 import ServicesPage from "@pages/ServicesPage/ServicesPage.tsx";
 import CustomersPage from "@pages/CustomersPage/CustomersPage.tsx";
 import EmployeesFormPage from "@pages/EmployeesFormPage/EmployeesFormPage.tsx";
+import ServicesFormPage from "@pages/ServicesFormPage/ServicesFormPage.tsx";
 
 /* For authenticated users */
 export const protectedRoutes: IRoute[] = [
@@ -106,6 +107,19 @@ export const protectedRoutes: IRoute[] = [
     },
     {
         path: RoutePaths.EMPLOYEES_FORM,
+        component: <EmployeesFormPage/>,
+        enabledRoles: [
+            Role.ROLE_ENTREPRENEUR,
+            Role.ROLE_ADMIN,
+        ],
+        metaData: {
+            footerEnabled: false,
+            headerId: 'control-panel',
+            fixed: true,
+        }
+    },
+    {
+        path: RoutePaths.EMPLOYEES_EDIT_FORM,
         component: <EmployeesFormPage/>,
         enabledRoles: [
             Role.ROLE_ENTREPRENEUR,

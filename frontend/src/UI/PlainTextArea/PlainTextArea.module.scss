@@ -1,17 +1,36 @@
 .disabled {
-  background-color: rgba(30, 32, 32, 0.1);
+  background-color: rgba(30, 32, 32, 0.1) !important;
   border: none;
 }
 
 .invalid {
-  border-color: #df3636;
-  color: #df3636;
+  border-color: #df3636 !important;
+  color: #df3636 !important;
 }
 
 .label {
-  display: inline-block;
+  display: flex;
+  align-items: center;
   margin-bottom: 5px;
   font-weight: 600;
+}
+
+.required {
+  color: gray;
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  position: relative;
+  left: 12px;
+  height: 100%;
+
+  &::after {
+    content: ')'
+  }
+
+  &::before {
+    content: '(*';
+  }
 }
 
 .error {

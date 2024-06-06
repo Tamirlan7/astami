@@ -17,6 +17,4 @@ public class BranchDto {
     private String city;
     private String country;
     private long companyId;
-    private List<EmployeeDto> employees;
-    private List<ServiceDto> services;
 }

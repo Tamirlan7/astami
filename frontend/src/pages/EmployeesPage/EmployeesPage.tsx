@@ -8,15 +8,21 @@ import {getEmployeesThunk} from "@thunks/employeeThunk.ts";
 import BackendEndpoints from "@config/BackendEndpoints.ts";
 import {HttpMethod} from "@/types/types.ts";
 import EmployeesFilter from "@components/EmployeesFilter/EmployeesFilter.tsx";
-import {useNavigate} from "react-router-dom";
+import {createSearchParams, useLocation, useNavigate} from "react-router-dom";
 import {RoutePaths} from "@config/RoutePaths.ts";
+import IntroduceTitle from "@ui/IntroduceTitle/IntroduceTitle.tsx";
+import {IEmployee} from "@/types/model.ts";
+import EmployeeDetailsModal from "@components/EmployeeDetailsModal/EmployeeDetailsModal.tsx";
 
 const EmployeesPage = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch()
+    const location = useLocation();
+    const [currentEmployee, setCurrentEmployee] = useState<IEmployee | null>(null)
     const {employees, pagination} = useAppSelector(state => state.employee)
     const {currentCompany, lastRequest} = useAppSelector(state => state.company)
     const [currentPage, setCurrentPage] = useState(0);
+    const [isEmployeeModalVisible, setIsEmployeeModalVisible] = useState<boolean>(false)
 
     useEffect(() => {
         if ((currentCompany &&
@@ -44,18 +50,37 @@ const EmployeesPage = () => {
     const navigateToEmployeeFormPage = () => {
 
         if (currentCompany) {
-            navigate(
-                RoutePaths.EMPLOYEES_FORM
-                    .replace(':companyId', currentCompany.id.toString())
-            );
+            navigate({
+                pathname: RoutePaths.EMPLOYEES_FORM
+                    .replace(':companyId', currentCompany.id.toString()),
+                search: createSearchParams({
+                    redirectBack: location.pathname
+                }).toString()
+            });
         }
+    }
+
+    function handleOnRowClick(data: IEmployee, index: number | undefined) {
+        setCurrentEmployee(data)
+        setIsEmployeeModalVisible(true)
     }
 
     return (
         <ControlPanelWrapper>
             <div className={c.main}>
-                <div className={c.filter}>
-                    <EmployeesFilter onAddEmployeeClick={handleOnAddEmployeeClick}/>
+                <div className={c.header}>
+
+                    <div>
+                        <IntroduceTitle
+                            title={'Сотрудники'}
+                            description={'Список'}
+                            specialText={'сотрудников'}
+                        />
+                    </div>
+
+                    <div className={c.filter}>
+                        <EmployeesFilter onAddEmployeeClick={handleOnAddEmployeeClick}/>
+                    </div>
                 </div>
 
                 <div className={c.content}>
@@ -66,13 +91,28 @@ const EmployeesPage = () => {
                                pageSize: pagination.size ?? 10,
                                showSizeChanger: false,
                                onChange: onPageChanged,
+                               size: 'default',
                            }}
                            size={'small'}
                            dataSource={employees}
+                           rowKey={record => record.id}
+                           onRow={(data, index) => {
+                               return {
+                                   onClick: () => handleOnRowClick(data, index)
+
+                               }
+                           }}
                            columns={employeeTableColumns}
                     />
                 </div>
+
+                <EmployeeDetailsModal
+                    employee={currentEmployee}
+                    visible={isEmployeeModalVisible}
+                    setVisible={setIsEmployeeModalVisible}
+                />
             </div>
+
         </ControlPanelWrapper>
     );
 };

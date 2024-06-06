@@ -29,7 +29,7 @@ public class Service {
     @Column(name = "title", nullable = false, length = 100)
     private String title;
 
-    @Column(name = "description", length = 500)
+    @Column(name = "description", length = 5000)
     private String description;
 
     @PositiveOrZero
@@ -39,13 +39,7 @@ public class Service {
 
     @Builder.Default
     @Column(name = "duration", nullable = false)
-    private Duration duration = Duration.ofHours(1);
-
-    @Column(name = "available_from", nullable = false)
-    private Time availableFrom; // a service available from
-
-    @Column(name = "available_to", nullable = false)
-    private Time availableTo; // a service available to
+    private Long duration = Duration.ofHours(1).toMillis();
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)

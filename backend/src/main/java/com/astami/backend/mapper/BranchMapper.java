@@ -17,12 +17,6 @@ public class BranchMapper {
                 .country(branch.getCountry())
                 .title(branch.getTitle())
                 .companyId(branch.getCompany().getId())
-                .employees(
-                        branch.getEmployees().stream().map(EmployeeMapper::mapToDto).toList()
-                )
-                .services(
-                        branch.getServices().stream().map(ServiceMapper::mapToDto).toList()
-                )
                 .build();
     }
 }

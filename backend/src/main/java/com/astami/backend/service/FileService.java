@@ -1,16 +1,20 @@
 package com.astami.backend.service;
 
+import com.astami.backend.exception.CustomBadRequestException;
 import com.astami.backend.exception.CustomInternalServerException;
 import com.astami.backend.model.File;
 import com.astami.backend.repository.FileRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -67,7 +71,7 @@ public class FileService {
 
             // Save file information to the database
             File fileInfo = File.builder()
-                    .name(fileName)
+                    .name(uniqueFileName)
                     .type(file.getContentType())
                     .path(targetLocation.toString())
                     .build();
@@ -75,7 +79,7 @@ public class FileService {
 
             return fileInfo;
         } catch (IOException e) {
-            LOGGER.error("Failed to store file " + file.getOriginalFilename(), e);
+            LOGGER.error("Failed to store file {}", file.getOriginalFilename(), e);
             throw new CustomInternalServerException("Failed to store file " + file.getOriginalFilename());
         }
     }
@@ -87,6 +91,21 @@ public class FileService {
         String uniqueID = UUID.randomUUID().toString();
         // Append extension to the unique ID
         return uniqueID + "." + fileExtension;
+    }
+
+    public Resource load(Path path) {
+        try {
+            Resource resource = new UrlResource(path.toUri());
+
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            } else {
+                throw new CustomBadRequestException("Такого файла не существует");
+            }
+        } catch (MalformedURLException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new CustomBadRequestException("Ошибка: " + e.getMessage());
+        }
     }
 
 }

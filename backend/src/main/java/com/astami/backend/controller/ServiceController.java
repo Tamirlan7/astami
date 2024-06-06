@@ -1,8 +1,6 @@
 package com.astami.backend.controller;
 
-import com.astami.backend.payload.service.AddServiceRequest;
-import com.astami.backend.payload.service.AddServiceResponse;
-import com.astami.backend.payload.service.GetServiceResponse;
+import com.astami.backend.payload.service.*;
 import com.astami.backend.service.ServiceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +25,26 @@ public class ServiceController {
     ) {
         return ResponseEntity.ok()
                 .body(serviceService.addServiceToBranch(body, companyId, branchId, authentication));
+    }
+
+    @GetMapping
+    public ResponseEntity<GetServicesResponse> getServices(
+            @RequestParam(name = "title", required = false, defaultValue = "") String title,
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
+            @PathVariable("branchId") long branchId,
+            @PathVariable("companyId") long companyId,
+            Authentication authentication
+    ) {
+        return ResponseEntity.ok()
+                .body(serviceService.getServices(GetServicesRequest.builder()
+                        .title(title)
+                        .page(page)
+                        .size(size)
+                        .authentication(authentication)
+                        .branchId(branchId)
+                        .companyId(companyId)
+                        .build()));
     }
 
 

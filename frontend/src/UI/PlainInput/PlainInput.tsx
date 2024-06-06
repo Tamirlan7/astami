@@ -11,6 +11,7 @@ export interface PlainInputProps extends InputHTMLAttributes<HTMLInputElement> {
     onPreIconClicked?: () => void
     rootClassName?: string
     postIconClassName?: string
+    required?: boolean
 }
 
 const PlainInput = forwardRef<HTMLInputElement, PlainInputProps>(({
@@ -22,17 +23,21 @@ const PlainInput = forwardRef<HTMLInputElement, PlainInputProps>(({
                                                                       onPreIconClicked,
                                                                       onPostIconClick,
                                                                       postIcon,
+                                                                      required,
                                                                       postIconClassName,
                                                                       ...props
                                                                   }, ref: ForwardedRef<HTMLInputElement>) => {
     const invalidProperty = useMemo<IPropertyValid | undefined>(() => {
-        return validations?.find(v => v.isInvalid)
+        return validations?.find(v => v.isInvalid && !v.exception)
     }, [validations])
 
     return (
         <div className={`${c.block} ${rootClassName}`}>
             {label && (
-                <label className={c.label}>{label}</label>
+                <label className={c.label}>
+                    {label}
+                    {required && <span className={c.required}>обязательное поле</span>}
+                </label>
             )}
             <div className={c['input-wrapper']}>
                 {preIcon && (

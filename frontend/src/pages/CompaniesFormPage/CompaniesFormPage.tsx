@@ -32,7 +32,8 @@ function CompaniesFormPage() {
             title: [
                 {
                     isInvalid: formData.title.trim().length <= 1,
-                    message: 'Название компании должна быть больше одного символа'
+                    message: 'Название компании должна быть больше одного символа',
+                    exception: formData.title.trim().length === 0,
                 },
                 {
                     isInvalid: formData.title.trim().length > 100,

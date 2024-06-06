@@ -15,6 +15,11 @@ export interface IControlPanelPage {
     icon: ReactElement
 }
 
+export interface IUseAuthorizedFileConfig {
+    replaceCompanyIdInURI?: boolean
+    replaceBranchIdInURI?: boolean
+}
+
 
 export interface ITokenPayload {
     jti: string;
@@ -47,6 +52,7 @@ export interface IRoute {
 export interface IPropertyValid {
     isInvalid: boolean
     message?: string
+    exception?: boolean
 }
 
 export interface IFormValid {

@@ -1,10 +1,7 @@
 package com.astami.backend.payload.employee;
 
-import com.astami.backend.model.Employee;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.astami.backend.dto.EmployeeDto;
+import lombok.*;
 
 import java.util.List;
 
@@ -13,8 +10,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetEmployeesResponse {
-    List<Employee> employees;
-    int totalPages;
-    long totalElements;
-    int pageSize;
+    private List<EmployeeDto> employees;
+    private int totalPages;
+    private long totalElements;
+    private int size;
+    private int currentPage;
+    private boolean isLast;
+    private boolean isFirst;
 }

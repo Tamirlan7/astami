@@ -16,9 +16,11 @@ export interface IBranch {
 
 export interface IEmployee {
     id: number
+    age: number
     fullName: string
     description: string
     image: IFile
+    jobTitle: string
     services: number[] // services ids
     branchId: number
     workdayStartTime: string
@@ -31,7 +33,7 @@ export interface IService {
     title: string
     description: string
     price: number
-    duration: string
+    duration: number
     availableFrom: Date
     availableTo: Date
     employees: IEmployee[]

@@ -16,8 +16,6 @@ public class ServiceMapper {
                 .title(service.getTitle())
                 .description(service.getDescription())
                 .price(service.getPrice())
-                .availableFrom(service.getAvailableFrom())
-                .availableTo(service.getAvailableTo())
                 .duration(service.getDuration())
                 .employees(service.getEmployees().stream().map(Employee::getId).toList())
                 .build();

@@ -1,13 +1,13 @@
 import {IEmployee, Weekdays} from "@/types/model.ts";
 import {ColumnType} from "antd/es/table";
-import Img from "@ui/Img/Img.tsx";
+import AuthorizedImage from "@ui/AuthorizedImage/AuthorizedImage.tsx";
 import BackendEndpoints from "@config/BackendEndpoints.ts";
 import Icon from "@ui/Icon/Icon.tsx";
 import OptionsDots from '@assets/icons/options-dots.svg?react';
-import {Tag} from "antd";
+import {Avatar, Tag} from "antd";
 import type {LiteralUnion} from "antd/es/_util/type";
 import type {PresetColorType, PresetStatusColorType} from "antd/es/_util/colors";
-import WeekdayConverter from "@utils/WeekdayConverter.ts";
+import WeekdaysUtils from "@utils/WeekdaysUtils.ts";
 
 const employeeTableColumns: ColumnType<IEmployee>[] = [
     {
@@ -16,18 +16,19 @@ const employeeTableColumns: ColumnType<IEmployee>[] = [
         dataIndex: 'image',
         width: 40,
         render: (_, record, __) => {
+            if (!record.image) {
+                return <Avatar shape={'square'}/>
+            }
+
             return (
-                <Img
+                <AuthorizedImage
                     path={
                         BackendEndpoints.GET_EMPLOYEES_FILE
                             .replace(':branchId', record.branchId.toString())
                             .replace(':employeeId', record.id.toString())
-                            .replace(':fileName', record.image.name)
+                            .replace(':fileName', record.image?.name)
                     }
-                    rounded
                     replaceCompanyIdInPath
-                    width={38}
-                    height={38}
                     alt={'employee'}
                 />
             )
@@ -70,38 +71,15 @@ const employeeTableColumns: ColumnType<IEmployee>[] = [
             return (
                 <div>
                     {record.workDays.slice(0, 3).map((day) => {
-                        let color: LiteralUnion<PresetColorType | PresetStatusColorType>;
-
-                        switch (day) {
-                            case Weekdays.MONDAY:
-                                color = 'gold'
-                                break
-                            case Weekdays.TUESDAY:
-                                color = 'red'
-                                break
-                            case Weekdays.WEDNESDAY:
-                                color = 'geekblue'
-                                break
-                            case Weekdays.THURSDAY:
-                                color = 'cyan'
-                                break
-                            case Weekdays.FRIDAY:
-                                color = 'lime'
-                                break
-                            case Weekdays.SATURDAY:
-                                color = 'volcano'
-                                break
-                            default:
-                                color = 'purple'
-                        }
+                        const color = WeekdaysUtils.getWeekdayColor(day);
 
                         return (
                             <Tag color={color} key={day}>
-                                {WeekdayConverter.convertToRu(day)}
+                                {WeekdaysUtils.convertToRu(day)}
                             </Tag>
                         );
                     })}
-                    ...
+                    {record.workDays.length > 3 && '...'}
                 </div>
             )
         }

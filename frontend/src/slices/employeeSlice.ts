@@ -1,18 +1,30 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {IEmployee} from "@/types/model.ts";
+import {IEmployee, IService} from "@/types/model.ts";
 import {HttpMethod, IRequest} from "@/types/types.ts";
-import {ICreateEmployeeResponse, IGetEmployeesResponse, IPagination} from "@/types/payload.ts";
+import {
+    ICreateEmployeeResponse,
+    IGetEmployeeByIdResponse,
+    IGetEmployeesResponse,
+    IPagination, IUpdateEmployeeRequest, IUpdateEmployeeResponse
+} from "@/types/payload.ts";
 import BackendEndpoints from "@config/BackendEndpoints.ts";
-import {createEmployeeThunk, getEmployeesThunk} from "@thunks/employeeThunk.ts";
+import {
+    createEmployeeThunk,
+    getEmployeeByIdThunk,
+    getEmployeesThunk,
+    updateEmployeeThunk
+} from "@thunks/employeeThunk.ts";
 
 interface IState {
     employees: IEmployee[]
     pagination: IPagination
     lastRequest: IRequest
+    currentEmployee: IEmployee & { assignedServices: IService[] } | null
 }
 
 const initialState: IState = {
     employees: [],
+    currentEmployee: null,
     pagination: {
         isFirst: null,
         isLast: null,
@@ -37,7 +49,21 @@ const initialState: IState = {
 const employeeSlice = createSlice({
     name: "employee",
     initialState,
-    reducers: {},
+    reducers: {
+        clearLastRequest(state: IState) {
+            state.lastRequest = {
+                isPending: false,
+                path: null,
+                success: null,
+                method: null,
+                error: {
+                    caught: false,
+                    message: null,
+                    status: 0
+                },
+            };
+        }
+    },
     extraReducers: builder =>
         builder
             .addCase(getEmployeesThunk.pending, (state: IState) => {
@@ -122,6 +148,93 @@ const employeeSlice = createSlice({
                 }
             })
 
+            .addCase(updateEmployeeThunk.pending, (state: IState) => {
+                state.lastRequest.isPending = true
+                state.lastRequest.path = BackendEndpoints.CREATE_EMPLOYEE
+                state.lastRequest.method = HttpMethod.POST
+            })
+            .addCase(updateEmployeeThunk.fulfilled, (state: IState, action: PayloadAction<IUpdateEmployeeResponse | undefined>) => {
+                if (action.payload) {
+                    if (state.employees.length < 10) {
+                        state.employees.push({
+                            ...action.payload.employee,
+                        })
+
+                        if (state.currentEmployee?.id === action.payload.employee.id) {
+                            state.currentEmployee = {
+                                ...action.payload.employee,
+                                assignedServices: action.payload.assignedServices
+                            }
+                        }
+                    }
+                }
+
+                state.lastRequest.isPending = false
+                state.lastRequest.success = true
+                state.lastRequest.error = {
+                    caught: false,
+                    message: null,
+                    status: 0,
+                }
+            })
+            .addCase(updateEmployeeThunk.rejected, (state: IState, action: PayloadAction<unknown>) => {
+                state.lastRequest.error.caught = true;
+                state.lastRequest.isPending = false
+
+                if (action.payload instanceof Error) {
+                    const e = action.payload as Error;
+                    state.lastRequest.error.message = e.message;
+                } else if (typeof action.payload === 'object' && action.payload !== null) {
+                    const e = action.payload as {
+                        status?: number,
+                        message?: string
+                    };
+
+                    state.lastRequest.error.message = e.message === undefined ? null : e.message;
+                    state.lastRequest.error.status = e.status ?? 0;
+                }
+            })
+
+            .addCase(getEmployeeByIdThunk.pending, (state: IState) => {
+                state.lastRequest.isPending = true
+                state.lastRequest.path = BackendEndpoints.GET_EMPLOYEE_BY_ID
+                state.lastRequest.method = HttpMethod.GET
+            })
+            .addCase(getEmployeeByIdThunk.fulfilled, (state: IState, action: PayloadAction<IGetEmployeeByIdResponse | undefined>) => {
+                if (action.payload) {
+                    state.currentEmployee = {
+                        ...action.payload.employee,
+                        assignedServices: action.payload.assignedServices
+                    }
+                }
+
+                state.lastRequest.isPending = false
+                state.lastRequest.success = true
+                state.lastRequest.error = {
+                    caught: false,
+                    message: null,
+                    status: 0,
+                }
+            })
+            .addCase(getEmployeeByIdThunk.rejected, (state: IState, action: PayloadAction<unknown>) => {
+                state.lastRequest.error.caught = true;
+                state.lastRequest.isPending = false
+
+                if (action.payload instanceof Error) {
+                    const e = action.payload as Error;
+                    state.lastRequest.error.message = e.message;
+                } else if (typeof action.payload === 'object' && action.payload !== null) {
+                    const e = action.payload as {
+                        status?: number,
+                        message?: string
+                    };
+
+                    state.lastRequest.error.message = e.message === undefined ? null : e.message;
+                    state.lastRequest.error.status = e.status ?? 0;
+                }
+            })
+
 })
 
+export const {clearLastRequest: clearEmployeeLastRequest} = employeeSlice.actions;
 export default employeeSlice.reducer

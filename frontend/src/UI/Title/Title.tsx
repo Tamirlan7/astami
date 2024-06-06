@@ -7,7 +7,10 @@ interface TitleProps extends PropsWithChildren, HTMLAttributes<HTMLHeadingElemen
 
 const Title: FC<TitleProps> = ({children, ...props}) => {
     return (
-        <h1 className={`${c.title} ${props.className}`} {...props}>
+        <h1
+            {...props}
+            className={`${c.title} ${props.className}`}
+        >
             {children}
         </h1>
     );

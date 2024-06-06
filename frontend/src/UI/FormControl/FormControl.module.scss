@@ -16,3 +16,23 @@
 .main {
   width: 100%;
 }
+
+.required {
+  color: gray;
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  margin-top: 10px;
+  position: relative;
+  left: 7px;
+
+  &::before {
+    content: '*';
+    display: inline-block;
+    position: absolute;
+    left: -7px;
+    top: 50%;
+    margin-top: 1px;
+    transform: translateY(-50%);
+  }
+}

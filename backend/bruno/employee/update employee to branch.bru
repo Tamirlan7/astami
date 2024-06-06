@@ -1,0 +1,25 @@
+meta {
+  name: update employee to branch
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{api_url}}/company/1/branch/1/employee/1
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:multipart-form {
+  fullName: Олжас
+  description: Описание Олжаса
+  image: @file(C:\Users\Acer\Desktop\projects\logo.jpg)
+  jobTitle: Старший Барбер
+  age: 21
+  workdayStartTime: 08:00
+  assignedServicesIds: 1
+}
