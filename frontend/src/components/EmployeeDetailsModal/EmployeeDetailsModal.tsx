@@ -1,6 +1,6 @@
 import React, {Dispatch, FC, SetStateAction, useEffect, useMemo, useState} from 'react';
 import c from './EmployeeDetailsModal.module.scss'
-import {Avatar, Button, Card, Descriptions, Divider, Empty, List, Modal, Skeleton, Tag} from "antd";
+import {Avatar, Button, Card, Descriptions, Divider, Empty, List, Modal, Popconfirm, Skeleton, Tag} from "antd";
 import {useAppDispatch, useAppSelector} from "@hooks/reduxHooks.ts";
 import BackendEndpoints from "@config/BackendEndpoints.ts";
 import {IEmployee} from "@/types/model.ts";
@@ -8,7 +8,7 @@ import Meta from "antd/es/card/Meta";
 import DescriptionsItem from "antd/es/descriptions/Item";
 import WeekdaysUtils from "@utils/WeekdaysUtils.ts";
 import IntroduceTitle from "@ui/IntroduceTitle/IntroduceTitle.tsx";
-import {getEmployeeByIdThunk} from "@thunks/employeeThunk.ts";
+import {deleteEmployeeThunk, getEmployeeByIdThunk} from "@thunks/employeeThunk.ts";
 import {RoutePaths} from "@config/RoutePaths.ts";
 import {useNavigate} from "react-router-dom";
 
@@ -23,6 +23,7 @@ const EmployeeDetailsModal: FC<EmployeeDetailsModalProps> = ({visible, setVisibl
     const dispatch = useAppDispatch()
     const {currentCompany} = useAppSelector(state => state.company)
     const [descriptionModalVisible, setDescriptionModalVisible] = useState(false)
+    const [confirmDelete, setConfirmDelete] = useState(false)
     const [servicesModal, setServicesModal] = useState(false)
     const {currentEmployee, lastRequest} = useAppSelector(state => state.employee)
     const avatarSrc = useMemo<string>(() => {
@@ -37,6 +38,7 @@ const EmployeeDetailsModal: FC<EmployeeDetailsModalProps> = ({visible, setVisibl
             .replace(':fileName', employee.image?.name)
     }, [currentCompany, employee])
     const handleOnCancel = () => {
+        setConfirmDelete(false)
         closeModal()
     }
 
@@ -76,7 +78,15 @@ const EmployeeDetailsModal: FC<EmployeeDetailsModalProps> = ({visible, setVisibl
     }
 
     const handleOnDeleteClick = () => {
+        if (currentCompany && currentEmployee) {
+            dispatch(deleteEmployeeThunk({
+                employeeId: currentEmployee.id,
+                branchId: currentCompany.currentBranch.id,
+                companyId: currentCompany.id
+            }))
 
+            closeModal()
+        }
     }
 
     const closeModal = () => {
@@ -91,13 +101,25 @@ const EmployeeDetailsModal: FC<EmployeeDetailsModalProps> = ({visible, setVisibl
         <Modal
             open={visible}
             onCancel={handleOnCancel}
+            destroyOnClose
             okText={'Редактировать'}
             cancelText={'Закрыть'}
             footer={() => {
                 return (
                     <div style={{gap: 12, display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
                         <Button onClick={handleOnCancel}>Закрыть</Button>
-                        <Button type={'primary'} danger onClick={handleOnDeleteClick}>Удалить</Button>
+                        <Popconfirm
+                            open={confirmDelete}
+                            onCancel={() => setConfirmDelete(false)}
+                            cancelText={'Нет'}
+                            okText={'Да'}
+                            onConfirm={handleOnDeleteClick}
+                            title={'Вы точно хотите удалить сотрудника ?'}
+                        >
+                            <Button type={'primary'} danger onClick={() => setConfirmDelete(true)}>
+                                Удалить
+                            </Button>
+                        </Popconfirm>
                         <Button type={'primary'} onClick={handleOnEditClick}>Редактировать</Button>
                     </div>
                 )

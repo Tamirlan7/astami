@@ -1,6 +1,13 @@
 import {
-    ICreateEmployeeRequest, ICreateEmployeeResponse, IGetEmployeeByIdRequest, IGetEmployeeByIdResponse,
-    IGetEmployeesRequest, IGetEmployeesResponse, IUpdateEmployeeRequest, IUpdateEmployeeResponse
+    ICreateEmployeeRequest,
+    ICreateEmployeeResponse,
+    IDeleteEmployeeRequest, IDeleteEmployeeResponse,
+    IGetEmployeeByIdRequest,
+    IGetEmployeeByIdResponse,
+    IGetEmployeesRequest,
+    IGetEmployeesResponse,
+    IUpdateEmployeeRequest,
+    IUpdateEmployeeResponse
 } from "@/types/payload.ts";
 import {AxiosResponse} from "axios";
 import client from "@services/client.ts";
@@ -109,6 +116,15 @@ class EmployeeService {
                 .replace(':companyId', body.companyId.toString())
                 .replace(':branchId', body.branchId.toString())
                 .replace(':employeeId', body.employeeId.toString())
+        )
+    }
+
+    static async deleteEmployee(body: IDeleteEmployeeRequest): Promise<AxiosResponse<IDeleteEmployeeResponse>> {
+        return await client.delete(
+            BackendEndpoints.DELETE_EMPLOYEE_BY_ID
+                .replace(':employeeId', body.employeeId.toString())
+                .replace(':companyId', body.companyId.toString())
+                .replace(':branchId', body.branchId.toString())
         )
     }
 }

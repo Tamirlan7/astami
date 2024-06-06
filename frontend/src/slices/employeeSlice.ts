@@ -2,14 +2,14 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IEmployee, IService} from "@/types/model.ts";
 import {HttpMethod, IRequest} from "@/types/types.ts";
 import {
-    ICreateEmployeeResponse,
+    ICreateEmployeeResponse, IDeleteEmployeeResponse,
     IGetEmployeeByIdResponse,
     IGetEmployeesResponse,
     IPagination, IUpdateEmployeeRequest, IUpdateEmployeeResponse
 } from "@/types/payload.ts";
 import BackendEndpoints from "@config/BackendEndpoints.ts";
 import {
-    createEmployeeThunk,
+    createEmployeeThunk, deleteEmployeeThunk,
     getEmployeeByIdThunk,
     getEmployeesThunk,
     updateEmployeeThunk
@@ -150,8 +150,8 @@ const employeeSlice = createSlice({
 
             .addCase(updateEmployeeThunk.pending, (state: IState) => {
                 state.lastRequest.isPending = true
-                state.lastRequest.path = BackendEndpoints.CREATE_EMPLOYEE
-                state.lastRequest.method = HttpMethod.POST
+                state.lastRequest.path = BackendEndpoints.UPDATE_EMPLOYEE_BY_ID
+                state.lastRequest.method = HttpMethod.PUT
             })
             .addCase(updateEmployeeThunk.fulfilled, (state: IState, action: PayloadAction<IUpdateEmployeeResponse | undefined>) => {
                 if (action.payload) {
@@ -178,6 +178,42 @@ const employeeSlice = createSlice({
                 }
             })
             .addCase(updateEmployeeThunk.rejected, (state: IState, action: PayloadAction<unknown>) => {
+                state.lastRequest.error.caught = true;
+                state.lastRequest.isPending = false
+
+                if (action.payload instanceof Error) {
+                    const e = action.payload as Error;
+                    state.lastRequest.error.message = e.message;
+                } else if (typeof action.payload === 'object' && action.payload !== null) {
+                    const e = action.payload as {
+                        status?: number,
+                        message?: string
+                    };
+
+                    state.lastRequest.error.message = e.message === undefined ? null : e.message;
+                    state.lastRequest.error.status = e.status ?? 0;
+                }
+            })
+
+            .addCase(deleteEmployeeThunk.pending, (state: IState) => {
+                state.lastRequest.isPending = true
+                state.lastRequest.path = BackendEndpoints.DELETE_EMPLOYEE_BY_ID
+                state.lastRequest.method = HttpMethod.DELETE
+            })
+            .addCase(deleteEmployeeThunk.fulfilled, (state: IState, action: PayloadAction<IDeleteEmployeeResponse | undefined>) => {
+                if (action.payload) {
+                    state.employees = state.employees.filter((e) => e.id !== action.payload?.employeeId)
+                }
+
+                state.lastRequest.isPending = false
+                state.lastRequest.success = true
+                state.lastRequest.error = {
+                    caught: false,
+                    message: null,
+                    status: 0,
+                }
+            })
+            .addCase(deleteEmployeeThunk.rejected, (state: IState, action: PayloadAction<unknown>) => {
                 state.lastRequest.error.caught = true;
                 state.lastRequest.isPending = false
 

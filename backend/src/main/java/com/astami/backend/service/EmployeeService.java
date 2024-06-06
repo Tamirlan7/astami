@@ -187,4 +187,10 @@ public class EmployeeService {
                 .assignedServices(employee.getServices().stream().map(ServiceMapper::mapToDto).toList())
                 .build();
     }
+
+    public void deleteEmployeeById(long employeeId, long branchId, long companyId, Authentication authentication) {
+        companyService.validateUserCompany(authentication, companyId);
+
+        employeeRepository.deleteById(employeeId);
+    }
 }

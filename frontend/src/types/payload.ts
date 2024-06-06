@@ -94,6 +94,16 @@ export interface IUpdateEmployeeResponse extends ICreateEmployeeResponse {
     assignedServices: IService[]
 }
 
+export interface IDeleteEmployeeRequest {
+    employeeId: number
+    branchId: number
+    companyId: number
+}
+
+export interface IDeleteEmployeeResponse {
+    employeeId: number
+}
+
 export interface ICreateEmployeeRequestBody {
     fullName: string
     description: string

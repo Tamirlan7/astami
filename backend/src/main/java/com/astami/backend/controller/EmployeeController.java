@@ -118,4 +118,15 @@ public class EmployeeController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(employeeService.updateEmployee(body, employeeId, branchId, companyId, authentication));
     }
+    @DeleteMapping("/{employeeId}")
+    public ResponseEntity<?> updateEmployee(
+            @PathVariable("employeeId") long employeeId,
+            @PathVariable("branchId") long branchId,
+            @PathVariable("companyId") long companyId,
+            Authentication authentication
+    ) {
+        employeeService.deleteEmployeeById(employeeId, branchId, companyId, authentication);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(null);
+    }
 }
