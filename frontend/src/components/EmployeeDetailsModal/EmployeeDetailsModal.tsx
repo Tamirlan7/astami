@@ -11,6 +11,7 @@ import IntroduceTitle from "@ui/IntroduceTitle/IntroduceTitle.tsx";
 import {deleteEmployeeThunk, getEmployeeByIdThunk} from "@thunks/employeeThunk.ts";
 import {RoutePaths} from "@config/RoutePaths.ts";
 import {useNavigate} from "react-router-dom";
+import AuthorizedImage from "@ui/AuthorizedImage/AuthorizedImage.tsx";
 
 interface EmployeeDetailsModalProps {
     visible: boolean
@@ -136,10 +137,10 @@ const EmployeeDetailsModal: FC<EmployeeDetailsModalProps> = ({visible, setVisibl
                         body: c['card-body']
                     }}
                 >
-                    <Avatar
+                    <AuthorizedImage
                         rootClassName={c.avatar}
                         shape={'circle'}
-                        src={avatarSrc}
+                        path={avatarSrc}
                     />
 
                     <Meta title={employee.fullName}></Meta>

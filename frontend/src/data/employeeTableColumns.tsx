@@ -20,12 +20,18 @@ const employeeTableColumns: ColumnType<IEmployee>[] = [
 
             return (
                 <AuthorizedImage
+                    preview={false}
                     path={
                         BackendEndpoints.GET_EMPLOYEES_FILE
-                            .replace(':branchId', record.branchId.toString())
                             .replace(':employeeId', record.id.toString())
                             .replace(':fileName', record.image?.name)
                     }
+                    width={30}
+                    height={30}
+                    authorizedFileConfig={{
+                        replaceBranchIdInURI: true,
+                        replaceCompanyIdInURI: true
+                    }}
                     alt={'employee'}
                 />
             )

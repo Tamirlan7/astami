@@ -8,6 +8,7 @@ import {servicesTableColumns} from "@/data/servicesTableColumns.tsx";
 import ServicesFilter from "@components/ServicesFilter/ServicesFilter.tsx";
 import {useLocation, useNavigate} from "react-router-dom";
 import ServicesFormModal from "@components/ServicesFormModal/ServicesFormModal.tsx";
+import IntroduceTitle from "@ui/IntroduceTitle/IntroduceTitle.tsx";
 
 const ServicesPage = () => {
     const dispatch = useAppDispatch()
@@ -39,12 +40,23 @@ const ServicesPage = () => {
     return (
         <ControlPanelWrapper>
             <div className={c.main}>
-                <div className={c.filter}>
-                    <ServicesFilter onAddServiceClick={handleOnAddServiceClick}/>
+                <div className={c.header}>
+                    <div>
+                        <IntroduceTitle
+                            title={'Услуги'}
+                            description={'Список'}
+                            specialText={'услуг'}
+                        />
+                    </div>
+
+                    <div className={c.filter}>
+                        <ServicesFilter onAddServiceClick={handleOnAddServiceClick}/>
+                    </div>
                 </div>
 
                 <div className={c.content}>
                     <Table
+                        rootClassName={c.table}
                         columns={servicesTableColumns}
                         dataSource={services}
                         rowKey='id'

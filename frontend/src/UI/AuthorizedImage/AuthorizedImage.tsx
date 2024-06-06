@@ -7,10 +7,11 @@ import {IUseAuthorizedFileConfig} from "@/types/types.ts";
 interface AuthorizedImageProps extends ImageProps {
     path: string;
     authorizedFileConfig?: IUseAuthorizedFileConfig
+    shape?: 'circle' | 'square'
 }
 
-const AuthorizedImage: FC<AuthorizedImageProps> = ({path, authorizedFileConfig, ...props}) => {
-    const {fileBase64} = useAuthorizedFile(path)
+const AuthorizedImage: FC<AuthorizedImageProps> = ({path, authorizedFileConfig, shape = 'square', ...props}) => {
+    const {fileBase64} = useAuthorizedFile(path, authorizedFileConfig)
 
     if (!fileBase64) {
         return null;
@@ -21,8 +22,8 @@ const AuthorizedImage: FC<AuthorizedImageProps> = ({path, authorizedFileConfig, 
             {...props}
             alt={props.alt}
             src={fileBase64}
-            className={`${c.image} ${props.className}`}/>
-
+            wrapperClassName={`${c.wrapper} ${shape === 'circle' && c['wrapper-circle']}`}
+            className={`${c.image} ${props.className} ${shape === 'circle' && c.circle}`}/>
     );
 };
 

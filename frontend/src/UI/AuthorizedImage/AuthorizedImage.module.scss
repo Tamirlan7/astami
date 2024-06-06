@@ -1,3 +1,15 @@
-.rounded {
+.wrapper-circle > .ant-image-mask {
+  border-radius: 50% !important;
+}
+
+.image {
+  object-fit: cover;
+  object-position: center;
+  border-radius: 4px;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.circle {
   border-radius: 50%;
 }
