@@ -28,7 +28,7 @@ public class Customer {
     @Column(nullable = false, unique = true, length = 25)
     private String phone;
 
-    @Column(unique = true, length = 100)
+    @Column(length = 100)
     private String email;
 
     @JsonIgnore

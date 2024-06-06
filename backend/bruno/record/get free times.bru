@@ -1,0 +1,15 @@
+meta {
+  name: get free times
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{api_url}}/company/1/branch/1/record/free-times/service/1?date=2024-06-06T00:00:00
+  body: none
+  auth: none
+}
+
+query {
+  date: 2024-06-06T00:00:00
+}

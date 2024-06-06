@@ -46,6 +46,11 @@ public class Branch {
     @ToString.Exclude
     private List<Service> services = new ArrayList<>();
 
+    @JsonIgnore
+    @Builder.Default
+    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Record> records = new ArrayList<>();
+
     public void setCompany(Company company) {
         this.company = company;
         this.company.getBranches().add(this);

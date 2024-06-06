@@ -8,7 +8,6 @@ import {
     IUpdateEmployeeRequest
 } from "@/types/payload.ts";
 import EmployeeService from "@services/employeeService.ts";
-import ServiceService from "@services/serviceService.ts";
 
 export const getEmployeesThunk = createAsyncThunk(
     'employee/getEmployeesThunk',

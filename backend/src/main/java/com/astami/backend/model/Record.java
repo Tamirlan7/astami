@@ -32,6 +32,10 @@ public class Record {
     @JoinColumn(name = "service_id", nullable = false)
     private Service service;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "branch_id", nullable = false)
+    private Branch branch;
+
     @Column(nullable = false)
     private LocalDateTime dateTime;
 
@@ -48,5 +52,10 @@ public class Record {
     public void setService(Service service) {
         this.service = service;
         service.getRecords().add(this);
+    }
+
+    public void setBranch(Branch branch) {
+        this.branch = branch;
+        branch.getRecords().add(this);
     }
 }

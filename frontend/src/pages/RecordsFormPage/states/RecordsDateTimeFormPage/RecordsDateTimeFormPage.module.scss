@@ -1,0 +1,38 @@
+.date-list {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.date-list-item {
+  border: 1px solid rgba(226, 226, 226, 0.5);
+  box-sizing: content-box;
+  padding: 5px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color .1s ease;
+
+  &:hover {
+    background-color: #1e2020;
+    color: #fff;
+  }
+}
+
+.block {
+  display: flex;
+  justify-content: center;
+}
+
+.date-list-item-selected {
+  background-color: #1e2020;
+  color: #fff;
+}
+
+.time-list {
+  max-width: 440px;
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 12px;
+  flex-wrap: wrap;
+}

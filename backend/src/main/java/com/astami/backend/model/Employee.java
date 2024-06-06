@@ -46,7 +46,7 @@ public class Employee {
     private LocalTime workdayStartTime;
 
     @Column(nullable = false)
-    private LocalTime workDayEndTime;
+    private LocalTime workdayEndTime;
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)

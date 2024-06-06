@@ -46,7 +46,7 @@ public class EmployeeService {
                 .jobTitle(body.getJobTitle())
                 .workDays(workDays)
                 .workdayStartTime(body.getWorkdayStartTime())
-                .workDayEndTime(body.getWorkdayEndTime())
+                .workdayEndTime(body.getWorkdayEndTime())
                 .age(body.getAge())
                 .build();
 
@@ -161,8 +161,8 @@ public class EmployeeService {
             employee.setWorkdayStartTime(body.getWorkdayStartTime());
         }
 
-        if (body.getWorkdayEndTime() != null && !body.getWorkdayEndTime().equals(employee.getWorkDayEndTime())) {
-            employee.setWorkDayEndTime(body.getWorkdayEndTime());
+        if (body.getWorkdayEndTime() != null && !body.getWorkdayEndTime().equals(employee.getWorkdayEndTime())) {
+            employee.setWorkdayEndTime(body.getWorkdayEndTime());
         }
 
         if (body.getAge() != -1 && body.getAge() != employee.getAge()) {

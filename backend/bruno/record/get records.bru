@@ -1,0 +1,15 @@
+meta {
+  name: get records
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{api_url}}/company/1/branch/1/record
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

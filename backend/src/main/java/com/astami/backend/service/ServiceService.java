@@ -1,11 +1,14 @@
 package com.astami.backend.service;
 
 import com.astami.backend.dto.ServiceDto;
+import com.astami.backend.exception.CustomBadRequestException;
 import com.astami.backend.exception.CustomNotFoundException;
 import com.astami.backend.mapper.ServiceMapper;
-import com.astami.backend.model.Branch;
-import com.astami.backend.model.Service;
+import com.astami.backend.model.*;
+import com.astami.backend.model.Record;
 import com.astami.backend.payload.service.*;
+import com.astami.backend.repository.EmployeeRepository;
+import com.astami.backend.repository.RecordRepository;
 import com.astami.backend.repository.ServiceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,6 +16,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 
+import java.time.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @org.springframework.stereotype.Service
@@ -22,6 +27,8 @@ public class ServiceService {
     private final ServiceRepository serviceRepository;
     private final CompanyService companyService;
     private final BranchService branchService;
+    private final RecordRepository recordRepository;
+    private final EmployeeRepository employeeRepository;
 
     public GetServiceResponse getServiceResponseById(long serviceId, long companyId, Authentication authentication) {
         companyService.validateUserCompany(authentication, companyId);
@@ -33,7 +40,7 @@ public class ServiceService {
                 .build();
     }
 
-    private Service getServiceById(long serviceId) {
+    public Service getServiceById(long serviceId) {
         return serviceRepository.findById(serviceId)
                 .orElseThrow(() -> new CustomNotFoundException("Service with id " + serviceId + " not found"));
     }

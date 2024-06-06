@@ -30,11 +30,11 @@ public class EmployeeValidator {
             throw new CustomBadRequestException("Поля description превышает лимит символов (максимум 5000)");
         }
 
-        if (employee.getWorkdayStartTime().isAfter(employee.getWorkDayEndTime())) {
+        if (employee.getWorkdayStartTime().isAfter(employee.getWorkdayEndTime())) {
             throw new CustomBadRequestException("Поле getWorkdayStartTime время не может быть после времени указанного в поле getWorkdayEndTime");
         }
 
-        if (employee.getWorkDayEndTime().isBefore(employee.getWorkdayStartTime())) {
+        if (employee.getWorkdayEndTime().isBefore(employee.getWorkdayStartTime())) {
             throw new CustomBadRequestException("Поле getWorkDayEndTime время не может быть до времени указанного в поле getWorkdayStartTime");
         }
     }

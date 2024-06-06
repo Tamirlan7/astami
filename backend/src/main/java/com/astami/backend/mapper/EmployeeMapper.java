@@ -19,7 +19,7 @@ public class EmployeeMapper {
                 .branchId(employee.getBranch().getId())
                 .workDays(employee.getWorkDays())
                 .workdayStartTime(employee.getWorkdayStartTime())
-                .workdayEndTime(employee.getWorkDayEndTime())
+                .workdayEndTime(employee.getWorkdayEndTime())
                 .fullName(employee.getFullName())
                 .age(employee.getAge())
                 .jobTitle(employee.getJobTitle())

@@ -14,6 +14,12 @@ export interface IBranch {
     companyId: number
 }
 
+export interface ICustomer {
+    phone: string
+    email?: string
+    name: string
+}
+
 export interface IEmployee {
     id: number
     age: number
@@ -38,6 +44,14 @@ export interface IService {
     availableTo: Date
     employees: IEmployee[]
     branchId: number
+}
+
+export interface IRecord {
+    id: number
+    customer: ICustomer
+    datetime: string
+    serviceId: number
+    employeeId: number
 }
 
 export interface IFile {

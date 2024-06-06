@@ -1,5 +1,6 @@
-import {Gender, IBranch, ICompany, IEmployee, IFile, IService, Weekdays} from "./model.ts";
+import {Gender, IBranch, ICompany, IEmployee, IFile, IRecord, IService, Weekdays} from "./model.ts";
 import {UploadFile} from "antd";
+import {getRecordsThunk} from "@thunks/recordThunk.ts";
 
 export interface ILoginRequest {
     email: string
@@ -116,6 +117,56 @@ export interface IUpdateServiceRequest extends ICreateServiceRequest {
 
 export interface IUpdateServiceResponse extends ICreateServiceResponse {
 
+}
+
+export interface IGetRecordsRequest {
+    branchId: number | string
+    companyId: number | string
+    page?: number
+    size?: number
+}
+
+export interface IGetRecordsResponse extends IPaginationIncludedRequest{
+    records: IRecord[]
+}
+
+export interface IGetRecordFreeTimesRequest {
+    serviceId: number
+    date: Date
+}
+
+export interface IGetRecordAvailableEmployeesRequest {
+    serviceId: number
+    datetime: Date
+}
+
+export interface IGetRecordAvailableEmployeesResponse {
+    employees: IEmployee[]
+}
+
+export interface IGetRecordFreeTimesResponse {
+}
+
+export interface ICreateRecordResponse {
+    record: IRecord
+}
+
+export interface ICreateRecordRequest extends ICreateRecordRequestBody {
+    branchId: number
+    companyId: number
+}
+
+export interface ICreateRecordRequestBody {
+    serviceId: number
+    employeeId: number
+    datetime: Date | null
+    customer: ICreateRecordCustomerBody
+}
+
+export interface ICreateRecordCustomerBody {
+    phone: string
+    email?: string
+    name: string
 }
 
 export interface ICreateEmployeeRequestBody {
