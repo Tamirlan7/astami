@@ -1,6 +1,6 @@
 import {
-    ICreateServiceRequest, ICreateServiceResponse,
-    IGetServicesRequest, IGetServicesResponse
+    ICreateServiceRequest, ICreateServiceResponse, IDeleteServiceRequest, IDeleteServiceResponse,
+    IGetServicesRequest, IGetServicesResponse, IUpdateServiceRequest, IUpdateServiceResponse
 } from "@/types/payload.ts";
 import {AxiosResponse} from "axios";
 import client from "@services/client.ts";
@@ -28,6 +28,25 @@ class ServiceService {
                 .replace(':companyId', body.companyId.toString())
                 .replace(':branchId', body.branchId.toString()),
             body,
+        )
+    }
+
+    static async deleteService(body: IDeleteServiceRequest): Promise<AxiosResponse<IDeleteServiceResponse>> {
+        return await client.delete(
+            BackendEndpoints.DELETE_SERVICE_BY_ID
+                .replace(':companyId', body.companyId.toString())
+                .replace(':branchId', body.branchId.toString())
+                .replace(':serviceId', body.serviceId.toString()),
+        )
+    }
+
+    static async updateService(body: IUpdateServiceRequest): Promise<AxiosResponse<IUpdateServiceResponse>> {
+        return await client.put(
+            BackendEndpoints.UPDATE_SERVICE_BY_ID
+                .replace(':companyId', body.companyId.toString())
+                .replace(':branchId', body.branchId.toString())
+                .replace(':serviceId', body.serviceId.toString()),
+            body
         )
     }
 }

@@ -6,12 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
 @Builder
-public class AddServiceResponse {
-
+@NoArgsConstructor
+@AllArgsConstructor
+public class UpdateServiceResponse {
     private ServiceDto service;
-
 }

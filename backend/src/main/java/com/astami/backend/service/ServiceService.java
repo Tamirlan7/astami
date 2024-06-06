@@ -13,7 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 
-import java.time.Duration;
 import java.util.List;
 
 @org.springframework.stereotype.Service
@@ -39,7 +38,7 @@ public class ServiceService {
                 .orElseThrow(() -> new CustomNotFoundException("Service with id " + serviceId + " not found"));
     }
 
-    public AddServiceResponse addServiceToBranch(AddServiceRequest body, long companyId, long branchId, Authentication authentication) {
+    public CreateServiceResponse addServiceToBranch(CreateServiceRequest body, long companyId, long branchId, Authentication authentication) {
         companyService.validateUserCompany(authentication, companyId);
 
         Branch branch = branchService.getBranchById(branchId);
@@ -54,7 +53,7 @@ public class ServiceService {
         service.setBranch(branch);
         service = serviceRepository.save(service);
 
-        return AddServiceResponse.builder()
+        return CreateServiceResponse.builder()
                 .service(ServiceMapper.mapToDto(service))
                 .build();
     }
@@ -79,6 +78,40 @@ public class ServiceService {
                 .currentPage(body.getPage())
                 .isLast(page.isLast())
                 .isFirst(page.isFirst())
+                .build();
+    }
+
+    public void deleteServiceById(long serviceId, long companyId, Authentication authentication) {
+        companyService.validateUserCompany(authentication, companyId);
+        serviceRepository.deleteById(serviceId);
+    }
+
+    public UpdateServiceResponse updateServiceById(UpdateServiceRequest body, long serviceId, long companyId, Authentication authentication) {
+        companyService.validateUserCompany(authentication, companyId);
+
+        var service = serviceRepository.findById(serviceId)
+                .orElseThrow(() -> new CustomNotFoundException("Услуга с идентификатором " + serviceId + " была не найдена"));
+
+        if (body.getTitle() != null && !body.getTitle().isEmpty() && !body.getTitle().equals(service.getTitle())) {
+            service.setTitle(body.getTitle());
+        }
+
+        if (body.getDescription() != null && !body.getDescription().isEmpty() && !body.getDescription().equals(service.getDescription())) {
+            service.setDescription(body.getDescription());
+        }
+
+        if (body.getPrice() != -1 && body.getPrice() != service.getPrice()) {
+            service.setPrice(body.getPrice());
+        }
+
+        if (body.getDuration() != -1 && body.getDuration() != service.getDuration()) {
+            service.setDuration(body.getDuration());
+        }
+
+        service = serviceRepository.save(service);
+
+        return UpdateServiceResponse.builder()
+                .service(ServiceMapper.mapToDto(service))
                 .build();
     }
 }

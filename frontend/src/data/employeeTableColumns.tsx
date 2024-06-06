@@ -1,12 +1,10 @@
-import {IEmployee, Weekdays} from "@/types/model.ts";
+import {IEmployee} from "@/types/model.ts";
 import {ColumnType} from "antd/es/table";
 import AuthorizedImage from "@ui/AuthorizedImage/AuthorizedImage.tsx";
 import BackendEndpoints from "@config/BackendEndpoints.ts";
 import Icon from "@ui/Icon/Icon.tsx";
 import OptionsDots from '@assets/icons/options-dots.svg?react';
 import {Avatar, Tag} from "antd";
-import type {LiteralUnion} from "antd/es/_util/type";
-import type {PresetColorType, PresetStatusColorType} from "antd/es/_util/colors";
 import WeekdaysUtils from "@utils/WeekdaysUtils.ts";
 
 const employeeTableColumns: ColumnType<IEmployee>[] = [
@@ -28,7 +26,6 @@ const employeeTableColumns: ColumnType<IEmployee>[] = [
                             .replace(':employeeId', record.id.toString())
                             .replace(':fileName', record.image?.name)
                     }
-                    replaceCompanyIdInPath
                     alt={'employee'}
                 />
             )

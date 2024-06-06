@@ -77,10 +77,6 @@ export interface IPaginationIncludedResponse {
     size: number
 }
 
-export interface IGetBranchResponse {
-    branch: IBranch
-}
-
 export interface ICreateEmployeeRequest extends ICreateEmployeeRequestBody {
     companyId: number
     branchId: number
@@ -100,8 +96,26 @@ export interface IDeleteEmployeeRequest {
     companyId: number
 }
 
+export interface IDeleteServiceRequest {
+    serviceId: number
+    branchId: number
+    companyId: number
+}
+
 export interface IDeleteEmployeeResponse {
     employeeId: number
+}
+
+export interface IDeleteServiceResponse {
+    serviceId: number
+}
+
+export interface IUpdateServiceRequest extends ICreateServiceRequest {
+    serviceId: number
+}
+
+export interface IUpdateServiceResponse extends ICreateServiceResponse {
+
 }
 
 export interface ICreateEmployeeRequestBody {
@@ -119,10 +133,6 @@ export interface ICreateEmployeeRequestBody {
 export type AssignedService = (Pick<IService, 'id'> & Pick<IService, 'title'>)
 
 export interface ICreateEmployeeResponse {
-    employee: IEmployee
-}
-
-export interface GetEmployeeResponse {
     employee: IEmployee
 }
 
@@ -151,14 +161,6 @@ export interface IGetEmployeeByIdRequest {
 export interface IGetEmployeeByIdResponse {
     employee: IEmployee
     assignedServices: IService[]
-}
-
-export interface AddServiceResponse {
-    service: IService
-}
-
-export interface GetServiceResponse {
-    service: IService
 }
 
 export interface IGetServicesResponse extends IPaginationIncludedResponse {

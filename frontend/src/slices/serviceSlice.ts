@@ -1,9 +1,15 @@
 import {IService} from "@/types/model.ts";
-import {ICreateServiceResponse, IGetServicesResponse, IPagination} from "@/types/payload.ts";
+import {
+    ICreateServiceResponse,
+    IDeleteServiceResponse,
+    IGetServicesResponse,
+    IPagination,
+    IUpdateServiceResponse
+} from "@/types/payload.ts";
 import {HttpMethod, IRequest} from "@/types/types.ts";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import BackendEndpoints from "@config/BackendEndpoints.ts";
-import {createServiceThunk, getServicesThunk} from "@thunks/serviceThunk.ts";
+import {createServiceThunk, deleteServiceThunk, getServicesThunk, updateServiceThunk} from "@thunks/serviceThunk.ts";
 
 interface IState {
     services: IService[]
@@ -104,6 +110,85 @@ const serviceSlice = createSlice({
                 }
             })
             .addCase(createServiceThunk.rejected, (state: IState, action: PayloadAction<unknown>) => {
+                state.lastRequest.error.caught = true;
+                state.lastRequest.isPending = false
+
+                if (action.payload instanceof Error) {
+                    const e = action.payload as Error;
+                    state.lastRequest.error.message = e.message;
+                } else if (typeof action.payload === 'object' && action.payload !== null) {
+                    const e = action.payload as {
+                        status?: number,
+                        message?: string
+                    };
+
+                    state.lastRequest.error.message = e.message === undefined ? null : e.message;
+                    state.lastRequest.error.status = e.status ?? 0;
+                }
+            })
+
+
+            .addCase(deleteServiceThunk.pending, (state: IState) => {
+                state.lastRequest.isPending = true
+                state.lastRequest.path = BackendEndpoints.DELETE_SERVICE_BY_ID
+                state.lastRequest.method = HttpMethod.DELETE
+            })
+            .addCase(deleteServiceThunk.fulfilled, (state: IState, action: PayloadAction<IDeleteServiceResponse | undefined>) => {
+                if (action.payload) {
+                    state.services = state.services.filter(s => s.id !== action.payload?.serviceId)
+                }
+
+                state.lastRequest.isPending = false
+                state.lastRequest.success = true
+                state.lastRequest.error = {
+                    caught: false,
+                    message: null,
+                    status: 0,
+                }
+            })
+            .addCase(deleteServiceThunk.rejected, (state: IState, action: PayloadAction<unknown>) => {
+                state.lastRequest.error.caught = true;
+                state.lastRequest.isPending = false
+
+                if (action.payload instanceof Error) {
+                    const e = action.payload as Error;
+                    state.lastRequest.error.message = e.message;
+                } else if (typeof action.payload === 'object' && action.payload !== null) {
+                    const e = action.payload as {
+                        status?: number,
+                        message?: string
+                    };
+
+                    state.lastRequest.error.message = e.message === undefined ? null : e.message;
+                    state.lastRequest.error.status = e.status ?? 0;
+                }
+            })
+
+            .addCase(updateServiceThunk.pending, (state: IState) => {
+                state.lastRequest.isPending = true
+                state.lastRequest.path = BackendEndpoints.DELETE_SERVICE_BY_ID
+                state.lastRequest.method = HttpMethod.DELETE
+            })
+            .addCase(updateServiceThunk.fulfilled, (state: IState, action: PayloadAction<IUpdateServiceResponse | undefined>) => {
+                if (action.payload) {
+                    state.services = state.services.map(s => {
+                        if (s.id === action.payload?.service.id) {
+                            return action.payload.service
+                        }
+
+                        return s
+                    })
+                }
+
+                state.lastRequest.isPending = false
+                state.lastRequest.success = true
+                state.lastRequest.error = {
+                    caught: false,
+                    message: null,
+                    status: 0,
+                }
+            })
+            .addCase(updateServiceThunk.rejected, (state: IState, action: PayloadAction<unknown>) => {
                 state.lastRequest.error.caught = true;
                 state.lastRequest.isPending = false
 

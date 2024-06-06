@@ -1,4 +1,4 @@
-import React, {ChangeEvent, Dispatch, FC, SetStateAction, useMemo, useRef, useState} from 'react';
+import React, {ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useMemo, useRef, useState} from 'react';
 import c from './ServicesFormModal.module.scss'
 import {Modal} from "antd";
 import PlainInput from "@ui/PlainInput/PlainInput.tsx";
@@ -9,17 +9,23 @@ import PlainTextArea from "@ui/PlainTextArea/PlainTextArea.tsx";
 import PlainTimePicker from "@ui/PlainTimePicker/PlainTimePicker.tsx";
 import IntroduceTitle from "@ui/IntroduceTitle/IntroduceTitle.tsx";
 import {IFormValid} from "@/types/types.ts";
-import {createServiceThunk} from "@thunks/serviceThunk.ts";
+import {createServiceThunk, updateServiceThunk} from "@thunks/serviceThunk.ts";
 import convertTimeStringToMilliseconds from "@utils/convertTimeStringToMilliseconds.ts";
+import {IService} from "@/types/model.ts";
+import dayjs from "dayjs";
+import convertMillisecondsToTime from "@utils/convertMillisecondsToTime.ts";
 
 interface ServicesFormModalProps {
     visible: boolean
     setVisible: Dispatch<SetStateAction<boolean>>
+    isEditForm?: boolean
+    service?: IService
 }
 
-const ServicesFormModal: FC<ServicesFormModalProps> = ({visible, setVisible}) => {
+const ServicesFormModal: FC<ServicesFormModalProps> = ({visible, setVisible, service, isEditForm = false}) => {
     const dispatch = useAppDispatch();
     const {currentCompany} = useAppSelector(state => state.company)
+    const {lastRequest} = useAppSelector(state => state.service)
     const inputTitleRef = useRef<HTMLInputElement>(null)
     const [formData, setFormData] = useState<ICreateServiceRequestBody>({
         title: '',
@@ -27,6 +33,14 @@ const ServicesFormModal: FC<ServicesFormModalProps> = ({visible, setVisible}) =>
         duration: 0,
         price: 100
     })
+
+    useEffect(() => {
+        if (service) {
+            setFormData({
+                 ...service
+            })
+        }
+    }, [service]);
 
     const isFormValid = useMemo<IFormValid>(() => {
         const isValid = {
@@ -79,14 +93,37 @@ const ServicesFormModal: FC<ServicesFormModalProps> = ({visible, setVisible}) =>
 
     const handleOnOk = () => {
         if (currentCompany && currentCompany.currentBranch.id) {
-            dispatch(createServiceThunk({
-                ...formData,
-                companyId: currentCompany.id,
-                branchId: currentCompany.currentBranch.id
-            }))
+
+            if (isEditForm) {
+
+                if (service) {
+                    dispatch(updateServiceThunk({
+                        serviceId: service.id,
+                        companyId: currentCompany.id,
+                        branchId: currentCompany.currentBranch.id,
+                        ...formData
+                    }))
+                }
+                return;
+            } else {
+                dispatch(createServiceThunk({
+                    ...formData,
+                    companyId: currentCompany.id,
+                    branchId: currentCompany.currentBranch.id
+                }))
+            }
             closeModal()
         }
     }
+
+    const dataChanged = useMemo(() => {
+        return (
+            formData.title !== service?.title ||
+            formData.description !== service?.description ||
+            formData.duration !== service?.duration ||
+            formData.price !== service?.price
+        )
+    }, [formData, service])
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData((prev) => ({...prev, [e.target.name]: e.target.value}))
@@ -111,14 +148,15 @@ const ServicesFormModal: FC<ServicesFormModalProps> = ({visible, setVisible}) =>
             cancelText={'Закрыть'}
             okText={'Подтвердить'}
             okButtonProps={{
-                disabled: isFormValid['all'][0].isInvalid
+                disabled: isFormValid['all'][0].isInvalid || (isEditForm && !dataChanged),
+                loading: lastRequest.isPending,
             }}
         >
             <div className={c.block}>
                 <div className={c.header}>
                     <IntroduceTitle
                         title={'Форма'}
-                        description={'Форма для добавления'}
+                        description={`Форма для ${isEditForm ? 'редактирования' : 'добавления'}`}
                         specialText={'услуг'}
                     />
                 </div>
@@ -165,6 +203,7 @@ const ServicesFormModal: FC<ServicesFormModalProps> = ({visible, setVisible}) =>
                             size={'middle'}
                             onChange={onTimeChange}
                             showSecond={false}
+                            value={dayjs(convertMillisecondsToTime(formData.duration), 'HH:mm')}
                             minuteStep={5}
                             needConfirm={false}
                             showNow={false}

@@ -156,8 +156,12 @@ const employeeSlice = createSlice({
             .addCase(updateEmployeeThunk.fulfilled, (state: IState, action: PayloadAction<IUpdateEmployeeResponse | undefined>) => {
                 if (action.payload) {
                     if (state.employees.length < 10) {
-                        state.employees.push({
-                            ...action.payload.employee,
+                        state.employees = state.employees.map(e => {
+                            if (e.id === action.payload?.employee.id) {
+                                return action.payload.employee
+                            }
+
+                            return e
                         })
 
                         if (state.currentEmployee?.id === action.payload.employee.id) {

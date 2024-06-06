@@ -1,6 +1,9 @@
 import {ColumnType} from "antd/es/table";
 import {IService} from "@/types/model.ts";
 import convertMillisecondsToTimeString from "@utils/convertMillisecondsToTimeString.ts";
+import React from "react";
+import DeleteServiceIcon from "@components/DeleteServiceIcon/DeleteServiceIcon.tsx";
+import EditServiceIcon from "@components/EditServiceIcon/EditServiceIcon.tsx";
 
 export const servicesTableColumns: ColumnType<IService>[] = [
     {
@@ -31,5 +34,17 @@ export const servicesTableColumns: ColumnType<IService>[] = [
 
             return <div>{text}</div>
         }
+    },
+    {
+        title: 'Удалить',
+        key: 'delete',
+        render: (_, record) => <DeleteServiceIcon service={record} />,
+        width: 48
+    },
+    {
+        title: 'Изменить',
+        key: 'delete',
+        render: (_, record) => <EditServiceIcon service={record} />,
+        width: 48
     },
 ]

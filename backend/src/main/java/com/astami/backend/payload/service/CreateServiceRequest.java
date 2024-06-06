@@ -4,9 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
-import java.time.Duration;
-
-public record AddServiceRequest(
+public record CreateServiceRequest(
         @NotBlank
         @Size(min = 1, max = 100)
         String title,

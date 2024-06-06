@@ -15,6 +15,8 @@ class BackendEndpoints {
     static GET_EMPLOYEE_BY_ID = '/company/:companyId/branch/:branchId/employee/:employeeId';
     static UPDATE_EMPLOYEE_BY_ID = '/company/:companyId/branch/:branchId/employee/:employeeId';
     static DELETE_EMPLOYEE_BY_ID = '/company/:companyId/branch/:branchId/employee/:employeeId';
+    static DELETE_SERVICE_BY_ID = '/company/:companyId/branch/:branchId/service/:serviceId';
+    static UPDATE_SERVICE_BY_ID = '/company/:companyId/branch/:branchId/service/:serviceId';
 }
 
 export default BackendEndpoints;
