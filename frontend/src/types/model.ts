@@ -50,8 +50,8 @@ export interface IRecord {
     id: number
     customer: ICustomer
     datetime: string
-    serviceId: number
-    employeeId: number
+    service: IService
+    employee: IEmployee
 }
 
 export interface IFile {

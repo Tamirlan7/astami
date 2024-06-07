@@ -70,8 +70,8 @@ export interface IGetEmployeesResponse extends IPaginationIncludedResponse {
 }
 
 export interface IPaginationIncludedResponse {
-    isLast: boolean
-    isFirst: boolean
+    last: boolean
+    first: boolean
     currentPage: number
     totalElements: number
     totalPages: number

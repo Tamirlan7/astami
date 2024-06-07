@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC, FormEvent, useEffect, useMemo, useRef, useState} from 'react';
+import React, {ChangeEvent, FC, FormEvent, ReactNode, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import c from './EmployeesFormPage.module.scss'
 import ControlPanelWrapper from "@components/ControlPanelWrapper/ControlPanelWrapper.tsx";
 import Title from "@ui/Title/Title.tsx";
@@ -6,9 +6,16 @@ import PlainInput from "@ui/PlainInput/PlainInput.tsx";
 import PlainTextArea from "@ui/PlainTextArea/PlainTextArea.tsx";
 import Button from "@ui/Button/Button.tsx";
 import PlainUpload from "@ui/PlainUpload/PlainUpload.tsx";
-import {Avatar, Empty, Image, Select, Skeleton, TimePicker} from "antd";
+import {
+    Avatar,
+    Empty,
+    Image,
+    Select,
+    Skeleton,
+    TimePicker
+} from "antd";
 import {UploadRequestOption} from "rc-upload/lib/interface";
-import {ICreateEmployeeRequestBody} from "@/types/payload.ts";
+import {ICreateEmployeeRequestBody, IGetServicesResponse} from "@/types/payload.ts";
 import FormControl from "@ui/FormControl/FormControl.tsx";
 import InfoIcon from '@assets/icons/info.svg?react'
 import {selectWeekdaysOptions} from "@/data/selectWeekdaysOptions.ts";
@@ -26,18 +33,20 @@ import {RoutePaths} from "@config/RoutePaths.ts";
 import AuthorizedImage from "@ui/AuthorizedImage/AuthorizedImage.tsx";
 import dayjs from 'dayjs'
 
-
 const EmployeesFormPage: FC = () => {
     const inputRef = useRef<HTMLInputElement>(null);
     const navigate = useNavigate()
     const dispatch = useAppDispatch();
     const [searchParams] = useSearchParams()
     const {lastRequest: employeeLastRequest} = useAppSelector(state => state.employee)
-    const {services, pagination: servicesPagination} = useAppSelector(state => state.service)
+    const {
+        lastRequest: serviceLastRequest
+    } = useAppSelector(state => state.service)
     const {currentCompany} = useAppSelector(state => state.company)
     const [previewOpen, setPreviewOpen] = useState(false);
     const [servicesCurrentPage, setServicesCurrentPage] = useState(0);
     const servicesPaginationSize = 25;
+    const [servicesResponse, setServicesResponse] = useState<IGetServicesResponse>();
     const [servicesSearchValue, setServicesSearchValue] = useState<string>('')
     const [formData, setFormData] = useState<ICreateEmployeeRequestBody>({
         age: 25,
@@ -47,12 +56,55 @@ const EmployeesFormPage: FC = () => {
         jobTitle: '',
         workDays: [],
         assignedServices: [],
-        workdayStartTime: '',
-        workdayEndTime: '',
+        workdayStartTime: '08:00',
+        workdayEndTime: '23:00',
     })
     const {currentEmployee} = useAppSelector(state => state.employee)
     const {pathname} = useLocation()
     const {employeeId} = useParams()
+
+    const observer = useRef<IntersectionObserver | null>(null);
+    const services = useMemo<IService[]>(() => servicesResponse?.services ?? [], [servicesResponse?.services])
+
+    const hasMore = useMemo(() => {
+        return !servicesResponse?.last
+    }, [servicesResponse?.last])
+
+    useEffect(() => {
+        if (currentCompany && hasMore && servicesCurrentPage !== servicesResponse?.currentPage) {
+            dispatch(getServicesThunk({
+                companyId: currentCompany.id,
+                branchId: currentCompany.currentBranch.id,
+                page: servicesCurrentPage,
+            })).then((res) => {
+                const servicesResponse = res.payload as IGetServicesResponse
+                setServicesResponse((prev) => {
+                    let services: IService[] = []
+
+                    if (prev) services = [...prev.services, ...servicesResponse.services]
+                    else services = [...servicesResponse.services]
+
+                    return {
+                        ...servicesResponse,
+                        services: services
+                    }
+                })
+            })
+        }
+    }, [currentCompany, dispatch, hasMore, servicesCurrentPage, servicesResponse?.currentPage])
+
+    const lastServiceRef = useCallback((node) => {
+        if (serviceLastRequest.isPending && serviceLastRequest.path === BackendEndpoints.GET_SERVICES && serviceLastRequest.method === HttpMethod.GET) return
+        if (observer.current) observer.current?.disconnect()
+
+        observer.current = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting && hasMore) {
+                setServicesCurrentPage(prev => prev + 1)
+            }
+        })
+
+        if (node) observer.current?.observe(node);
+    }, [hasMore, serviceLastRequest.isPending, serviceLastRequest.method, serviceLastRequest.path])
 
     const authorizedImagePath = useMemo<string | null>(() => {
         if (currentEmployee == null || !currentEmployee.image || !currentCompany) {
@@ -65,6 +117,7 @@ const EmployeesFormPage: FC = () => {
             .replace(':employeeId', currentEmployee.id.toString())
             .replace(':fileName', currentEmployee.image.name)
     }, [currentCompany, currentEmployee])
+
 
     const getEmployeeLoading = useMemo<boolean>(() => {
         return employeeLastRequest.isPending && employeeLastRequest.path === BackendEndpoints.GET_EMPLOYEE_BY_ID && employeeLastRequest.method === HttpMethod.GET
@@ -250,19 +303,6 @@ const EmployeesFormPage: FC = () => {
         inputRef.current?.focus();
     }, [])
 
-    useEffect(() => {
-        if (currentCompany && currentCompany.currentBranch.id) {
-            if (servicesPagination.currentPage != servicesCurrentPage) {
-                dispatch(getServicesThunk({
-                    size: servicesPaginationSize,
-                    page: servicesCurrentPage,
-                    companyId: currentCompany.id,
-                    branchId: currentCompany.currentBranch.id
-                }))
-            }
-        }
-    }, [currentCompany, dispatch, servicesCurrentPage, servicesPagination.currentPage]);
-
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -340,6 +380,10 @@ const EmployeesFormPage: FC = () => {
                 assignedServices: [...prev.assignedServices, {id: value, title: label}]
             });
         })
+    }
+
+    const loadMoreServices = () => {
+
     }
 
     const handleOnRemoveServices = ({value}: { value: number, label: string }) => {
@@ -466,6 +510,7 @@ const EmployeesFormPage: FC = () => {
                                         <Skeleton loading={getEmployeeLoading} active>
                                             <div className={c.services}>
                                                 <Select
+                                                    loading={serviceLastRequest.isPending}
                                                     virtual
                                                     mode={'multiple'}
                                                     style={{width: '100%'}}
@@ -481,8 +526,19 @@ const EmployeesFormPage: FC = () => {
                                                         value: s.id,
                                                         label: s.title,
                                                     }))}
-                                                    optionRender={option =>
-                                                        <div>{filteredServices.find(s => s.id === option.value)?.title}</div>}
+                                                    optionRender={(option, {index}) => {
+                                                        return (
+                                                            <>
+                                                                {services.length - 1 === index ? (
+                                                                    <div
+                                                                        ref={lastServiceRef}>{`${filteredServices.find(s => s.id === option.value)?.title}`}</div>
+                                                                ) : (
+                                                                    <div>{`${filteredServices.find(s => s.id === option.value)?.title}`}</div>
+                                                                )}
+                                                            </>
+                                                        )
+                                                    }}
+
                                                     value={formData.assignedServices.map(s => ({
                                                         value: s.id,
                                                         label: s.title,
@@ -504,8 +560,9 @@ const EmployeesFormPage: FC = () => {
                                                 <div className={c.picker}>
                                                     <span>от</span>
                                                     <TimePicker
+                                                        needConfirm={false}
                                                         showNow={false}
-                                                        value={dayjs(formData.workdayStartTime, 'HH:mm')}
+                                                        value={formData.workdayStartTime ? dayjs(formData.workdayStartTime, 'HH:mm') : null}
                                                         onChange={(_, dateString) => handleOnTimeChanged(_, dateString, 'workdayStartTime')}
                                                         placeholder={'Выберите время'}
                                                         showSecond={false}
@@ -516,7 +573,8 @@ const EmployeesFormPage: FC = () => {
                                                 <div className={c.picker}>
                                                     <span>до</span>
                                                     <TimePicker
-                                                        value={dayjs(formData.workdayEndTime, 'HH:mm')}
+                                                        needConfirm={false}
+                                                        value={formData.workdayEndTime ? dayjs(formData.workdayEndTime, 'HH:mm') : null}
                                                         onChange={(_, dateString) => handleOnTimeChanged(_, dateString, 'workdayEndTime')}
                                                         showNow={false}
                                                         disabledTime={() => workdayEndTimeDisabledHours}
