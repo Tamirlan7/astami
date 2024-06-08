@@ -37,6 +37,10 @@ const ServicesPage = () => {
         setIsFormVisible(true)
     }
 
+    const onPageChanged = (page: number, _: number) => {
+        setCurrentPage(page - 1)
+    }
+
     return (
         <ControlPanelWrapper>
             <div className={c.main}>
@@ -60,6 +64,14 @@ const ServicesPage = () => {
                         columns={servicesTableColumns}
                         dataSource={services}
                         rowKey='id'
+
+                        pagination={{
+                            total: pagination.totalElements ?? 0,
+                            pageSize: pagination.size ?? 10,
+                            showSizeChanger: false,
+                            onChange: onPageChanged,
+                            size: 'default',
+                        }}
                     />
                 </div>
             </div>

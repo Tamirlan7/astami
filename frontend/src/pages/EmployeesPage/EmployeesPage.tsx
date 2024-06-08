@@ -39,7 +39,7 @@ const EmployeesPage = () => {
         }
     }, [currentCompany, currentPage, dispatch, lastRequest.isPending, lastRequest.method, lastRequest.path, pagination.currentPage]);
 
-    const onPageChanged = (page: number, pageSize: number) => {
+    const onPageChanged = (page: number, _: number) => {
         setCurrentPage(page - 1)
     }
 
