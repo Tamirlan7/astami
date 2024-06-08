@@ -57,8 +57,8 @@ export interface IGetEmployeesRequest extends IPaginationIncludedRequest {
 }
 
 export interface IPagination {
-    isLast: boolean | null
-    isFirst: boolean | null
+    last: boolean | null
+    first: boolean | null
     currentPage: number | null
     totalElements: number | null
     totalPages: number | null
@@ -126,7 +126,7 @@ export interface IGetRecordsRequest {
     size?: number
 }
 
-export interface IGetRecordsResponse extends IPaginationIncludedRequest{
+export interface IGetRecordsResponse extends IPaginationIncludedResponse {
     records: IRecord[]
 }
 

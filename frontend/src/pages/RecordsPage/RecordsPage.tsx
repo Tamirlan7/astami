@@ -3,26 +3,31 @@ import c from './RecordsPage.module.scss'
 import ControlPanelWrapper from "@components/ControlPanelWrapper/ControlPanelWrapper.tsx";
 import IntroduceTitle from "@ui/IntroduceTitle/IntroduceTitle.tsx";
 import {Table} from "antd";
-import employeeTableColumns from "@/data/employeeTableColumns.tsx";
 import {useAppDispatch, useAppSelector} from "@hooks/reduxHooks.ts";
 import recordTableColumns from "@/data/recordTableColumns.ts";
 import {getRecordsThunk} from "@thunks/recordThunk.ts";
 
 const RecordsPage = () => {
     const dispatch = useAppDispatch()
-    const {records} = useAppSelector(state => state.record)
+    const {records, pagination} = useAppSelector(state => state.record)
     const {currentCompany} = useAppSelector(state => state.company)
     const [currentPage, setCurrentPage] = useState(0)
     
     useEffect(() => {
         if (currentCompany) {
-            dispatch(getRecordsThunk({
-                companyId: currentCompany.id,
-                branchId: currentCompany.currentBranch.id,
-                page: currentPage,
-            }))
+            if (pagination.currentPage !== currentPage) {
+                dispatch(getRecordsThunk({
+                    companyId: currentCompany.id,
+                    branchId: currentCompany.currentBranch.id,
+                    page: currentPage,
+                }))
+            }
         }
-    }, [currentCompany, currentPage, dispatch]);
+    }, [currentCompany, currentPage, dispatch, pagination.currentPage]);
+
+    const onPageChanged = (page: number, _: number) => {
+        setCurrentPage(page - 1)
+    }
 
     return (
         <ControlPanelWrapper>
@@ -44,13 +49,13 @@ const RecordsPage = () => {
                 <div className={c.content}>
                     <Table className={c.table}
                            rowClassName={c.row}
-                           // pagination={{
-                           //     total: pagination.totalElements ?? 0,
-                           //     pageSize: pagination.size ?? 10,
-                           //     showSizeChanger: false,
-                           //     onChange: onPageChanged,
-                           //     size: 'default',
-                           // }}
+                           pagination={{
+                               total: pagination.totalElements ?? 0,
+                               pageSize: pagination.size ?? 10,
+                               showSizeChanger: false,
+                               onChange: onPageChanged,
+                               size: 'default',
+                           }}
                            size={'small'}
                            dataSource={records}
                            rowKey={record => record.id}

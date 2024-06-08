@@ -26,8 +26,8 @@ const initialState: IState = {
     employees: [],
     currentEmployee: null,
     pagination: {
-        isFirst: null,
-        isLast: null,
+        first: null,
+        last: null,
         currentPage: null,
         size: 10,
         totalElements: null,

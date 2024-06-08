@@ -64,6 +64,7 @@ const ServicesPage = () => {
                         columns={servicesTableColumns}
                         dataSource={services}
                         rowKey='id'
+                        size={'small'}
 
                         pagination={{
                             total: pagination.totalElements ?? 0,
