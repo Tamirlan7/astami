@@ -84,6 +84,7 @@
   height: 50px;
   font-family: inherit !important;
   font-weight: 600;
+
   * {
     color: #666666 !important;
   }
@@ -102,7 +103,7 @@
   border-radius: 6px;
   align-self: flex-start;
 
-  img {
+  * {
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
@@ -139,7 +140,6 @@
   display: flex;
   align-items: center;
   gap: 10px;
-
 }
 
 .info {

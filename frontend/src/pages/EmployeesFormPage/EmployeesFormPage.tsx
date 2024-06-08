@@ -466,16 +466,15 @@ const EmployeesFormPage: FC = () => {
                                             <div className={c['picture-control']}>
                                                 {(formData.image && 'path' in formData.image && isEditEmployee && authorizedImagePath)
                                                     ? (
-                                                        <>
+                                                        <div className={c.picture}>
                                                             <AuthorizedImage
-                                                                wrapperClassName={c.picture}
                                                                 preview={{
                                                                     visible: previewOpen,
                                                                     'onVisibleChange': (visible) => setPreviewOpen(visible),
                                                                 }}
                                                                 path={authorizedImagePath}
                                                             />
-                                                        </>
+                                                        </div>
 
                                                     ) : (formData.image instanceof Blob) ? (
                                                         <Image

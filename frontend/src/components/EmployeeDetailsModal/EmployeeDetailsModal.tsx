@@ -86,6 +86,7 @@ const EmployeeDetailsModal: FC<EmployeeDetailsModalProps> = ({visible, setVisibl
                 companyId: currentCompany.id
             }))
 
+            setConfirmDelete(false)
             closeModal()
         }
     }
