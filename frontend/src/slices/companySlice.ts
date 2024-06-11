@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IBranch, ICompany} from "../types/model.ts";
-import {createCompanyThunk, getCompanyById, getUserCompaniesThunk} from "@thunks/companyThunk.ts";
+import {createCompanyThunk, getCompanyByIdThunk, getUserCompaniesThunk} from "@thunks/companyThunk.ts";
 import {
     ICreateBranchResponse,
     ICreateCompanyResponse,
@@ -133,12 +133,12 @@ const companySlice = createSlice({
             })
 
 
-            .addCase(getCompanyById.pending, (state: IState) => {
+            .addCase(getCompanyByIdThunk.pending, (state: IState) => {
                 state.lastRequest.isPending = true
                 state.lastRequest.path = BackendEndpoints.GET_COMPANY_BY_ID
                 state.lastRequest.method = HttpMethod.GET
             })
-            .addCase(getCompanyById.fulfilled, (state: IState, action: PayloadAction<IGetCompanyResponse | undefined>) => {
+            .addCase(getCompanyByIdThunk.fulfilled, (state: IState, action: PayloadAction<IGetCompanyResponse | undefined>) => {
                 if (action.payload) {
                     state.currentCompany = action.payload.company
                     state.currentCompany.currentBranch = action.payload.currentBranch
@@ -152,7 +152,7 @@ const companySlice = createSlice({
                     status: 0,
                 }
             })
-            .addCase(getCompanyById.rejected, (state: IState, action: PayloadAction<unknown>) => {
+            .addCase(getCompanyByIdThunk.rejected, (state: IState, action: PayloadAction<unknown>) => {
                 state.lastRequest.error.caught = true;
                 state.lastRequest.isPending = false
 

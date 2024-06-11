@@ -4,10 +4,25 @@
 }
 
 .icon {
+  position: relative;
+  left: -30px;
   cursor: pointer;
 
   * {
     width: 18px;
     height: 18px;
   }
+}
+
+.main {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.content {
+  width: 100%;
+}
+
+.node {
 }

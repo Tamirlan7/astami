@@ -39,8 +39,8 @@ const ControlPanelMenu: FC<ControlPanelMenuProps> = ({onBurgerMenuStateChanged, 
             navigator.clipboard.writeText(copyInputRef.current.input.value);
             dispatch(raisePopupNotification({
                 type: 'success',
-                message: 'Текст успешно скопирован',
-                description: 'Текст успешно скопирован'
+                message: 'Ссылка успешно скопирована',
+                description: 'Ссылка успешно скопирована'
             }))
         }
     }

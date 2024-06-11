@@ -45,7 +45,6 @@ const EmployeesFormPage: FC = () => {
     const {currentCompany} = useAppSelector(state => state.company)
     const [previewOpen, setPreviewOpen] = useState(false);
     const [servicesCurrentPage, setServicesCurrentPage] = useState(0);
-    const servicesPaginationSize = 25;
     const [servicesResponse, setServicesResponse] = useState<IGetServicesResponse>();
     const [servicesSearchValue, setServicesSearchValue] = useState<string>('')
     const [formData, setFormData] = useState<ICreateEmployeeRequestBody>({

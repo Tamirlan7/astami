@@ -18,7 +18,10 @@ import org.springframework.data.domain.Sort;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @org.springframework.stereotype.Service
 @RequiredArgsConstructor
@@ -120,15 +123,17 @@ public class RecordService {
                 .build();
     }
 
+
     public List<String> getFreeTimesToRecord(GetFreeTimesForRecordRequest body) {
         // Fetch the service by its ID
         Service service = serviceService.getServiceById(body.getServiceId());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
         // Retrieve the list of employees providing the service
         List<Employee> employees = service.getEmployees();
 
-        // Initialize the list to store free times
-        List<LocalDateTime> freeTimes = new ArrayList<>();
+        // Initialize the set to store free times
+        Set<LocalDateTime> freeTimes = new HashSet<>();
 
         // Calculate the start and end of the day
         LocalDate date = body.getDate();
@@ -137,6 +142,12 @@ public class RecordService {
 
         // Calculate the duration of the service
         Duration serviceDuration = Duration.ofMillis(service.getDuration());
+
+        // Check for existing records on the specified date and service
+        List<Record> existingRecords = recordRepository.findByDateTimeBetweenAndServiceId(startOfTheDay, endOfTheDay, service.getId());
+        Set<LocalDateTime> occupiedTimes = existingRecords.stream()
+                .map(Record::getDateTime)
+                .collect(Collectors.toSet());
 
         // Iterate over each employee to find free times
         for (Employee employee : employees) {
@@ -154,20 +165,16 @@ public class RecordService {
                 LocalDateTime endTime = LocalDateTime.of(date, workdayEndTime);
                 List<LocalDateTime> employeeFreeTimes = calculateFreeTimes(startTime, endTime, serviceDuration);
 
-                // Check for existing records on the specified date and service
-                List<Record> existingRecords = recordRepository.findByDateTimeBetweenAndServiceId(startOfTheDay, endOfTheDay, service.getId());
-
                 // Exclude occupied time slots from the available time slots
-                employeeFreeTimes.removeAll(existingRecords.stream()
-                        .map(Record::getDateTime)
-                        .toList());
+                employeeFreeTimes.removeAll(occupiedTimes);
 
-                // Add the free time slots to the list
+                // Add the free time slots to the set
                 freeTimes.addAll(employeeFreeTimes);
             }
         }
 
-        return freeTimes.stream().map(t -> t.format(formatter)).toList();
+        // Convert the set to a list and format the times
+        return freeTimes.stream().map(t -> t.format(formatter)).sorted().toList();
     }
 
     private Weekdays convertToWeekday(DayOfWeek dayOfWeek) {
@@ -195,5 +202,4 @@ public class RecordService {
 
         return freeTimes;
     }
-
 }

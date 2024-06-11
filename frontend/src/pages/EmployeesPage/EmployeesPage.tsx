@@ -85,6 +85,7 @@ const EmployeesPage = () => {
 
                 <div className={c.content}>
                     <Table className={c.table}
+                           loading={(lastRequest.isPending && lastRequest.path === BackendEndpoints.GET_EMPLOYEES && lastRequest.method === HttpMethod.GET)}
                            rowClassName={c.row}
                            pagination={{
                                total: pagination.totalElements ?? 0,

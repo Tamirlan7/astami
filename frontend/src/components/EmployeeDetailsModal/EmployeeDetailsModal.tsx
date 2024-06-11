@@ -27,6 +27,7 @@ const EmployeeDetailsModal: FC<EmployeeDetailsModalProps> = ({visible, setVisibl
     const [confirmDelete, setConfirmDelete] = useState(false)
     const [servicesModal, setServicesModal] = useState(false)
     const {currentEmployee, lastRequest} = useAppSelector(state => state.employee)
+
     const avatarSrc = useMemo<string>(() => {
         if (!currentCompany || !employee) {
             return ''

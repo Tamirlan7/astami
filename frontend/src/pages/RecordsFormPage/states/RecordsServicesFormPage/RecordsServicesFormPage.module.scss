@@ -1,12 +1,25 @@
 .block {
-  width: 70%;
+  width: 100%;
+  display: flex;
+  padding-bottom: 30px;
+  justify-content: center;
+}
+
+.container {
+  max-width: 60%;
+}
+
+.header {
+  padding-inline: 10px;
+}
+
+.title {
   display: flex;
   align-items: center;
-  flex-direction: column;
+  gap: 10px;
 }
 
 .list {
-  max-width: 60%;
 }
 
 .icon {

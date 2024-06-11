@@ -1,12 +1,28 @@
 .block {
   display: flex;
   justify-content: center;
+  max-width: 60%;
+  width: 100%;
+}
+
+.container {
+  width: 100%;
 }
 
 .list {
   width: 100%;
-  max-width: 440px;
 }
+
+.header {
+  padding-inline: 10px;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 
 .card-body {
   display: flex;
@@ -17,4 +33,16 @@
 
 .info {
   flex-grow: 1;
+}
+
+.image {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+
+  * {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+  }
 }

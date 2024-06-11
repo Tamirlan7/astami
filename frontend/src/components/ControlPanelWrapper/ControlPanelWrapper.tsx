@@ -2,7 +2,7 @@ import React, {FC, PropsWithChildren, useEffect, useState} from 'react';
 import c from './ControlPanelWrapper.module.scss'
 import ControlPanelMenu from "@components/ControlPanelMenu/ControlPanelMenu.tsx";
 import {useAppDispatch, useAppSelector} from "@hooks/reduxHooks.ts";
-import {getCompanyById} from "@thunks/companyThunk.ts";
+import {getCompanyByIdThunk} from "@thunks/companyThunk.ts";
 import {useNavigate, useParams} from "react-router-dom";
 import BackendEndpoints from "@config/BackendEndpoints.ts";
 import {HttpMethod} from "@/types/types.ts";
@@ -38,7 +38,7 @@ const ControlPanelWrapper: FC<ControlPanelWrapperProps> = ({children}) => {
             return
         }
 
-        dispatch(getCompanyById(Number(companyId)))
+        dispatch(getCompanyByIdThunk(Number(companyId)))
     }, [companyId, dispatch, currentCompany]);
 
     return (

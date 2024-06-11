@@ -1,21 +1,40 @@
 .block {
   display: flex;
   justify-content: center;
+  max-width: 60%;
+  width: 100%;
+}
+
+.container {
+  width: 100%;
 }
 
 .main {
-  max-width: 440px;
-  width: 100%;
+  display: flex;
+  justify-content: center;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 .input {
   width: 100%;
 }
 
+.header {
+  padding-inline: 10px;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .form {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  width: 100%;
 }
 
 .btn {

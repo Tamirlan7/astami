@@ -75,7 +75,7 @@ export const getUserCompaniesThunk = createAsyncThunk(
     }
 )
 
-export const getCompanyById = createAsyncThunk(
+export const getCompanyByIdThunk = createAsyncThunk(
     'company/getCompanyById',
     async (id: number, {dispatch, rejectWithValue}) => {
         try {

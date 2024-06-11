@@ -9,12 +9,14 @@ import ServicesFilter from "@components/ServicesFilter/ServicesFilter.tsx";
 import {useLocation, useNavigate} from "react-router-dom";
 import ServicesFormModal from "@components/ServicesFormModal/ServicesFormModal.tsx";
 import IntroduceTitle from "@ui/IntroduceTitle/IntroduceTitle.tsx";
+import BackendEndpoints from "@config/BackendEndpoints.ts";
+import {HttpMethod} from "@/types/types.ts";
 
 const ServicesPage = () => {
     const dispatch = useAppDispatch()
     const navigate = useNavigate();
     const location = useLocation();
-    const {services, pagination} = useAppSelector(state => state.service)
+    const {services, pagination, lastRequest} = useAppSelector(state => state.service)
     const {currentCompany} = useAppSelector(state => state.company)
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [isFormVisible, setIsFormVisible] = useState<boolean>(false)
@@ -60,6 +62,7 @@ const ServicesPage = () => {
 
                 <div className={c.content}>
                     <Table
+                        loading={(lastRequest.isPending && lastRequest.path === BackendEndpoints.GET_EMPLOYEES && lastRequest.method === HttpMethod.GET)}
                         rootClassName={c.table}
                         columns={servicesTableColumns}
                         dataSource={services}
