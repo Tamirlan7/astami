@@ -5,6 +5,7 @@ import popupNotificationSlice from "@slices/popupNotificationSlice.ts";
 import employeeSlice from "@slices/employeeSlice.ts";
 import serviceSlice from "@slices/serviceSlice.ts";
 import recordSlice from "@slices/recordSlice.ts";
+import customerSlice from "@slices/customerSlice.ts";
 
 const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
         'employee': employeeSlice,
         'service': serviceSlice,
         'record': recordSlice,
+        'customer': customerSlice,
 },
     devTools: import.meta.env.NODE_ENV !== 'production',
 })

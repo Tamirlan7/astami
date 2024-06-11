@@ -21,6 +21,7 @@ class BackendEndpoints {
     static GET_RECORD_AVAILABLE_EMPLOYEES = '/company/:companyId/branch/:branchId/record/available-employees';
     static CREATE_RECORD = '/company/:companyId/branch/:branchId/record';
     static GET_RECORDS = '/company/:companyId/branch/:branchId/record';
+    static GET_CUSTOMERS = '/company/:companyId/branch/:branchId/customer';
 }
 
 export default BackendEndpoints;

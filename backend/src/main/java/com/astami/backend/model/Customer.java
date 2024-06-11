@@ -31,8 +31,17 @@ public class Customer {
     @Column(length = 100)
     private String email;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "branch_id")
+    private Branch branch;
+
     @JsonIgnore
     @Builder.Default
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Record> records = new ArrayList<>();
+
+    public void setBranch(Branch branch) {
+        this.branch = branch;
+        branch.getCustomers().add(this);
+    }
 }

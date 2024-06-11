@@ -15,6 +15,7 @@ export interface IBranch {
 }
 
 export interface ICustomer {
+    id: number
     phone: string
     email?: string
     name: string

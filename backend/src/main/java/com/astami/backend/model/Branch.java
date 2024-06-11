@@ -46,6 +46,12 @@ public class Branch {
     @ToString.Exclude
     private List<Service> services = new ArrayList<>();
 
+    @OneToMany(mappedBy = "branch", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    @Builder.Default
+    @ToString.Exclude
+    private List<Customer> customers = new ArrayList<>();
+
     @JsonIgnore
     @Builder.Default
     @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

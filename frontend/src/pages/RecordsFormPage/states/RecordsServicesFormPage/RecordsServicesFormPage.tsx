@@ -33,41 +33,45 @@ const RecordsServicesFormPage: FC<RecordsServicesFormPageProps> = ({onServiceSel
         return !servicesResponse?.last
     }, [servicesResponse?.last])
 
-    useEffect(() => {
-        async function fetchServices() {
-            if (currentCompany && hasMore && servicesCurrentPage !== servicesResponse?.currentPage) {
-                try {
-                    setLoading(true)
-                    const res = await dispatch(getServicesThunk({
-                        companyId: currentCompany.id,
-                        branchId: currentCompany.currentBranch.id,
-                        page: servicesCurrentPage,
-                    }))
+    const fetchServices = useCallback(async () => {
+        if (branchId && companyId && !servicesResponse?.last && servicesCurrentPage !== servicesResponse?.currentPage) {
 
-                    const servicesResponse = res.payload as IGetServicesResponse
-                    setServicesResponse((prev) => {
-                        let services: IService[] = []
+            try {
+                setLoading(true);
+                const res = await dispatch(getServicesThunk({
+                    companyId: companyId,
+                    branchId: branchId,
+                    page: servicesCurrentPage,
+                }));
 
-                        if (prev) services = [...prev.services, ...servicesResponse.services]
-                        else services = [...servicesResponse.services]
+                const servicesResponse = res.payload as IGetServicesResponse;
+                console.log(servicesResponse)
 
-                        return {
-                            ...servicesResponse,
-                            services: services
-                        }
-                    })
-                } catch (_) {
-                    setLoading(false)
+                setServicesResponse((prev) => {
+                    const services = prev ? [...prev.services, ...servicesResponse.services] : [...servicesResponse.services];
 
-                } finally {
-                    setLoading(false)
-                }
+                    console.log(services)
+                    return {
+                        ...servicesResponse,
+                        services: Array.from(new Set(services))
+                    };
+                });
+            } catch (error) {
+                console.error(error);
+                setLoading(false);
+            } finally {
+                setLoading(false);
             }
+
+            console.log('Fetching services');
+            console.log('servicesCurrentPage:', servicesCurrentPage);
+            console.log('servicesResponse:', servicesResponse);
         }
+    }, [branchId, companyId, servicesResponse, servicesCurrentPage, dispatch]);
 
-        fetchServices()
-
-    }, [currentCompany, dispatch, hasMore, servicesCurrentPage, servicesResponse?.currentPage])
+    useEffect(() => {
+        fetchServices();
+    }, [fetchServices]);
 
     const lastServiceRef = useCallback((node) => {
         if (serviceLastRequest.isPending && serviceLastRequest.path === BackendEndpoints.GET_SERVICES && serviceLastRequest.method === HttpMethod.GET) return
@@ -81,13 +85,6 @@ const RecordsServicesFormPage: FC<RecordsServicesFormPageProps> = ({onServiceSel
 
         if (node) observer.current?.observe(node);
     }, [hasMore, serviceLastRequest.isPending, serviceLastRequest.method, serviceLastRequest.path])
-
-    useEffect(() => {
-        dispatch(getServicesThunk({
-            companyId: Number(companyId),
-            branchId: Number(branchId),
-        }))
-    }, [branchId, companyId, dispatch]);
 
     const handleOnClickItem = (service: IService) => {
         if (onServiceSelect) {
@@ -148,7 +145,7 @@ const RecordsServicesFormPage: FC<RecordsServicesFormPageProps> = ({onServiceSel
                             )
                         }}
                     />
-                    <Skeleton active loading={loading} paragraph={{ rows: 4 }} />
+                    <Skeleton active loading={loading} paragraph={{rows: 4}}/>
                 </div>
             </div>
         </div>

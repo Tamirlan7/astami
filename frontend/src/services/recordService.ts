@@ -1,6 +1,6 @@
 import {
     ICreateRecordRequest,
-    ICreateRecordRequestBody, ICreateRecordResponse,
+    ICreateRecordResponse,
     IGetRecordAvailableEmployeesRequest, IGetRecordAvailableEmployeesResponse,
     IGetRecordFreeTimesRequest, IGetRecordFreeTimesResponse, IGetRecordsRequest, IGetRecordsResponse,
 } from "@/types/payload.ts";
@@ -9,10 +9,11 @@ import client from "@services/client.ts";
 import BackendEndpoints from "@config/BackendEndpoints.ts";
 import extractDateStrFromDate from "@utils/extractDateStrFromDate.ts";
 import toLocalISOString from "@utils/toLocalISOString.ts";
+import guest from "@services/guest.ts";
 
 class RecordService {
     public static async getRecordFreeTimes(body: IGetRecordFreeTimesRequest): Promise<AxiosResponse<IGetRecordFreeTimesResponse>> {
-        return await client.get(
+        return await guest.get(
             BackendEndpoints.GET_RECORD_FREE_TIMES
                 .replace(':serviceId', body.serviceId.toString()),
             {
@@ -24,7 +25,7 @@ class RecordService {
     }
 
     static async getRecordAvailableEmployees(body: IGetRecordAvailableEmployeesRequest): Promise<AxiosResponse<IGetRecordAvailableEmployeesResponse>> {
-        return await client.get(
+        return await guest.get(
             BackendEndpoints.GET_RECORD_AVAILABLE_EMPLOYEES,
             {
                 params: {
@@ -36,7 +37,7 @@ class RecordService {
     }
 
     static async createRecord(body: ICreateRecordRequest): Promise<AxiosResponse<ICreateRecordResponse>> {
-        return await client.post(
+        return await guest.post(
             BackendEndpoints.CREATE_RECORD
                 .replace(':companyId', body.companyId.toString())
                 .replace(':branchId', body.branchId.toString()),

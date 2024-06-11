@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -35,6 +36,7 @@ public class RecordService {
     private final CompanyService companyService;
 
 
+    @Transactional
     public CreateRecordResponse createRecord(CreateRecordRequest body, long branchId) {
         var service = serviceService.getServiceById(body.getServiceId());
         var employee = employeeService.getEmployeeById(body.getEmployeeId());
@@ -47,6 +49,7 @@ public class RecordService {
                         .name(body.getCustomer().getName())
                         .build());
 
+        customer.setBranch(branch);
         customerRepository.save(customer);
 
         var record = Record.builder()

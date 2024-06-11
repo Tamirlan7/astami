@@ -30,6 +30,7 @@ public class SecurityConfig {
                         auth.requestMatchers("/api/v1/auth/**").permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/api/v1/company/*/branch/*/record")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/api/v1/company/*/branch/*/record/free-times/service/*")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/api/v1/company/*/branch/*/record/available-employees")).permitAll()
                                 .anyRequest().authenticated())
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(exceptionHandling -> exceptionHandling

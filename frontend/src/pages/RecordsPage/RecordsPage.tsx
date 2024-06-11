@@ -6,13 +6,15 @@ import {Table} from "antd";
 import {useAppDispatch, useAppSelector} from "@hooks/reduxHooks.ts";
 import recordTableColumns from "@/data/recordTableColumns.ts";
 import {getRecordsThunk} from "@thunks/recordThunk.ts";
+import BackendEndpoints from "@config/BackendEndpoints.ts";
+import {HttpMethod} from "@/types/types.ts";
 
 const RecordsPage = () => {
     const dispatch = useAppDispatch()
-    const {records, pagination} = useAppSelector(state => state.record)
+    const {records, pagination, lastRequest} = useAppSelector(state => state.record)
     const {currentCompany} = useAppSelector(state => state.company)
     const [currentPage, setCurrentPage] = useState(0)
-    
+
     useEffect(() => {
         if (currentCompany) {
             if (pagination.currentPage !== currentPage) {
@@ -48,6 +50,7 @@ const RecordsPage = () => {
 
                 <div className={c.content}>
                     <Table className={c.table}
+                           loading={(lastRequest.isPending && lastRequest.path === BackendEndpoints.GET_RECORDS && lastRequest.method === HttpMethod.GET)}
                            rowClassName={c.row}
                            pagination={{
                                total: pagination.totalElements ?? 0,
