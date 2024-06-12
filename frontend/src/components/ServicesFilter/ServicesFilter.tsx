@@ -1,6 +1,7 @@
-import React, {FC} from 'react';
+import React, {ChangeEvent, FC} from 'react';
 import c from './ServicesFilter.module.scss'
 import Button from "@ui/Button/Button.tsx";
+import SearchInput from "@ui/SearchInput/SearchInput.tsx";
 
 interface ServicesFilterProps {
     onTitleChange?: (title: string) => void;
@@ -15,9 +16,16 @@ const ServicesFilter: FC<ServicesFilterProps> = ({onAddServiceClick, onTitleChan
         }
     }
 
+    const handleOnTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (onTitleChange) {
+            onTitleChange(e.target.value);
+        }
+    }
+
     return (
         <div className={c.block}>
-            <div>
+            <div className={c.control}>
+                <SearchInput onChange={handleOnTitleChange} rootClassName={c['input-root']} label={'Поиск по названию'}/>
                 <Button onClick={handleOnAddClick}>Добавить</Button>
             </div>
         </div>

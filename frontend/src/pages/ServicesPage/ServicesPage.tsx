@@ -14,29 +14,30 @@ import {HttpMethod} from "@/types/types.ts";
 
 const ServicesPage = () => {
     const dispatch = useAppDispatch()
-    const navigate = useNavigate();
-    const location = useLocation();
     const {services, pagination, lastRequest} = useAppSelector(state => state.service)
     const {currentCompany} = useAppSelector(state => state.company)
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [isFormVisible, setIsFormVisible] = useState<boolean>(false)
+    const [title, setTitle] = useState<string>('');
 
     useEffect(() => {
         if (currentCompany && currentCompany.currentBranch) {
-            if (pagination.currentPage !== currentPage) {
-                dispatch(getServicesThunk({
-                    companyId: currentCompany.id,
-                    branchId: currentCompany.currentBranch.id,
-                    page: currentPage,
-                    title: '',
-                }))
-            }
+            dispatch(getServicesThunk({
+                companyId: currentCompany.id,
+                branchId: currentCompany.currentBranch.id,
+                page: currentPage,
+                title: title,
+            }))
         }
 
-    }, [currentCompany, currentPage, dispatch, pagination.currentPage]);
+    }, [currentCompany, currentPage, dispatch, pagination.currentPage, title]);
 
     const handleOnAddServiceClick = () => {
         setIsFormVisible(true)
+    }
+
+    const handleOnTitleChange = (value: string) => {
+        setTitle(value)
     }
 
     const onPageChanged = (page: number, _: number) => {
@@ -56,7 +57,8 @@ const ServicesPage = () => {
                     </div>
 
                     <div className={c.filter}>
-                        <ServicesFilter onAddServiceClick={handleOnAddServiceClick}/>
+                        <ServicesFilter onTitleChange={handleOnTitleChange}
+                                        onAddServiceClick={handleOnAddServiceClick}/>
                     </div>
                 </div>
 

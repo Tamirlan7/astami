@@ -18,20 +18,6 @@ public record RegisterRequest(
 
         @Size(min = 8)
         @NotBlank
-        String password,
-
-        @NotBlank
-        @Size(max = 100)
-        String firstName,
-
-        @NotBlank
-        @Size(max = 100)
-        String lastName,
-
-        @NotNull
-        Gender gender,
-
-        @NotNull
-        LocalDate birthDate
+        String password
 ) {
 }

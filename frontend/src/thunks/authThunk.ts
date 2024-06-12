@@ -3,12 +3,15 @@ import {ILoginRequest, IRefreshRequest, IRegisterRequest} from "../types/payload
 import AuthService from "../services/authService.ts";
 import {raisePopupNotification} from "@slices/popupNotificationSlice.ts";
 import axios from "axios";
+import {TOKENS} from "@config/AppConstants.ts";
 
 export const loginThunk = createAsyncThunk(
     'auth/loginThunk',
     async (body: ILoginRequest, {dispatch, rejectWithValue}) => {
         try {
             const {data, status} = await AuthService.login(body);
+            localStorage.setItem(TOKENS, JSON.stringify(data))
+
             if (status >= 200 && status < 300) {
                 dispatch(raisePopupNotification({
                     message: 'Сообщение',
@@ -48,6 +51,8 @@ export const registerThunk = createAsyncThunk(
     async (body: IRegisterRequest, {dispatch, rejectWithValue}) => {
         try {
             const {data, status} = await AuthService.register(body);
+            localStorage.setItem(TOKENS, JSON.stringify(data))
+
             if (status >= 200 && status < 300) {
                 dispatch(raisePopupNotification({
                     message: 'Сообщение',

@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface RecordRepository extends JpaRepository<Record, Long> {
 
-    Page<Record> findAllByBranchId(Long branchId, Pageable pageable);
+    Page<Record> findAllByBranchIdAndDateTimeBetween(Long branchId, LocalDateTime dateTime1, LocalDateTime dateTime2, Pageable pageable);
 
     List<Record> findByDateTimeBetweenAndServiceId(LocalDateTime dateTime, LocalDateTime dateTime2, Long serviceId);
 

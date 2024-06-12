@@ -71,9 +71,16 @@ public class RecordService {
     public GetRecordsResponse getRecords(GetRecordsRequest body) {
         companyService.validateUserCompany(body.getAuthentication(), body.getCompanyId());
 
-        Page<Record> page = recordRepository.findAllByBranchId(
+        LocalDate date = body.getDate();
+        LocalDateTime startOfDay = LocalDateTime.of(date, LocalTime.MIN);
+        LocalDateTime endOfDay = LocalDateTime.of(date, LocalTime.MAX);
+
+        Page<Record> page = recordRepository.findAllByBranchIdAndDateTimeBetween(
                 body.getBranchId(),
-                PageRequest.of(body.getPage(), body.getSize(), Sort.by("id")));
+                startOfDay,
+                endOfDay,
+                PageRequest.of(body.getPage(), body.getSize(), Sort.by("id"))
+        );
 
         return GetRecordsResponse.builder()
                 .records(page.getContent().stream().map(RecordMapper::mapToDto).toList())

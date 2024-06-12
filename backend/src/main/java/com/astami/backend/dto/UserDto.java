@@ -19,10 +19,6 @@ public class UserDto {
     private long id;
     private String email;
     private String phone;
-    private String firstName;
-    private String lastName;
-    private Gender gender;
-    private LocalDate birthDate;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Role role;

@@ -22,25 +22,26 @@ const EmployeesPage = () => {
     const {employees, pagination} = useAppSelector(state => state.employee)
     const {currentCompany, lastRequest} = useAppSelector(state => state.company)
     const [currentPage, setCurrentPage] = useState(0);
+    const [name, setName] = useState<string>('');
     const [isEmployeeModalVisible, setIsEmployeeModalVisible] = useState<boolean>(false)
 
     useEffect(() => {
-        if ((currentCompany &&
-            lastRequest.path === BackendEndpoints.GET_EMPLOYEES &&
-            lastRequest.method === HttpMethod.GET &&
-            pagination.currentPage !== currentPage &&
-            !lastRequest.isPending) || currentCompany && lastRequest.path !== BackendEndpoints.GET_EMPLOYEES
-        ) {
+        if (currentCompany) {
             dispatch(getEmployeesThunk({
                 companyId: currentCompany.id,
                 branchId: currentCompany.currentBranch.id,
-                page: currentPage
+                page: currentPage,
+                name: name
             }))
         }
-    }, [currentCompany, currentPage, dispatch, lastRequest.isPending, lastRequest.method, lastRequest.path, pagination.currentPage]);
+    }, [currentCompany, currentPage, dispatch, name, lastRequest.isPending, lastRequest.method, lastRequest.path, pagination.currentPage]);
 
     const onPageChanged = (page: number, _: number) => {
         setCurrentPage(page - 1)
+    }
+
+    const handleOnTitleChange = (value: string) => {
+        setName(value)
     }
 
     const handleOnAddEmployeeClick = () => {
@@ -79,7 +80,7 @@ const EmployeesPage = () => {
                     </div>
 
                     <div className={c.filter}>
-                        <EmployeesFilter onAddEmployeeClick={handleOnAddEmployeeClick}/>
+                        <EmployeesFilter onTitleChange={handleOnTitleChange} onAddEmployeeClick={handleOnAddEmployeeClick}/>
                     </div>
                 </div>
 

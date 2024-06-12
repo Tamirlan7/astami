@@ -26,6 +26,7 @@ public class RecordController {
     public ResponseEntity<GetRecordsResponse> getEmployees(
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
             @RequestParam(name = "size", required = false, defaultValue = "10") int size,
+            @RequestParam(name = "date") LocalDate date,
             @PathVariable("branchId") long branchId,
             @PathVariable("companyId") long companyId,
             Authentication authentication
@@ -37,6 +38,7 @@ public class RecordController {
                         .companyId(companyId)
                         .authentication(authentication)
                         .branchId(branchId)
+                        .date(date)
                         .build()));
     }
 

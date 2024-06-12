@@ -48,6 +48,7 @@ function LoginPage() {
                 {
                     isInvalid: formData.password.length < 8,
                     message: 'Количество символов должна быть больше либо равна 8',
+                    exception: !formData.password.length
                 },
             ]
         }
@@ -107,12 +108,6 @@ function LoginPage() {
                             value={formData.password}
                             onChange={handleOnChange}
                         />
-                    </div>
-
-                    <div className={c.text} tabIndex={3}>
-                        <UnderlineText underlineColor={'#5B8CEB'} thickness={1.1}>
-                            Забыл пароль?
-                        </UnderlineText>
                     </div>
 
                     <Button disabled={isFormValid['all'][0].isInvalid}

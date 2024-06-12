@@ -1,10 +1,10 @@
-import React, {FC, LegacyRef, useMemo, useRef, useState} from 'react';
+import React, {FC, useMemo, useRef, useState} from 'react';
 import c from './ControlPanelMenu.module.scss'
 import controlPanelPages from "@/data/controlPanelPages.tsx";
 import BurgerMenuIcon from '@assets/icons/burger-menu.svg?react'
 import CompanyIcon from '@assets/icons/company.svg?react'
 import ControlPanelMenuItem from "@components/ControlPanelMenuItem/ControlPanelMenuItem.tsx";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {Divider, Input, InputRef, Modal} from "antd";
 import IntroduceTitle from "@ui/IntroduceTitle/IntroduceTitle.tsx";
 import {CopyOutlined} from '@ant-design/icons'
@@ -24,10 +24,6 @@ const ControlPanelMenu: FC<ControlPanelMenuProps> = ({onBurgerMenuStateChanged, 
     const [companyModal, setCompanyModal] = useState(false)
     const navigate = useNavigate();
     const copyInputRef = useRef<InputRef>(null)
-
-    const copyToClipboard = () => {
-
-    }
 
     const onCopy = () => {
         // Select the text field
@@ -102,7 +98,7 @@ const ControlPanelMenu: FC<ControlPanelMenuProps> = ({onBurgerMenuStateChanged, 
                     <ControlPanelMenuItem
                         item={{
                             id: 'company-button',
-                            title: '',
+                            title: 'Ссылка',
                             icon: <CompanyIcon/>
                         }}
                         onClick={handleOnCompanyClick}

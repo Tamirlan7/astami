@@ -38,10 +38,6 @@ public class AuthService {
                         .phone(body.phone())
                         .password(passwordEncoder.encode(body.password()))
                         .email(body.email())
-                        .lastName(body.lastName())
-                        .firstName(body.firstName())
-                        .gender(body.gender())
-                        .birthDate(body.birthDate())
                         .build()
         );
 

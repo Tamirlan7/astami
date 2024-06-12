@@ -16,10 +16,10 @@ export interface IRegisterRequest {
     email: string
     phone: string
     password: string
-    gender: Gender
-    firstName: string
-    lastName: string
-    birthDate: Date
+    // gender: Gender
+    // firstName: string
+    // lastName: string
+    // birthDate: Date
 }
 
 export interface ICreateCompanyRequest {
@@ -124,6 +124,7 @@ export interface IGetRecordsRequest {
     companyId: number | string
     page?: number
     size?: number
+    date: Date
 }
 
 export interface IGetRecordsResponse extends IPaginationIncludedResponse {

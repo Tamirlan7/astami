@@ -10,6 +10,7 @@ import BackendEndpoints from "@config/BackendEndpoints.ts";
 import extractDateStrFromDate from "@utils/extractDateStrFromDate.ts";
 import toLocalISOString from "@utils/toLocalISOString.ts";
 import guest from "@services/guest.ts";
+import formatDate from "@utils/formatDate.ts";
 
 class RecordService {
     public static async getRecordFreeTimes(body: IGetRecordFreeTimesRequest): Promise<AxiosResponse<IGetRecordFreeTimesResponse>> {
@@ -49,10 +50,20 @@ class RecordService {
     }
 
     static async getRecords(body: IGetRecordsRequest): Promise<AxiosResponse<IGetRecordsResponse>> {
+        const date = body.date ?? new Date()
+
         return await client.get(
             BackendEndpoints.GET_RECORDS
                 .replace(':companyId', body.companyId.toString())
                 .replace(':branchId', body.branchId.toString())
+            ,
+            {
+                params: {
+                    page: body.page,
+                    size: body.size,
+                    date: formatDate(date),
+                }
+            }
         )
     }
 }

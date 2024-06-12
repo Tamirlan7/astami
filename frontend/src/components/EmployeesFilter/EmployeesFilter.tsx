@@ -1,6 +1,7 @@
 import React, {ChangeEvent, FC} from 'react';
 import c from './EmployeesFilter.module.scss'
 import Button from "@ui/Button/Button.tsx";
+import SearchInput from "@ui/SearchInput/SearchInput.tsx";
 
 interface EmployeesFilterProps {
     onTitleChange?: (title: string) => void;
@@ -23,7 +24,8 @@ const EmployeesFilter: FC<EmployeesFilterProps> = ({onTitleChange, onAddEmployee
 
     return (
         <div className={c.block}>
-            <div>
+            <div className={c.control}>
+                <SearchInput onChange={handleOnTitleChange} rootClassName={c['input-root']} label={'Поиск по имени'} />
                 <Button onClick={handleOnAddClick}>Добавить</Button>
             </div>
         </div>

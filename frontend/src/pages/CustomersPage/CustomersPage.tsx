@@ -38,9 +38,9 @@ const CustomersPage = () => {
 
                     <div>
                         <IntroduceTitle
-                            title={'Записи'}
+                            title={'Клиенты'}
                             description={'Список'}
-                            specialText={'записей'}
+                            specialText={'клиентов'}
                         />
                     </div>
 

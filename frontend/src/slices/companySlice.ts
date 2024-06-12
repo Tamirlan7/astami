@@ -229,14 +229,26 @@ const companySlice = createSlice({
                 state.lastRequest.method = HttpMethod.POST
             })
             .addCase(addBranchToCompanyThunk.fulfilled, (state: IState, action: PayloadAction<ICreateBranchResponse>) => {
+                console.log(action.payload)
                 if (action.payload?.branch) {
+
                     state.companies = state.companies.map(c => {
                         if (c.id === action.payload.branch.companyId) {
-                            c.branches.push(action.payload.branch)
+                            return {
+                                ...c,
+                                branches: [...c.branches, action.payload.branch]
+                            }
                         }
 
                         return c;
                     })
+
+                    if (state.currentCompany) {
+                        state.currentCompany = {
+                            ...state.currentCompany,
+                            branches: [...state.currentCompany.branches, action.payload.branch]
+                        }
+                    }
                 }
 
                 state.lastRequest.isPending = false
